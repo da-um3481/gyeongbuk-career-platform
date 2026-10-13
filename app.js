@@ -159,16 +159,29 @@
           .join("")}
       </div>`;
 
+    const sitemap = (G.tabs || [])
+      .filter((t) => t.id !== "home")
+      .map((t) => `<button class="foot-nav" data-tab="${esc(t.id)}">${t.icon ? esc(t.icon) + " " : ""}${esc(t.label)}</button>`)
+      .join("");
     $("#site-footer").innerHTML = `
       <div class="foot-inner">
         <div><b>${esc(G.meta.title)}</b> · ${esc(G.meta.slogan)}</div>
-        <div class="foot-links">
-          <a href="https://www.gbe.kr/jinhak/main.do" target="_blank" rel="noopener">경북진학지원센터</a>
-          <a href="https://www.ggoomgil.go.kr" target="_blank" rel="noopener">꿈길 진로체험</a>
-          <a href="https://www.career.go.kr" target="_blank" rel="noopener">커리어넷</a>
-          <a href="https://www.adiga.kr" target="_blank" rel="noopener">대입정보포털</a>
+        <div class="foot-cols">
+          <div>
+            <div class="foot-h">바로가기 (메뉴)</div>
+            <div class="foot-nav-wrap">${sitemap}</div>
+          </div>
+          <div>
+            <div class="foot-h">외부 기관</div>
+            <div class="foot-links">
+              <a href="https://www.gbe.kr/jinhak/main.do" target="_blank" rel="noopener">경북진학지원센터</a>
+              <a href="https://www.ggoomgil.go.kr" target="_blank" rel="noopener">꿈길 진로체험</a>
+              <a href="https://www.career.go.kr" target="_blank" rel="noopener">커리어넷</a>
+              <a href="https://www.adiga.kr" target="_blank" rel="noopener">대입정보포털</a>
+            </div>
+          </div>
         </div>
-        <div class="muted">본 플랫폼은 진로·학업설계 이해를 돕기 위한 교육용 자료이며, 대학별 전형·과목 정보는 반드시 각 대학 입학처 원문을 확인하세요.</div>
+        <div class="muted">${esc(G.meta.title)} · ${esc(G.meta.office)} · 본 플랫폼은 진로·학업설계 이해를 돕기 위한 교육용 자료이며, 대학별 전형·과목 정보는 반드시 각 대학 입학처 원문을 확인하세요.</div>
       </div>`;
   }
 
@@ -622,7 +635,7 @@
           <div class="li-sub mt-8">${esc(e.area)}</div>
           <p class="mt-8 muted">${esc(e.desc)}</p>
           <div class="row mt-16">
-            <a class="btn btn-sm" href="${esc(e.url)}" target="_blank" rel="noopener">자세히 보기</a>
+            <a class="btn btn-sm" href="${esc(e.url || "https://map.naver.com/p/search/" + encodeURIComponent(e.name))}" target="_blank" rel="noopener">자세히 보기</a>
             ${/(시|군)$/.test(e.area) ? `<button class="btn btn-sm" data-schooldistrict="${esc(e.area)}" data-school="${esc(e.name)}">🗺️ 위치·길찾기</button>` : ""}
           </div>
         </article>`

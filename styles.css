@@ -407,8 +407,14 @@ tbody tr:hover { background: var(--slate-50); }
 }
 #site-footer .foot-inner { max-width: var(--maxw); margin: 0 auto; padding: 0 18px; }
 #site-footer b { color: #fff; }
-#site-footer .foot-links { display: flex; flex-wrap: wrap; gap: 14px; margin: 12px 0; }
+#site-footer .foot-links { display: flex; flex-direction: column; gap: 6px; margin: 0; }
 #site-footer .foot-links a { color: #c7d2fe; font-weight: 700; }
+.foot-cols { display: grid; grid-template-columns: 2.2fr 1fr; gap: 24px; margin: 16px 0; }
+@media (max-width: 640px) { .foot-cols { grid-template-columns: 1fr; gap: 14px; } }
+.foot-h { font-size: 12px; font-weight: 800; color: #94a3b8; margin-bottom: 8px; }
+.foot-nav-wrap { display: flex; flex-wrap: wrap; gap: 4px 6px; }
+.foot-nav { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #c7d2fe; font-size: 12px; font-weight: 700; padding: 5px 11px; border-radius: 999px; }
+.foot-nav:hover { background: rgba(255,255,255,0.16); color: #fff; }
 
 /* utilities */
 .hidden { display: none !important; }
