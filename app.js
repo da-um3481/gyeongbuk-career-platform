@@ -467,7 +467,19 @@
       return;
     }
     const map = L.map("gbmap", { scrollWheelZoom: true, worldCopyJump: true }).setView([36.35, 128.75], 8);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap contributors" }).addTo(map);
+    const primary = L.tileLayer("https://tile.openstreetmap.de/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+    let tileFallback = false;
+    primary.on("tileerror", () => {
+      if (tileFallback) return;
+      tileFallback = true;
+      map.removeLayer(primary);
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
+        maxZoom: 19, attribution: 'Tiles © <a href="https://www.esri.com">Esri</a> — Source: Esri, Maxar, Earthstar Geographics',
+      }).addTo(map);
+    });
     pts.forEach((p) => {
       const special = p.type !== "일반고";
       L.circleMarker([p.lat, p.lon], { radius: 6, color: "#fff", weight: 1.5, fillColor: special ? "#6a4fa3" : "#12707c", fillOpacity: 0.9 })
