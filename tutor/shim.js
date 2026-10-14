@@ -1,10 +1,15 @@
 /* ============================================================
-   AgentDB Bridge shim — 정적(sql.js) 백엔드
-   원본 대시보드는 window.agentdb.executeQuery(name, params) 를
-   호출합니다. 여기서는 번들된 SQLite 덤프를 메모리에 올려
-   같은 인터페이스로 응답합니다(읽기 전용, 쓰기는 세션 내에서만 반영).
+   AgentDB Bridge shim (v2 — 서버 DB 연결판)
+   1순위: /api/tutor (PostgreSQL, 실제 저장)
+   2순위: 번들된 SQLite 스냅샷(sql.js, 읽기 전용 데모) — API 미설정/실패 시
    ============================================================ */
 (function () {
+  var TOKEN = window.TUTOR_TOKEN || "";
+  var API = "/api/tutor";
+  var usingDb = null; // null=미확정, true=DB, false=로컬 스냅샷
+  var SELF = (document.currentScript && document.currentScript.src) || "";
+  var DIR = SELF ? SELF.replace(/[^\/]*$/, "") : "/tutor/";
+
   function b64utf8(b64) {
     var bin = atob(b64);
     var bytes = new Uint8Array(bin.length);
@@ -12,72 +17,128 @@
     return new TextDecoder().decode(bytes);
   }
 
-  var OVERRIDES = window.TUTOR_SQL_OVERRIDES || {};
-  var SQL_CDN = "https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/";
+  function loadScript(src) {
+    return new Promise(function (res, rej) {
+      var s = document.createElement("script");
+      s.src = src;
+      s.onload = res;
+      s.onerror = function () { rej(new Error("불러오기 실패: " + src)); };
+      document.head.appendChild(s);
+    });
+  }
 
-  var api = {
-    _db: null,
-    _queries: null,
-    ready: null,
+  /* ---------- 로컬(스냅샷) 백엔드 ---------- */
+  var localReady = null;
+  var ldb = null;
+  var lqueries = null;
+  var OVERRIDES = null;
 
-    async executeQuery(name, params) {
-      await api.ready;
-      var q = api._queries[name];
-      if (!q) throw new Error("알 수 없는 쿼리: " + name);
-      var sql = (OVERRIDES[name] || q.sql).replace(/\$(\d+)/g, "?$1");
-      var binds = (q.params || []).map(function (p) {
-        var v = params ? params[p.name] : undefined;
-        return v === undefined || v === null ? null : v;
-      });
-      var stmt = api._db.prepare(sql);
-      try {
-        if (binds.length) stmt.bind(binds);
-        var rows = [];
-        while (stmt.step()) rows.push(stmt.getAsObject());
-        return { rows: rows };
-      } finally {
-        stmt.free();
+  function initLocal() {
+    if (localReady) return localReady;
+    localReady = (async function () {
+      if (typeof initSqlJs !== "function") {
+        await loadScript("https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js");
       }
-    },
+      if (!window.TUTOR_DB_B64) await loadScript(DIR + "data/db.js");
+      if (!window.TUTOR_QUERIES_B64) await loadScript(DIR + "data/queries.js");
+      if (!window.TUTOR_SQL_OVERRIDES) await loadScript(DIR + "data/overrides.js");
+      OVERRIDES = window.TUTOR_SQL_OVERRIDES || {};
+      var SQL = await initSqlJs({
+        locateFile: function (f) { return "https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/" + f; },
+      });
+      ldb = new SQL.Database();
+      ldb.exec(b64utf8(window.TUTOR_DB_B64));
+      var parsed = JSON.parse(b64utf8(window.TUTOR_QUERIES_B64));
+      lqueries = {};
+      (parsed.queries || []).forEach(function (q) { lqueries[q.name] = q; });
+      return true;
+    })();
+    return localReady;
+  }
 
+  async function runLocal(name, params) {
+    await initLocal();
+    var q = lqueries[name];
+    if (!q) throw new Error("알 수 없는 쿼리: " + name);
+    var sql = (OVERRIDES[name] || q.sql).replace(/\$(\d+)/g, "?$1");
+    var binds = (q.params || []).map(function (p) {
+      var v = params ? params[p.name] : undefined;
+      return v === undefined || v === null ? null : v;
+    });
+    var stmt = ldb.prepare(sql);
+    try {
+      if (binds.length) stmt.bind(binds);
+      var rows = [];
+      while (stmt.step()) rows.push(stmt.getAsObject());
+      return rows;
+    } finally {
+      stmt.free();
+    }
+  }
+
+  /* ---------- 상태 배지 ---------- */
+  function badge() {
+    var host = document.querySelector(".top .right");
+    if (!host) return;
+    var el = document.getElementById("db-mode");
+    if (!el) {
+      el = document.createElement("span");
+      el.id = "db-mode";
+      el.style.cssText = "font-size:11px;padding:3px 9px;border-radius:999px;font-weight:600";
+      host.insertBefore(el, host.firstChild);
+    }
+    if (usingDb) {
+      el.textContent = "DB 연결됨";
+      el.style.background = "#DCF4E6";
+      el.style.color = "#1f9d55";
+    } else {
+      el.textContent = "데모(로컬) · 저장 안 됨";
+      el.style.background = "#FBEBD0";
+      el.style.color = "#b7791f";
+    }
+  }
+
+  /* ---------- 공개 API ---------- */
+  var api = {
+    mode: "unknown",
+    isConnected: function () { return usingDb === true; },
+    async executeQuery(name, params) {
+      params = params || {};
+      if (usingDb !== false) {
+        try {
+          var r = await fetch(API, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "x-tutor-token": TOKEN },
+            body: JSON.stringify({ q: name, params: params }),
+          });
+          if (r.ok) {
+            var j = await r.json();
+            if (j && Array.isArray(j.rows)) {
+              usingDb = true; api.mode = "db"; badge();
+              return { rows: j.rows };
+            }
+          } else if (r.status === 404 || r.status === 401 || r.status === 405 || r.status === 503 || r.status === 500) {
+            usingDb = false;
+          }
+        } catch (e) {
+          usingDb = false;
+        }
+      }
+      var rows = await runLocal(name, params);
+      usingDb = false; api.mode = "local"; badge();
+      return { rows: rows };
+    },
     async getSchema() {
-      await api.ready;
-      var res = api._db.exec("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name");
-      var tables = res.length ? res[0].values.map(function (r) { return r[0]; }) : [];
-      return { tables: tables };
+      if (usingDb) return { tables: [] };
+      await initLocal();
+      var res = ldb.exec("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name");
+      return { tables: res.length ? res[0].values.map(function (r) { return r[0]; }) : [] };
     },
-
     async getAppInfo() {
       return { id: "local", name: "AI 튜터 학습관리 시스템", scope: "workspace" };
     },
   };
 
-  api.ready = (async function () {
-    if (!window.TUTOR_DB_B64 || !window.TUTOR_QUERIES_B64) {
-      throw new Error("데이터 번들(data/db.js, data/queries.js)을 찾을 수 없습니다.");
-    }
-    if (typeof initSqlJs !== "function") {
-      throw new Error("sql.js 라이브러리를 불러오지 못했습니다(네트워크 확인).");
-    }
-    var SQL = await initSqlJs({ locateFile: function (f) { return SQL_CDN + f; } });
-    var db = new SQL.Database();
-    db.exec(b64utf8(window.TUTOR_DB_B64));
-    var parsed = JSON.parse(b64utf8(window.TUTOR_QUERIES_B64));
-    var map = {};
-    (parsed.queries || []).forEach(function (q) { map[q.name] = q; });
-    api._db = db;
-    api._queries = map;
-    return true;
-  })().catch(function (e) {
-    var el = document.getElementById("route");
-    if (el) {
-      el.innerHTML =
-        '<div class="err-note" style="margin:20px">데이터 엔진 초기화 실패: ' +
-        (e && e.message ? e.message : e) +
-        "<br>인터넷 연결을 확인한 뒤 새로고침하세요.</div>";
-    }
-    throw e;
-  });
-
+  document.addEventListener("DOMContentLoaded", function () { setTimeout(badge, 300); });
   window.agentdb = api;
 })();

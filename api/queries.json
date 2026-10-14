@@ -1,0 +1,347 @@
+{
+  "app_id": "a36f39d7-195a-4e6d-8fc7-a9daf13ae593",
+  "generated_at": "2026-10-14T16:52:00+09:00",
+  "queries": [
+    {
+      "name": "wa_summary",
+      "description": "홈 KPI 요약 — 학생/기관/이번 달 수업/검사/상담/미발송 리포트",
+      "params": [],
+      "sql": "SELECT\n  (SELECT COUNT(*) FROM students) AS students,\n  (SELECT COUNT(*) FROM organizations) AS orgs,\n  (SELECT COUNT(*) FROM class_schedule WHERE class_date >= date_trunc('month', CURRENT_DATE) AND class_date < date_trunc('month', CURRENT_DATE) + INTERVAL '1 month') AS classes_month,\n  (SELECT COUNT(*) FROM test_sessions) AS tests,\n  (SELECT COUNT(*) FROM counseling_sessions) AS counsel,\n  (SELECT COUNT(*) FROM parent_reports WHERE sent_date IS NULL) AS unsent"
+    },
+    {
+      "name": "wa_home_schedule",
+      "description": "홈 — 최근 7일 수업 일정",
+      "params": [],
+      "sql": "SELECT cs.class_date, cs.start_time, s.name AS student_name, sub.subject_name, cs.status\nFROM class_schedule cs\nLEFT JOIN students s ON s.id = cs.student_id\nLEFT JOIN subjects sub ON sub.id = cs.subject_id\nWHERE cs.class_date BETWEEN CURRENT_DATE - INTERVAL '2 days' AND CURRENT_DATE + INTERVAL '7 days'\nORDER BY cs.class_date, cs.start_time\nLIMIT 50"
+    },
+    {
+      "name": "wa_home_attention",
+      "description": "홈 — 관리 필요(진도 70% 미만 상위)",
+      "params": [],
+      "sql": "SELECT s.name AS student_name, sub.subject_name, cur.unit_name, pt.progress_percent AS progress_pct\nFROM progress_tracking pt\nLEFT JOIN students s ON s.id = pt.student_id\nLEFT JOIN curriculum cur ON cur.id = pt.curriculum_id\nLEFT JOIN subjects sub ON sub.id = cur.subject_id\nWHERE COALESCE(pt.progress_percent, 0) < 70\nORDER BY COALESCE(pt.progress_percent, 0) ASC\nLIMIT 20"
+    },
+    {
+      "name": "wa_home_drafts",
+      "description": "홈 — 미발송 학부모 리포트",
+      "params": [],
+      "sql": "SELECT\n  COALESCE(to_char(pr.report_period_start, 'YYYY-MM-DD') || ' ~ ' || to_char(pr.report_period_end, 'MM-DD'), pr.report_type) AS report_period,\n  s.name AS student_name,\n  pr.created_at,\n  pr.status\nFROM parent_reports pr\nLEFT JOIN students s ON s.id = pr.student_id\nWHERE pr.sent_date IS NULL\nORDER BY pr.created_at DESC\nLIMIT 20"
+    },
+    {
+      "name": "wa_home_orgs",
+      "description": "홈 — 기관 현황(학생 수)",
+      "params": [],
+      "sql": "SELECT o.name, o.org_type, o.status, (SELECT COUNT(*) FROM students s WHERE s.org_id = o.id) AS student_count\nFROM organizations o\nORDER BY o.name\nLIMIT 20"
+    },
+    {
+      "name": "wa_orgs",
+      "description": "기관·대상 관리",
+      "params": [],
+      "sql": "SELECT o.name, o.org_type, o.region, o.cohort, o.status,\n  (SELECT COUNT(*) FROM students s WHERE s.org_id = o.id) AS student_count\nFROM organizations o\nORDER BY o.name"
+    },
+    {
+      "name": "wa_onboard",
+      "description": "기관 온보딩 진행 — 간이 집계 (학생/계약정보/연락처/시작일 기준)",
+      "params": [],
+      "sql": "SELECT\n  o.name, o.org_type,\n  (SELECT COUNT(*) FROM students s WHERE s.org_id = o.id) AS student_count,\n  ((CASE WHEN o.contact_name IS NOT NULL THEN 1 ELSE 0 END)\n   + (CASE WHEN o.contact_phone IS NOT NULL THEN 1 ELSE 0 END)\n   + (CASE WHEN o.contact_email IS NOT NULL THEN 1 ELSE 0 END)\n   + (CASE WHEN o.program_name IS NOT NULL THEN 1 ELSE 0 END)\n   + (CASE WHEN o.cohort IS NOT NULL THEN 1 ELSE 0 END)\n   + (CASE WHEN o.start_date IS NOT NULL THEN 1 ELSE 0 END)\n   + (CASE WHEN o.student_quota IS NOT NULL THEN 1 ELSE 0 END)\n   + (CASE WHEN (SELECT COUNT(*) FROM students s WHERE s.org_id = o.id) > 0 THEN 1 ELSE 0 END)\n  ) AS done_steps,\n  ROUND(100.0 *\n    ((CASE WHEN o.contact_name IS NOT NULL THEN 1 ELSE 0 END)\n     + (CASE WHEN o.contact_phone IS NOT NULL THEN 1 ELSE 0 END)\n     + (CASE WHEN o.contact_email IS NOT NULL THEN 1 ELSE 0 END)\n     + (CASE WHEN o.program_name IS NOT NULL THEN 1 ELSE 0 END)\n     + (CASE WHEN o.cohort IS NOT NULL THEN 1 ELSE 0 END)\n     + (CASE WHEN o.start_date IS NOT NULL THEN 1 ELSE 0 END)\n     + (CASE WHEN o.student_quota IS NOT NULL THEN 1 ELSE 0 END)\n     + (CASE WHEN (SELECT COUNT(*) FROM students s WHERE s.org_id = o.id) > 0 THEN 1 ELSE 0 END)\n    ) / 8.0, 0) AS progress_pct\nFROM organizations o\nORDER BY o.name"
+    },
+    {
+      "name": "wa_schedule",
+      "description": "수업 캘린더(지난 30일 ~ 7일 뒤)",
+      "params": [],
+      "sql": "SELECT cs.class_date, cs.start_time, s.name AS student_name, sub.subject_name, cs.topic, cs.status\nFROM class_schedule cs\nLEFT JOIN students s ON s.id = cs.student_id\nLEFT JOIN subjects sub ON sub.id = cs.subject_id\nWHERE cs.class_date BETWEEN CURRENT_DATE - INTERVAL '30 days' AND CURRENT_DATE + INTERVAL '7 days'\nORDER BY cs.class_date DESC, cs.start_time\nLIMIT 100"
+    },
+    {
+      "name": "wa_homework",
+      "description": "숙제 — 최근 배부·제출 현황",
+      "params": [],
+      "sql": "SELECT h.due_date, s.name AS student_name, sub.subject_name, h.title, h.status, h.score\nFROM homework h\nLEFT JOIN students s ON s.id = h.student_id\nLEFT JOIN subjects sub ON sub.id = h.subject_id\nORDER BY h.due_date DESC NULLS LAST, h.id DESC\nLIMIT 100"
+    },
+    {
+      "name": "wa_students",
+      "description": "학생 종합",
+      "params": [],
+      "sql": "SELECT s.name, s.student_code, s.grade, s.school AS school_name,\n  (SELECT o.name FROM organizations o WHERE o.id = s.org_id) AS org_name,\n  s.learning_style\nFROM students s\nORDER BY s.name"
+    },
+    {
+      "name": "wa_progress",
+      "description": "진도·성취",
+      "params": [],
+      "sql": "SELECT s.name AS student_name, sub.subject_name, cur.unit_name,\n  pt.progress_percent AS progress_pct, pt.mastery_score AS achievement, pt.updated_at AS last_updated\nFROM progress_tracking pt\nLEFT JOIN students s ON s.id = pt.student_id\nLEFT JOIN curriculum cur ON cur.id = pt.curriculum_id\nLEFT JOIN subjects sub ON sub.id = cur.subject_id\nORDER BY pt.updated_at DESC NULLS LAST\nLIMIT 100"
+    },
+    {
+      "name": "wa_tutor",
+      "description": "AI 튜터 세션 로그",
+      "params": [],
+      "sql": "SELECT ai.session_date, s.name AS student_name, sub.subject_name,\n  ai.session_type, ai.duration_minutes AS duration_min, ai.student_engagement AS engagement\nFROM ai_tutor_sessions ai\nLEFT JOIN students s ON s.id = ai.student_id\nLEFT JOIN subjects sub ON sub.id = ai.subject_id\nORDER BY ai.session_date DESC\nLIMIT 100"
+    },
+    {
+      "name": "wa_contents",
+      "description": "학습 콘텐츠",
+      "params": [],
+      "sql": "SELECT lc.title, sub.subject_name, lc.content_type, lc.difficulty, lc.estimated_minutes AS duration_min\nFROM learning_contents lc\nLEFT JOIN subjects sub ON sub.id = lc.subject_id\nORDER BY lc.created_at DESC\nLIMIT 100"
+    },
+    {
+      "name": "wa_books",
+      "description": "교재(도서/시중 문제집) — prescription_resources(resource_type='교재')",
+      "params": [],
+      "sql": "SELECT pr.title, pr.provider AS publisher, sub.subject_name,\n  pr.target AS target_grade, pr.level AS difficulty\nFROM prescription_resources pr\nLEFT JOIN subjects sub ON sub.id = pr.subject_id\nWHERE pr.resource_type IN ('교재', '도서', '문제집')\nORDER BY pr.created_at DESC\nLIMIT 100"
+    },
+    {
+      "name": "wa_qbank",
+      "description": "문제뱅크",
+      "params": [],
+      "sql": "SELECT sub.subject_name, cur.unit_name, qb.question_type, qb.difficulty, qb.usage_count\nFROM question_bank qb\nLEFT JOIN subjects sub ON sub.id = qb.subject_id\nLEFT JOIN curriculum cur ON cur.id = qb.curriculum_id\nORDER BY qb.created_at DESC\nLIMIT 100"
+    },
+    {
+      "name": "wa_prescription",
+      "description": "학습 처방 — 상담 세션의 처방 기록(학생별)",
+      "params": [],
+      "sql": "SELECT s.name AS student_name,\n  NULL::text AS subject_name,\n  cs.session_date AS issued_date,\n  LEFT(COALESCE(cs.prescription, ''), 80) AS focus_area,\n  cs.status\nFROM counseling_sessions cs\nLEFT JOIN students s ON s.id = cs.student_id\nWHERE cs.prescription IS NOT NULL AND cs.prescription <> ''\nORDER BY cs.session_date DESC NULLS LAST\nLIMIT 100"
+    },
+    {
+      "name": "wa_paths",
+      "description": "학습 경로",
+      "params": [],
+      "sql": "SELECT s.name AS student_name, sub.subject_name, lp.path_name,\n  (SELECT COUNT(*) FROM learning_path_steps lps WHERE lps.path_id = lp.id) AS step_count,\n  lp.status\nFROM learning_paths lp\nLEFT JOIN students s ON s.id = lp.student_id\nLEFT JOIN subjects sub ON sub.id = lp.subject_id\nORDER BY lp.created_at DESC\nLIMIT 100"
+    },
+    {
+      "name": "wa_weak",
+      "description": "취약 단원(진도<70 또는 성취<70) — progress_tracking 기준",
+      "params": [],
+      "sql": "SELECT s.name AS student_name, sub.subject_name, cur.unit_name,\n  pt.progress_percent AS progress_pct, pt.mastery_score AS achievement\nFROM progress_tracking pt\nLEFT JOIN students s ON s.id = pt.student_id\nLEFT JOIN curriculum cur ON cur.id = pt.curriculum_id\nLEFT JOIN subjects sub ON sub.id = cur.subject_id\nWHERE COALESCE(pt.progress_percent, 0) < 70 OR COALESCE(pt.mastery_score, 0) < 70\nORDER BY COALESCE(pt.progress_percent, 0) + COALESCE(pt.mastery_score, 0) ASC\nLIMIT 100"
+    },
+    {
+      "name": "wa_tests",
+      "description": "검사 세션(MLST-2·MCDT·NEO 등)",
+      "params": [],
+      "sql": "SELECT ts.test_date, s.name AS student_name, ts.test_type,\n  COALESCE(ts.overall_label, LEFT(COALESCE(ts.summary, ''), 60)) AS result_summary\nFROM test_sessions ts\nLEFT JOIN students s ON s.id = ts.student_id\nORDER BY ts.test_date DESC NULLS LAST\nLIMIT 100"
+    },
+    {
+      "name": "wa_grades",
+      "description": "학기별 내신 성적(5등급제)",
+      "params": [],
+      "sql": "SELECT s.name AS student_name, sg.school_year, sg.semester, sg.subject_name,\n  NULL::numeric AS score, sg.grade AS grade_level\nFROM school_grades sg\nLEFT JOIN students s ON s.id = sg.student_id\nORDER BY sg.school_year DESC, sg.semester DESC, s.name, sg.subject_name\nLIMIT 100"
+    },
+    {
+      "name": "wa_roadmap",
+      "description": "대입 로드맵 — 학생×목표×단계",
+      "params": [],
+      "sql": "SELECT s.name AS student_name,\n  at.university || COALESCE(' · ' || at.department, '') AS target_name,\n  rs.id AS step_order,\n  COALESCE(rs.category || ' · ', '') || rs.title AS step_name,\n  COALESCE(rs.school_year::text || '학년 ' || rs.semester::text || '학기',\n           to_char(rs.target_date, 'YYYY-MM-DD')) AS due_period,\n  rs.status\nFROM admission_roadmap_steps rs\nLEFT JOIN admission_targets at ON at.id = rs.target_id\nLEFT JOIN students s ON s.id = rs.student_id\nORDER BY s.name, at.priority NULLS LAST, rs.target_date NULLS LAST, rs.id\nLIMIT 100"
+    },
+    {
+      "name": "wa_rx_res",
+      "description": "학습 처방 자료실",
+      "params": [],
+      "sql": "SELECT pr.title, sub.subject_name, pr.resource_type, pr.target AS target_level\nFROM prescription_resources pr\nLEFT JOIN subjects sub ON sub.id = pr.subject_id\nORDER BY pr.created_at DESC\nLIMIT 100"
+    },
+    {
+      "name": "wa_counsel",
+      "description": "진학·학습 상담 기록",
+      "params": [],
+      "sql": "SELECT cs.session_date, s.name AS student_name, cs.topic AS session_type,\n  cs.counselor AS counselor_name, LEFT(COALESCE(cs.content, ''), 80) AS summary\nFROM counseling_sessions cs\nLEFT JOIN students s ON s.id = cs.student_id\nORDER BY cs.session_date DESC\nLIMIT 100"
+    },
+    {
+      "name": "wa_reports",
+      "description": "학부모 리포트",
+      "params": [],
+      "sql": "SELECT\n  pr.id,\n  COALESCE(to_char(pr.report_period_start, 'YYYY-MM-DD') || ' ~ ' || to_char(pr.report_period_end, 'MM-DD'), pr.report_type) AS report_period,\n  s.name AS student_name,\n  pr.created_at,\n  pr.sent_date AS sent_at,\n  pr.status\nFROM parent_reports pr\nLEFT JOIN students s ON s.id = pr.student_id\nORDER BY pr.created_at DESC\nLIMIT 100"
+    },
+    {
+      "name": "wa_search",
+      "description": "전역 통합 검색 — 학생/기관/검사/상담 (ILIKE 부분일치)",
+      "params": [{"name": "kw", "type": "text", "nullable": false}],
+      "sql": "(SELECT 'student' AS kind, s.id::text AS ref_id, s.name AS title,\n   COALESCE(s.student_code,'') || ' · ' || COALESCE(s.school,'') || ' · ' || COALESCE(s.grade,'') AS subtitle,\n   NULL::date AS as_of\n FROM students s\n WHERE s.name ILIKE '%' || $1 || '%' OR COALESCE(s.student_code,'') ILIKE '%' || $1 || '%' OR COALESCE(s.school,'') ILIKE '%' || $1 || '%')\nUNION ALL\n(SELECT 'org' AS kind, o.id::text, o.name,\n   COALESCE(o.org_type,'') || ' · ' || COALESCE(o.region,'') AS subtitle,\n   NULL::date\n FROM organizations o\n WHERE o.name ILIKE '%' || $1 || '%' OR COALESCE(o.region,'') ILIKE '%' || $1 || '%')\nUNION ALL\n(SELECT 'test' AS kind, t.id::text,\n   s.name || ' · ' || COALESCE(t.test_type,'') AS title,\n   COALESCE(t.overall_label, LEFT(COALESCE(t.summary,''),40)) AS subtitle,\n   t.test_date\n FROM test_sessions t LEFT JOIN students s ON s.id = t.student_id\n WHERE COALESCE(t.test_type,'') ILIKE '%' || $1 || '%' OR COALESCE(t.test_name,'') ILIKE '%' || $1 || '%'\n   OR COALESCE(t.summary,'') ILIKE '%' || $1 || '%' OR s.name ILIKE '%' || $1 || '%')\nUNION ALL\n(SELECT 'counsel' AS kind, c.id::text,\n   s.name || ' · ' || COALESCE(c.topic,'상담') AS title,\n   LEFT(COALESCE(c.content,''),50) AS subtitle,\n   c.session_date\n FROM counseling_sessions c LEFT JOIN students s ON s.id = c.student_id\n WHERE COALESCE(c.content,'') ILIKE '%' || $1 || '%' OR COALESCE(c.topic,'') ILIKE '%' || $1 || '%' OR s.name ILIKE '%' || $1 || '%')\nORDER BY kind, as_of DESC NULLS LAST\nLIMIT 30"
+    },
+    {
+      "name": "wa_stu_basic",
+      "description": "학생 요약 페이지 — 기본정보",
+      "params": [{"name": "sid", "type": "integer", "nullable": false}],
+      "sql": "SELECT s.id, s.name, s.student_code, s.grade, s.school,\n  o.name AS org_name, o.org_type,\n  s.parent_name, s.parent_phone, s.parent_email,\n  s.learning_style, s.learning_goal, s.status, s.enrolled_date\nFROM students s\nLEFT JOIN organizations o ON o.id = s.org_id\nWHERE s.id = $1"
+    },
+    {
+      "name": "wa_stu_recent",
+      "description": "학생 요약 — 최근 수업+숙제 통합 타임라인",
+      "params": [{"name": "sid", "type": "integer", "nullable": false}],
+      "sql": "(SELECT '수업' AS kind, cs.class_date AS d, sub.subject_name AS subject,\n   COALESCE(cs.topic, '') AS title, COALESCE(cs.attendance, cs.status) AS status, NULL::numeric AS score\n FROM class_schedule cs\n LEFT JOIN subjects sub ON sub.id = cs.subject_id\n WHERE cs.student_id = $1\n ORDER BY cs.class_date DESC\n LIMIT 10)\nUNION ALL\n(SELECT '숙제' AS kind, h.due_date, sub.subject_name,\n   h.title, h.status, h.score\n FROM homework h\n LEFT JOIN subjects sub ON sub.id = h.subject_id\n WHERE h.student_id = $1\n ORDER BY h.due_date DESC NULLS LAST\n LIMIT 10)\nORDER BY d DESC NULLS LAST\nLIMIT 20"
+    },
+    {
+      "name": "wa_stu_progress",
+      "description": "학생 요약 — 진도·성취",
+      "params": [{"name": "sid", "type": "integer", "nullable": false}],
+      "sql": "SELECT sub.subject_name, cur.unit_name,\n  pt.progress_percent AS progress_pct, pt.mastery_score AS achievement, pt.updated_at\nFROM progress_tracking pt\nLEFT JOIN curriculum cur ON cur.id = pt.curriculum_id\nLEFT JOIN subjects sub ON sub.id = cur.subject_id\nWHERE pt.student_id = $1\nORDER BY pt.updated_at DESC NULLS LAST\nLIMIT 20"
+    },
+    {
+      "name": "wa_stu_tests",
+      "description": "학생 요약 — 검사 결과",
+      "params": [{"name": "sid", "type": "integer", "nullable": false}],
+      "sql": "SELECT t.id, t.test_date, t.test_type, t.test_name,\n  t.overall_label, t.overall_index, LEFT(COALESCE(t.summary,''),120) AS summary\nFROM test_sessions t\nWHERE t.student_id = $1\nORDER BY t.test_date DESC NULLS LAST\nLIMIT 10"
+    },
+    {
+      "name": "wa_stu_grades",
+      "description": "학생 요약 — 내신 성적·등급",
+      "params": [{"name": "sid", "type": "integer", "nullable": false}],
+      "sql": "SELECT sg.school_year, sg.semester, sg.subject_name, sg.achievement, sg.grade, sg.exam_period\nFROM school_grades sg\nWHERE sg.student_id = $1\nORDER BY sg.school_year DESC, sg.semester DESC, sg.subject_name"
+    },
+    {
+      "name": "wa_stu_roadmap",
+      "description": "학생 요약 — 진학 목표 + 로드맵 단계",
+      "params": [{"name": "sid", "type": "integer", "nullable": false}],
+      "sql": "SELECT at.id AS target_id, at.university, at.department, at.admission_type,\n  at.target_year, at.required_grade, at.priority, at.status AS target_status,\n  (SELECT COUNT(*) FROM admission_roadmap_steps rs WHERE rs.target_id = at.id) AS step_count,\n  (SELECT COUNT(*) FROM admission_roadmap_steps rs WHERE rs.target_id = at.id AND rs.status = '완료') AS done_steps\nFROM admission_targets at\nWHERE at.student_id = $1\nORDER BY at.priority NULLS LAST, at.id"
+    },
+    {
+      "name": "wa_stu_counsel",
+      "description": "학생 요약 — 상담 기록 + 처방",
+      "params": [{"name": "sid", "type": "integer", "nullable": false}],
+      "sql": "SELECT c.session_date, c.counselor, c.topic,\n  LEFT(COALESCE(c.content,''),140) AS content_preview,\n  LEFT(COALESCE(c.prescription,''),120) AS prescription_preview,\n  c.next_date, c.status\nFROM counseling_sessions c\nWHERE c.student_id = $1\nORDER BY c.session_date DESC\nLIMIT 10"
+    },
+    {
+      "name": "wa_stu_reports",
+      "description": "학생 요약 — 학부모 리포트 발행 현황",
+      "params": [{"name": "sid", "type": "integer", "nullable": false}],
+      "sql": "SELECT pr.id, pr.report_period_start, pr.report_period_end, pr.report_type,\n  pr.status, pr.sent_date, pr.created_at\nFROM parent_reports pr\nWHERE pr.student_id = $1\nORDER BY pr.created_at DESC\nLIMIT 20"
+    },
+    {
+      "name": "wa_students_pick",
+      "description": "학생 셀렉터 — 전체 학생 간단 리스트",
+      "params": [],
+      "sql": "SELECT s.id, s.name, s.grade, s.school, o.name AS org_name\nFROM students s LEFT JOIN organizations o ON o.id = s.org_id\nORDER BY s.name"
+    },
+    {
+      "name": "wa_orgs_pick",
+      "description": "기관 셀렉터",
+      "params": [],
+      "sql": "SELECT o.id, o.name, o.org_type, o.region, o.status,\n  (SELECT COUNT(*) FROM students s WHERE s.org_id = o.id) AS student_count\nFROM organizations o\nORDER BY o.name"
+    },
+    {
+      "name": "wa_org_detail",
+      "description": "기관 상세 — 기본정보 + KPI",
+      "params": [{"name": "oid", "type": "integer", "nullable": false}],
+      "sql": "SELECT o.id, o.name, o.org_type, o.region, o.address,\n  o.contact_name, o.contact_phone, o.contact_email,\n  o.program_name, o.cohort, o.status, o.start_date, o.end_date, o.student_quota, o.note,\n  (SELECT COUNT(*) FROM students s WHERE s.org_id = o.id) AS student_count,\n  (SELECT COUNT(*) FROM class_schedule cs JOIN students s ON s.id = cs.student_id\n     WHERE s.org_id = o.id AND cs.class_date >= date_trunc('month', CURRENT_DATE)\n     AND cs.class_date < date_trunc('month', CURRENT_DATE) + INTERVAL '1 month') AS classes_month,\n  (SELECT COUNT(*) FROM counseling_sessions c JOIN students s ON s.id = c.student_id\n     WHERE s.org_id = o.id AND c.session_date >= CURRENT_DATE - INTERVAL '30 days') AS counsel_30d,\n  (SELECT COUNT(*) FROM parent_reports pr JOIN students s ON s.id = pr.student_id\n     WHERE s.org_id = o.id AND pr.sent_date IS NULL) AS unsent_reports\nFROM organizations o\nWHERE o.id = $1"
+    },
+    {
+      "name": "wa_org_students",
+      "description": "기관 상세 — 소속 학생 전원 요약",
+      "params": [{"name": "oid", "type": "integer", "nullable": false}],
+      "sql": "SELECT s.id, s.name, s.student_code, s.grade, s.school, s.learning_style,\n  (SELECT COUNT(*) FROM test_sessions t WHERE t.student_id = s.id) AS test_count,\n  (SELECT COUNT(*) FROM counseling_sessions c WHERE c.student_id = s.id) AS counsel_count,\n  (SELECT ROUND(AVG(NULLIF(pt.progress_percent,0))) FROM progress_tracking pt WHERE pt.student_id = s.id) AS avg_progress,\n  (SELECT COUNT(*) FROM parent_reports pr WHERE pr.student_id = s.id AND pr.sent_date IS NULL) AS unsent\nFROM students s\nWHERE s.org_id = $1\nORDER BY s.name"
+    },
+    {
+      "name": "wa_home_recent_classes",
+      "description": "홈 — 최근/다가오는 수업 10건(날짜 가까운 순)",
+      "params": [],
+      "sql": "SELECT cs.class_date, cs.start_time, s.name AS student_name, sub.subject_name,\n  COALESCE(cs.topic,'') AS topic, cs.status\nFROM class_schedule cs\nLEFT JOIN students s ON s.id = cs.student_id\nLEFT JOIN subjects sub ON sub.id = cs.subject_id\nORDER BY ABS(cs.class_date - CURRENT_DATE) ASC, cs.start_time\nLIMIT 10"
+    },
+    {
+      "name": "wa_subjects",
+      "description": "과목 셀렉터",
+      "params": [],
+      "sql": "SELECT id, subject_name FROM subjects ORDER BY id"
+    },
+    {
+      "name": "wa_m_hw_score",
+      "description": "쓰기 — 숙제 점수/상태 저장",
+      "params": [
+        {"name": "hid", "type": "integer", "nullable": false},
+        {"name": "score", "type": "integer", "nullable": true},
+        {"name": "status", "type": "text", "nullable": false}
+      ],
+      "sql": "UPDATE homework SET score = $2, status = $3, submitted_at = CASE WHEN $3 = '제출' THEN CURRENT_TIMESTAMP ELSE submitted_at END\nWHERE id = $1\nRETURNING id, score, status"
+    },
+    {
+      "name": "wa_m_cls_att",
+      "description": "쓰기 — 수업 출결 저장",
+      "params": [
+        {"name": "cid", "type": "integer", "nullable": false},
+        {"name": "attendance", "type": "text", "nullable": false}
+      ],
+      "sql": "UPDATE class_schedule SET attendance = $2, status = CASE WHEN $2 IN ('출석','지각','조퇴') THEN '완료' WHEN $2 = '결석' THEN '결석' ELSE status END\nWHERE id = $1\nRETURNING id, attendance, status"
+    },
+    {
+      "name": "wa_m_counsel_add",
+      "description": "쓰기 — 상담 기록 추가",
+      "params": [
+        {"name": "sid", "type": "integer", "nullable": false},
+        {"name": "d", "type": "text", "nullable": true},
+        {"name": "counselor", "type": "text", "nullable": true},
+        {"name": "topic", "type": "text", "nullable": true},
+        {"name": "content", "type": "text", "nullable": true},
+        {"name": "prescription", "type": "text", "nullable": true},
+        {"name": "next_date", "type": "text", "nullable": true}
+      ],
+      "sql": "INSERT INTO counseling_sessions (student_id, session_date, counselor, topic, content, prescription, next_date, status)\nVALUES ($1, COALESCE(to_date(NULLIF($2,''),'YYYY-MM-DD'), CURRENT_DATE), $3, $4, $5, $6, to_date(NULLIF($7,''),'YYYY-MM-DD'), '완료')\nRETURNING id"
+    },
+    {
+      "name": "wa_m_report_send",
+      "description": "쓰기 — 학부모 리포트 발송 처리",
+      "params": [{"name": "rid", "type": "integer", "nullable": false}],
+      "sql": "UPDATE parent_reports SET sent_date = CURRENT_DATE, status = '발송'\nWHERE id = $1\nRETURNING id, sent_date, status"
+    },
+    {
+      "name": "wa_stu_roadmap_steps",
+      "description": "학생 요약 — 목표별 로드맵 단계 전체(완료 체크용)",
+      "params": [{"name": "sid", "type": "integer", "nullable": false}],
+      "sql": "SELECT rs.id, rs.target_id, at.university, at.department,\n  rs.school_year, rs.semester, rs.category, rs.title,\n  rs.target_date, rs.status\nFROM admission_roadmap_steps rs\nLEFT JOIN admission_targets at ON at.id = rs.target_id\nWHERE rs.student_id = $1\nORDER BY at.priority NULLS LAST, at.id, rs.target_date NULLS LAST, rs.id"
+    },
+    {
+      "name": "wa_m_step_toggle",
+      "description": "쓰기 — 로드맵 단계 상태 토글(완료↔예정)",
+      "params": [
+        {"name": "sid", "type": "integer", "nullable": false},
+        {"name": "status", "type": "text", "nullable": false}
+      ],
+      "sql": "UPDATE admission_roadmap_steps\nSET status = $2\nWHERE id = $1\nRETURNING id, status"
+    },
+    {
+      "name": "wa_m_target_add",
+      "description": "쓰기 — 희망 대학(목표) 추가",
+      "params": [
+        {"name": "sid", "type": "integer", "nullable": false},
+        {"name": "university", "type": "text", "nullable": false},
+        {"name": "department", "type": "text", "nullable": true},
+        {"name": "admission_type", "type": "text", "nullable": true},
+        {"name": "target_year", "type": "text", "nullable": true},
+        {"name": "required_grade", "type": "text", "nullable": true},
+        {"name": "priority", "type": "text", "nullable": true},
+        {"name": "note", "type": "text", "nullable": true}
+      ],
+      "sql": "INSERT INTO admission_targets (student_id, university, department, admission_type, target_year, required_grade, priority, status, note)\nVALUES ($1, $2, NULLIF($3,''), NULLIF($4,''),\n  CASE WHEN $5 ~ '^[0-9]+$' THEN $5::int ELSE NULL END,\n  CASE WHEN $6 ~ '^[0-9.]+$' THEN $6::numeric ELSE NULL END,\n  CASE WHEN $7 ~ '^[0-9]+$' THEN $7::int ELSE 3 END,\n  '검토', NULLIF($8,''))\nRETURNING id"
+    },
+    {
+      "name": "wa_report_one",
+      "description": "리포트 — 단일 리포트 전체 필드 조회(수정 모달용)",
+      "params": [{"name": "rid", "type": "integer", "nullable": false}],
+      "sql": "SELECT pr.id, pr.student_id, s.name AS student_name,\n  pr.report_period_start, pr.report_period_end, pr.report_type,\n  pr.overall_progress, pr.attendance_summary, pr.assessment_summary,\n  pr.strengths, pr.areas_for_improvement, pr.teacher_comments,\n  pr.ai_summary, pr.next_period_goals, pr.status, pr.sent_date\nFROM parent_reports pr\nLEFT JOIN students s ON s.id = pr.student_id\nWHERE pr.id = $1"
+    },
+    {
+      "name": "wa_m_report_add",
+      "description": "쓰기 — 학부모 리포트 초안 생성",
+      "params": [
+        {"name": "sid", "type": "integer", "nullable": false},
+        {"name": "start", "type": "text", "nullable": true},
+        {"name": "end", "type": "text", "nullable": true},
+        {"name": "rtype", "type": "text", "nullable": true},
+        {"name": "overall", "type": "text", "nullable": true},
+        {"name": "strengths", "type": "text", "nullable": true},
+        {"name": "improve", "type": "text", "nullable": true},
+        {"name": "comments", "type": "text", "nullable": true},
+        {"name": "goals", "type": "text", "nullable": true}
+      ],
+      "sql": "INSERT INTO parent_reports (student_id, report_period_start, report_period_end, report_type,\n  overall_progress, strengths, areas_for_improvement, teacher_comments, next_period_goals, status)\nVALUES ($1,\n  COALESCE(to_date(NULLIF($2,''),'YYYY-MM-DD'), date_trunc('month', CURRENT_DATE)::date),\n  COALESCE(to_date(NULLIF($3,''),'YYYY-MM-DD'), (date_trunc('month', CURRENT_DATE) + INTERVAL '1 month - 1 day')::date),\n  NULLIF($4,''),\n  NULLIF($5,''), NULLIF($6,''), NULLIF($7,''), NULLIF($8,''), NULLIF($9,''),\n  '초안')\nRETURNING id"
+    },
+    {
+      "name": "wa_m_report_update",
+      "description": "쓰기 — 학부모 리포트 수정(초안 상태만 가능)",
+      "params": [
+        {"name": "rid", "type": "integer", "nullable": false},
+        {"name": "start", "type": "text", "nullable": true},
+        {"name": "end", "type": "text", "nullable": true},
+        {"name": "rtype", "type": "text", "nullable": true},
+        {"name": "overall", "type": "text", "nullable": true},
+        {"name": "strengths", "type": "text", "nullable": true},
+        {"name": "improve", "type": "text", "nullable": true},
+        {"name": "comments", "type": "text", "nullable": true},
+        {"name": "goals", "type": "text", "nullable": true}
+      ],
+      "sql": "UPDATE parent_reports\nSET report_period_start = COALESCE(to_date(NULLIF($2,''),'YYYY-MM-DD'), report_period_start),\n    report_period_end = COALESCE(to_date(NULLIF($3,''),'YYYY-MM-DD'), report_period_end),\n    report_type = COALESCE(NULLIF($4,''), report_type),\n    overall_progress = NULLIF($5,''),\n    strengths = NULLIF($6,''),\n    areas_for_improvement = NULLIF($7,''),\n    teacher_comments = NULLIF($8,''),\n    next_period_goals = NULLIF($9,'')\nWHERE id = $1\nRETURNING id"
+    }
+  ]
+}

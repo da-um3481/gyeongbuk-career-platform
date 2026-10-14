@@ -6,3 +6,6 @@ Desktop.ini
 # 임시/생성물
 _*.html
 *.log
+
+# Node (Vercel functions)
+node_modules/
