@@ -1,5 +1,5 @@
 /* ============================================================
-   경상북도 진로학업설계 플랫폼 - App
+   다움 진로학업설계 플랫폼(경상북도) - App
    ============================================================ */
 (function () {
   "use strict";
@@ -139,7 +139,7 @@
         <div class="brand" data-goto="home" role="button" tabindex="0" aria-label="홈으로">
           <span class="brand-logo"><img src="logo-mark.png" alt="DA.UM" /></span>
           <div class="brand-text">
-            <b>경상북도 진로학업설계 플랫폼</b>
+            <b>다움 진로학업설계 플랫폼 경상북도편</b>
             <small>DA.UM Career &amp; Academic Consulting · 22개 시·군 진로교육</small>
           </div>
         </div>
@@ -211,8 +211,7 @@
     return `
       <section class="page">
         <div class="hero">
-          <span class="eyebrow">경상북도교육청 · ${esc(G.meta.updated)}</span>
-          <h1>교사·학생·학부모가 함께 보는 <span class="accent">경상북도</span> 진로·학업설계 <span class="accent2">E-Book</span></h1>
+          <h1>한눈에 찾아보는 <span class="accent">경상북도</span> 진로·학업설계 <span class="accent2">가이드</span></h1>
           <p>${esc(G.meta.slogan)} · 2022 개정 교육과정과 고교학점제 192학점을 기반으로, 경북 22개 시·군의 학생이 자기주도적으로 진로를 설계하도록 돕습니다.</p>
           <div class="hero-stats">
             <div class="hs"><b>${esc(G.meta.cities + G.meta.counties)}</b><span>시·군</span></div>
@@ -994,7 +993,7 @@
   function render() {
     $$("#tab-nav .tab-btn").forEach((b) => b.classList.toggle("active", b.dataset.tab === state.tab));
     const fn = VIEWS[state.tab] || viewHome;
-    $("#main").innerHTML = fn();
+    $("#main").innerHTML = `<div class="container">${fn()}</div>`;
     $("#main").focus({ preventScroll: true });
     if (state.tab === "map") initGbMap();
     // re-bind portfolio inputs
