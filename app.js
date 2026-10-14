@@ -505,10 +505,14 @@
     const list = count
       ? items
           .map(
-            (s) => `<div class="li"><div class="row between"><h4>${esc(s.name)}</h4>
-              <span class="row" style="gap:6px"><span class="badge ${esc(s.color)}">${esc(s.type)}</span><span class="badge b-slate">${esc(s.credits)}학점</span></span></div>
-              <div class="li-sub mt-8">${esc(s.group)}</div>
-              <p>${esc(s.desc)}</p></div>`
+            (s) => `<div class="li subj-card">
+              <div class="row between" style="gap:8px;align-items:flex-start">
+                <h4>${esc(s.name)}</h4>
+                <span class="badge ${esc(s.color)}" style="flex:none">${esc(s.type)}</span>
+              </div>
+              <div class="li-sub mt-8">${esc(s.group)} · ${esc(s.credits)}학점</div>
+              <p>${esc(s.desc)}</p>
+            </div>`
           )
           .join("")
       : `<div class="empty">조건에 맞는 과목이 없습니다.</div>`;
@@ -525,7 +529,7 @@
         </div>
         <div class="chip-row mb-16">${groupChips}</div>
         <div class="result-line">총 ${count}개 과목</div>
-        <div class="stack">${list}</div>
+        <div class="card-grid">${list}</div>
       </section>`;
   }
 
