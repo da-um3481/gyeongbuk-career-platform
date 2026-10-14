@@ -103,18 +103,29 @@
 
   function mount() {
     var right = document.querySelector(".top .right");
-    if (!right || $("ext-add-student")) return;
-    var b = document.createElement("button");
-    b.id = "ext-add-student";
-    b.textContent = "＋ 학생 등록";
-    b.style.cssText = "border-color:var(--brand-500);color:var(--brand-500);font-weight:700";
-    b.onclick = openStudentForm;
-    right.appendChild(b);
+    if (!right) return;
+    if (!$("ext-add-student")) {
+      var b = document.createElement("button");
+      b.id = "ext-add-student";
+      b.textContent = "＋ 학생 등록";
+      b.style.cssText = "border-color:var(--brand-500);color:var(--brand-500);font-weight:700";
+      b.onclick = openStudentForm;
+      right.appendChild(b);
+    }
+    if (!$("ext-logout")) {
+      var o = document.createElement("button");
+      o.id = "ext-logout";
+      o.textContent = "로그아웃";
+      o.onclick = function () { if (window.TUTOR_LOGOUT) window.TUTOR_LOGOUT(); };
+      right.appendChild(o);
+    }
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function startExtras() {
     mount();
-    var obs = new MutationObserver(function () { mount(); });
-    obs.observe(document.body, { childList: true, subtree: true });
-  });
+    new MutationObserver(mount).observe(document.body, { childList: true, subtree: true });
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", startExtras);
+  else startExtras();
 })();

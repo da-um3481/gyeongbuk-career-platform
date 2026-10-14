@@ -139,6 +139,7 @@
     },
   };
 
-  document.addEventListener("DOMContentLoaded", function () { setTimeout(badge, 300); });
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(badge, 300); });
+  else setTimeout(badge, 300);
   window.agentdb = api;
 })();
