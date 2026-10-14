@@ -137,10 +137,10 @@
     $("#site-header").innerHTML = `
       <div class="header-inner">
         <div class="brand" data-goto="home" role="button" tabindex="0" aria-label="홈으로">
-          <div class="brand-mark">경북</div>
+          <span class="brand-logo"><img src="logo-mark.png" alt="DA.UM" /></span>
           <div class="brand-text">
             <b>경상북도 진로학업설계 플랫폼</b>
-            <small>질문이 진로가 되는 경북 진로교육 · 22개 시·군</small>
+            <small>DA.UM Career &amp; Academic Consulting · 22개 시·군 진로교육</small>
           </div>
         </div>
         <div class="header-spacer"></div>
@@ -165,7 +165,11 @@
       .join("");
     $("#site-footer").innerHTML = `
       <div class="foot-inner">
-        <div><b>${esc(G.meta.title)}</b> · ${esc(G.meta.slogan)}</div>
+        <div class="foot-brand">
+          <span class="fb-name">DA.UM</span>
+          <span class="fb-sub">Career &amp; Academic Consulting</span>
+        </div>
+        <div class="mt-8"><b>${esc(G.meta.title)}</b> · ${esc(G.meta.slogan)}</div>
         <div class="foot-cols">
           <div>
             <div class="foot-h">바로가기 (메뉴)</div>
@@ -467,7 +471,7 @@
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap contributors" }).addTo(map);
     pts.forEach((p) => {
       const special = p.type !== "일반고";
-      L.circleMarker([p.lat, p.lon], { radius: 6, color: "#fff", weight: 1.5, fillColor: special ? "#7c3aed" : "#4f46e5", fillOpacity: 0.9 })
+      L.circleMarker([p.lat, p.lon], { radius: 6, color: "#fff", weight: 1.5, fillColor: special ? "#6a4fa3" : "#12707c", fillOpacity: 0.9 })
         .addTo(map)
         .bindPopup(mapPopup(p));
     });
