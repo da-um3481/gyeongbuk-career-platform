@@ -488,7 +488,12 @@
     });
     if (pts.length) { try { map.fitBounds(pts.map((p) => [p.lat, p.lon]), { padding: [30, 30], maxZoom: 12 }); } catch (e) {} }
     window.__gbmap = map;
-    setTimeout(() => { try { map.invalidateSize(); } catch (e) {} }, 80);
+    setTimeout(() => {
+      try {
+        map.invalidateSize();
+        if (pts.length) map.fitBounds(pts.map((p) => [p.lat, p.lon]), { padding: [30, 30], maxZoom: 12 });
+      } catch (e) {}
+    }, 140);
     renderMapList();
   }
 
