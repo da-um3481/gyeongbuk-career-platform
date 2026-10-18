@@ -1,0 +1,1438 @@
+<!doctype html>
+<html lang="ko" data-palette="graphite" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>다움진로진학컨설팅 — 진학 및 학습 맞춤엔진</title>
+<style>
+  :root {
+    --ink-0:#FFFEFB; --ink-50:#F3EFE5; --ink-100:#ECE6D7; --ink-200:#DFD7C3; --ink-300:#C8BEA5;
+    --ink-400:#9A8E72; --ink-500:#6E6450; --ink-600:#4A4234; --ink-700:#322C22; --ink-800:#1F1B15; --ink-900:#100E0B;
+    --brand-500:#A0501F; --success-500:#0F8A5E; --warn-500:#B86E16; --danger-500:#B42318;
+    --surface-0: var(--ink-0);
+  }
+  html, body { height: 100%; margin: 0; background: var(--ink-50); color: var(--ink-900); font-family: 'Pretendard','Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+  * { box-sizing: border-box; word-break: keep-all; }
+
+  /* 레이아웃 셸 */
+  .shell { display: grid; grid-template-columns: 232px 1fr; min-height: 100vh; }
+  .side { background: var(--ink-0); border-right: 1px solid var(--ink-100); padding: 14px 10px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .brand { display: flex; align-items: center; gap: 10px; padding: 4px 6px 14px; border-bottom: 1px solid var(--ink-100); margin-bottom: 10px; }
+  .brand .mk { width: 32px; height: 32px; border-radius: 8px; background: var(--brand-500); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex: 0 0 auto; }
+  .brand .nm { font-size: 13px; font-weight: 700; line-height: 1.25; color: var(--ink-900); }
+  .brand .nm small { display: block; font-size: 11px; font-weight: 500; color: var(--ink-500); margin-top: 2px; }
+
+  .nav-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; font-size: 13px; color: var(--ink-700); text-decoration: none; cursor: pointer; user-select: none; }
+  .nav-item:hover { background: var(--ink-50); color: var(--ink-900); }
+  .nav-item.active { background: var(--brand-500); color: #fff; }
+  .nav-item .ic { width: 18px; text-align: center; font-size: 13px; opacity: .85; }
+  .nav-item.active .ic { opacity: 1; }
+  .nav-section-label { font-size: 10px; letter-spacing: .08em; color: var(--ink-400); padding: 10px 10px 4px; text-transform: uppercase; }
+  .nav-more { font-size: 12px; color: var(--ink-500); padding: 6px 10px; cursor: pointer; }
+  .nav-more:hover { color: var(--brand-500); }
+  .nav-more .caret { display: inline-block; transition: transform .15s; }
+  .nav-more.open .caret { transform: rotate(90deg); }
+
+  /* 메인 영역 */
+  .main { display: flex; flex-direction: column; min-width: 0; }
+  .top { position: sticky; top: 0; z-index: 20; background: var(--ink-0); border-bottom: 1px solid var(--ink-100); padding: 10px 20px; display: flex; align-items: center; gap: 12px; }
+  .top .hamb { display: none; width: 36px; height: 36px; border: 1px solid var(--ink-200); border-radius: 8px; background: #fff; cursor: pointer; font-size: 18px; align-items: center; justify-content: center; }
+  .search { flex: 1; max-width: 520px; position: relative; }
+  .search input { width: 100%; height: 36px; border: 1px solid var(--ink-200); border-radius: 10px; padding: 0 36px 0 36px; font-size: 13px; background: var(--ink-50); color: var(--ink-900); outline: none; }
+  .search input:focus { border-color: var(--brand-500); background: #fff; }
+  .search .mg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--ink-500); font-size: 14px; }
+  .search .clear { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: none; background: transparent; color: var(--ink-500); cursor: pointer; display: none; }
+  #srDrop { position: absolute; top: 42px; left: 0; right: 0; background: #fff; border: 1px solid var(--ink-200); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.08); max-height: 420px; overflow-y: auto; display: none; }
+  #srDrop .sr-section { padding: 6px 12px; font-size: 10px; letter-spacing: .06em; color: var(--ink-400); background: var(--ink-50); position: sticky; top: 0; }
+  #srDrop .sr-item { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; cursor: pointer; border-bottom: 1px solid var(--ink-50); }
+  #srDrop .sr-item:hover { background: var(--ink-50); }
+  #srDrop .sr-t { font-size: 13px; color: var(--ink-900); font-weight: 600; }
+  #srDrop .sr-sub { font-size: 12px; color: var(--ink-500); margin-top: 2px; }
+  #srDrop .sr-empty { padding: 14px; color: var(--ink-500); font-size: 13px; text-align: center; }
+
+  .top .right { margin-left: auto; display: flex; align-items: center; gap: 10px; color: var(--ink-500); font-size: 12px; }
+  .top .right button { height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--ink-200); background: #fff; cursor: pointer; font-size: 12px; color: var(--ink-700); }
+  .top .right button:hover { color: var(--brand-500); border-color: var(--brand-500); }
+
+  #route { padding: 20px; min-height: calc(100vh - 56px); }
+
+  /* 공통 UI */
+  .hero { margin-bottom: 16px; }
+  .hero .micro { font-size: 11px; color: var(--brand-500); font-weight: 600; letter-spacing: .04em; }
+  .hero h1 { margin: 4px 0 6px; font-size: 20px; color: var(--ink-900); }
+  .hero p { margin: 0; color: var(--ink-600); font-size: 13px; }
+
+  .kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 14px; }
+  .kpi { background: #fff; border: 1px solid var(--ink-100); border-radius: 10px; padding: 12px 14px; }
+  .kpi .k { font-size: 11px; color: var(--ink-500); }
+  .kpi .v { font-size: 16px; font-weight: 700; color: var(--ink-900); line-height: 1.3; margin-top: 2px; }
+
+  .panels { display: grid; gap: 14px; }
+  .panels.two { grid-template-columns: 1fr 1fr; }
+  .panels.three { grid-template-columns: 2fr 1fr 1fr; }
+  .panel { background: #fff; border: 1px solid var(--ink-100); border-radius: 10px; padding: 14px; min-width: 0; }
+  .ph { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; gap: 8px; }
+  .pt { font-size: 13px; font-weight: 700; color: var(--ink-900); }
+  .pa { font-size: 11px; color: var(--ink-500); }
+
+  .tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .tbl th { text-align: left; padding: 8px 10px; color: var(--ink-500); font-weight: 500; font-size: 11px; letter-spacing: .02em; border-bottom: 1px solid var(--ink-100); white-space: nowrap; }
+  .tbl td { padding: 8px 10px; color: var(--ink-800); border-bottom: 1px solid var(--ink-50); }
+  .tbl td.num, .tbl th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr.row-link { cursor: pointer; }
+  .tbl tr.row-link:hover td { background: var(--ink-50); }
+  .tbl td .mini-btn { height: 24px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--ink-200); background: #fff; cursor: pointer; font-size: 11px; color: var(--ink-700); }
+  .tbl td .mini-btn:hover { color: var(--brand-500); border-color: var(--brand-500); }
+
+  .pill { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; background: var(--ink-100); color: var(--ink-700); }
+  .pill.pill-ok { background: #DCF4E6; color: var(--success-500); }
+  .pill.pill-warn { background: #FBEBD0; color: var(--warn-500); }
+  .pill.pill-danger { background: #FBE1DE; color: var(--danger-500); }
+  .pill.pill-brand { background: #FBE9DD; color: var(--brand-500); }
+
+  .empty { text-align: center; padding: 20px; color: var(--ink-500); font-size: 13px; }
+  .err-note { background: #FBE1DE; color: var(--danger-500); padding: 10px 12px; border-radius: 8px; font-size: 12px; }
+  .skl { height: 10px; background: linear-gradient(90deg, var(--ink-100), var(--ink-50), var(--ink-100)); background-size: 200% 100%; border-radius: 5px; animation: shimmer 1.2s infinite; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  /* 가이드 카드 */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+  .step { background: #fff; border: 1px solid var(--ink-100); border-radius: 10px; padding: 12px 14px; }
+  .step .no { font-size: 10px; color: var(--brand-500); font-weight: 700; }
+  .step .ti { font-size: 14px; font-weight: 700; color: var(--ink-900); margin: 4px 0; }
+  .step .de { font-size: 11.5px; color: var(--ink-600); line-height: 1.5; }
+  .core { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .ccard { display: block; background: var(--ink-50); border: 1px solid var(--ink-100); border-radius: 10px; padding: 10px 12px; text-decoration: none; color: inherit; cursor: pointer; }
+  .ccard:hover { background: #fff; border-color: var(--brand-500); }
+  .ccard .ck { font-size: 10px; color: var(--brand-500); }
+  .ccard .ct { font-size: 13px; font-weight: 700; color: var(--ink-900); margin-top: 2px; }
+  .ccard .cd { font-size: 11px; color: var(--ink-500); margin-top: 2px; }
+
+  /* 학생 요약 페이지 */
+  .stu-head { display: flex; gap: 14px; align-items: center; margin-bottom: 16px; background: #fff; border: 1px solid var(--ink-100); border-radius: 12px; padding: 14px 16px; }
+  .stu-head .av { width: 48px; height: 48px; border-radius: 50%; background: var(--brand-500); color: #fff; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; font-size: 18px; flex: 0 0 auto; }
+  .stu-head .nm { font-size: 18px; font-weight: 700; color: var(--ink-900); }
+  .stu-head .sub { font-size: 12px; color: var(--ink-500); margin-top: 2px; }
+  .stu-head .right-btns { margin-left: auto; display: flex; gap: 8px; }
+  .btn { height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--ink-200); background: #fff; cursor: pointer; font-size: 12px; color: var(--ink-700); display: inline-flex; align-items: center; gap: 4px; }
+  .btn:hover { color: var(--brand-500); border-color: var(--brand-500); }
+  .btn.primary { background: var(--brand-500); color: #fff; border-color: var(--brand-500); }
+  .btn.primary:hover { background: #8A4319; color: #fff; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .kv { display: grid; grid-template-columns: 80px 1fr; gap: 6px 10px; font-size: 12.5px; }
+  .kv .k { color: var(--ink-500); }
+  .kv .v { color: var(--ink-800); }
+
+  /* 모달 */
+  .modal-mask { position: fixed; inset: 0; background: rgba(23,20,16,.4); display: none; align-items: center; justify-content: center; z-index: 50; padding: 20px; }
+  .modal-mask.show { display: flex !important; }
+  .modal { background: #fff; border-radius: 12px; padding: 18px 20px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
+  .modal h3 { margin: 0 0 12px; font-size: 15px; color: var(--ink-900); }
+  .modal label { display: block; font-size: 11px; color: var(--ink-600); margin: 8px 0 2px; }
+  .modal input, .modal select, .modal textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--ink-200); border-radius: 8px; font-size: 13px; background: #fff; color: var(--ink-900); font-family: inherit; }
+  .modal textarea { min-height: 70px; resize: vertical; }
+  .modal .foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+
+  /* 토스트 */
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink-900); color: #fff; padding: 10px 16px; border-radius: 10px; font-size: 12.5px; z-index: 100; opacity: 0; transition: opacity .2s; }
+  .toast.show { opacity: 1; }
+
+  /* 모바일 */
+  @media (max-width: 820px) {
+    .shell { grid-template-columns: 1fr; }
+    .side { position: fixed; z-index: 40; top: 0; left: 0; width: 260px; transform: translateX(-100%); transition: transform .2s; box-shadow: 0 0 40px rgba(0,0,0,.1); }
+    .side.open { transform: translateX(0); }
+    .top .hamb { display: inline-flex; }
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .panels.two, .panels.three { grid-template-columns: 1fr; }
+    .steps, .core { grid-template-columns: repeat(2, 1fr); }
+    .grid2, .grid3 { grid-template-columns: 1fr; }
+    #route { padding: 14px; }
+    /* 테이블 → 카드 전환 */
+    .tbl.m-cards { display: block; }
+    .tbl.m-cards thead { display: none; }
+    .tbl.m-cards tbody, .tbl.m-cards tr { display: block; }
+    .tbl.m-cards tr { background: var(--ink-50); border-radius: 10px; padding: 8px 10px; margin-bottom: 8px; }
+    .tbl.m-cards td { display: flex; justify-content: space-between; padding: 4px 0; border: none; gap: 10px; }
+    .tbl.m-cards td::before { content: attr(data-label); font-size: 11px; color: var(--ink-500); flex: 0 0 90px; }
+    .tbl.m-cards td.num { text-align: right; }
+    #mobile-mask { position: fixed; inset: 0; background: rgba(0,0,0,.3); z-index: 39; display: none; }
+    #mobile-mask.show { display: block; }
+  }
+
+  /* --- 단독 실행판 부가 스타일 --- */
+  html, body { font-family:'Pretendard','Inter','Malgun Gothic','Apple SD Gothic Neo',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
+  #sa-badge { display:inline-flex; align-items:center; gap:5px; height:24px; padding:0 9px; border-radius:999px;
+    background:#FBE9DD; color:var(--brand-500); font-size:11px; font-weight:700; cursor:help; }
+  #sa-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--brand-500); }
+  #sa-note { margin:2px 6px 10px; padding:8px 10px; border-radius:8px; background:var(--ink-50); border:1px dashed var(--ink-200);
+    font-size:10.5px; line-height:1.5; color:var(--ink-500); }
+  #sa-note b { color:var(--ink-700); }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="side">
+    <div class="brand">
+      <div class="mk">다</div>
+      <div class="nm">다움진로진학컨설팅<small>진학 및 학습 맞춤엔진</small></div>
+    </div>
+    <div id="sa-note"><b>단독 실행판</b> · 스냅샷 2026-10-18<br />서버 없이 이 파일만으로 동작합니다.<br />변경사항은 이 브라우저에만 저장됩니다.</div>
+    <nav id="nav"></nav>
+  </aside>
+  <div class="main">
+    <div class="top">
+      <button class="hamb" id="hamb" aria-label="메뉴">☰</button>
+      <div class="search">
+        <span class="mg">🔎</span>
+        <input id="srInput" type="search" placeholder="학생·기관·검사·상담 검색…" autocomplete="off" />
+        <button class="clear" id="srClear" aria-label="지우기">✕</button>
+        <div id="srDrop"></div>
+      </div>
+      <div class="right">
+        <span id="sa-badge" title="이 파일은 DB 없이 동작하는 단독 실행판입니다. 등록·수정한 내용은 이 브라우저(localStorage)에만 저장되며 서버로 전송되지 않습니다.">오프라인 스냅샷 2026-10-18</span>
+        <span id="ts"></span>
+        <button id="refresh">새로고침</button>
+        <button id="sa-reset">초기화</button>
+      </div>
+    </div>
+    <div id="route">
+      <div class="skl" style="width:40%; margin-bottom:10px"></div>
+      <div class="skl" style="width:85%; margin-bottom:6px"></div>
+      <div class="skl" style="width:70%"></div>
+    </div>
+  </div>
+</div>
+<div id="mobile-mask"></div>
+<div class="modal-mask" id="modal"></div>
+<div class="toast" id="toast"></div>
+<script>
+/* ===== 내장 데이터 스냅샷 (2026-10-18) — 쿼리별 결과 ===== */
+window.__SNAPSHOT__ = {"generated_at":"2026-10-18","workspace":"AI 튜터 학습관리 시스템","app":"다움 통합 웹앱","queries":28};
+window.__DATA__ = {"wa_books":{"rows":[{"title":"최상위 수학","publisher":"디딤돌","subject_name":"수학","target_grade":"중학","difficulty":"심화"},{"title":"일품 중등 수학","publisher":"좋은책신사고","subject_name":"수학","target_grade":"중학","difficulty":"심화"},{"title":"쎈 중등 수학","publisher":"좋은책신사고","subject_name":"수학","target_grade":"중학","difficulty":"기본"},{"title":"개념원리 RPM","publisher":"개념원리","subject_name":"수학","target_grade":"중학","difficulty":"기본"},{"title":"개념원리 중학 수학","publisher":"개념원리","subject_name":"수학","target_grade":"중학","difficulty":"기본"},{"title":"천일문 기본","publisher":"쎄듀","subject_name":"영어","target_grade":"중학","difficulty":"심화"},{"title":"자이스토리 중등 영어 독해","publisher":"수경출판사","subject_name":"영어","target_grade":"중학","difficulty":"심화"},{"title":"마더텅 중학영문법 3800제","publisher":"마더텅","subject_name":"영어","target_grade":"중학","difficulty":"기본"},{"title":"워드마스터 중등","publisher":"NE능률","subject_name":"영어","target_grade":"중학","difficulty":"기초"},{"title":"Grammar Inside (그래머 인사이드)","publisher":"NE능률","subject_name":"영어","target_grade":"중학","difficulty":"기초"},{"title":"한끝 중학 국어","publisher":"비상교육","subject_name":"국어","target_grade":"중학","difficulty":"기본"},{"title":"매3비 (매일 지문 3개 비문학)","publisher":"키출판사","subject_name":"국어","target_grade":"중학","difficulty":"심화"},{"title":"빠작 중학 국어 비문학 독해","publisher":"동아출판","subject_name":"국어","target_grade":"중학","difficulty":"기본"},{"title":"하이탑 중학 과학","publisher":"동아출판","subject_name":"과학","target_grade":"중학","difficulty":"심화"},{"title":"완자 중등 과학","publisher":"비상교육","subject_name":"과학","target_grade":"중학","difficulty":"기본"},{"title":"오투 중등 과학","publisher":"비상교육","subject_name":"과학","target_grade":"중학","difficulty":"기본"},{"title":"올쏘 중학 사회","publisher":"동아출판","subject_name":"사회","target_grade":"중학","difficulty":"기본"},{"title":"완자 중등 사회","publisher":"비상교육","subject_name":"사회","target_grade":"중학","difficulty":"기본"},{"title":"한끝 중학 사회","publisher":"비상교육","subject_name":"사회","target_grade":"중학","difficulty":"기본"}]},"wa_contents":{"rows":[{"title":"전체 복습 요약노트","subject_name":"수학","content_type":"개념교재","difficulty":"중","duration_min":60},{"title":"이차함수 그래프 인터랙티브","subject_name":"수학","content_type":"실습자료","difficulty":"중","duration_min":30},{"title":"이차방정식 실전 모의고사","subject_name":"수학","content_type":"모의고사","difficulty":"상","duration_min":60},{"title":"이차방정식 유형별 풀이","subject_name":"수학","content_type":"개념교재","difficulty":"상","duration_min":60},{"title":"인수분해 실전 100제","subject_name":"수학","content_type":"문제집","difficulty":"상","duration_min":90},{"title":"곱셈공식 완전정복","subject_name":"수학","content_type":"개념교재","difficulty":"중","duration_min":45},{"title":"제곱근 계산 연습 영상","subject_name":"수학","content_type":"강의영상","difficulty":"중","duration_min":20},{"title":"실수와 제곱근 핵심정리","subject_name":"수학","content_type":"개념교재","difficulty":"중","duration_min":30},{"title":"관계대명사 회화 연습","subject_name":"영어","content_type":"실습자료","difficulty":"중","duration_min":20},{"title":"관계대명사 종합 정리","subject_name":"영어","content_type":"개념교재","difficulty":"중","duration_min":35},{"title":"분사구문 실전 문제 50","subject_name":"영어","content_type":"문제집","difficulty":"중","duration_min":40},{"title":"분사구문 핵심 강의","subject_name":"영어","content_type":"강의영상","difficulty":"중","duration_min":25},{"title":"현대시 감상 가이드","subject_name":"국어","content_type":"개념교재","difficulty":"중","duration_min":40},{"title":"반응열 계산 연습","subject_name":"과학","content_type":"문제집","difficulty":"상","duration_min":50},{"title":"화학 반응식 실험 영상","subject_name":"과학","content_type":"강의영상","difficulty":"상","duration_min":30}]},"wa_counsel":{"rows":[{"session_date":"2026-09-23","student_name":"정현우","session_type":"진로","counselor_name":"김원장","summary":"MCDT 진로결정지수 46(미결정). 직업이해·의사결정기술이 낮고 신념·정서 장벽이 높음. 다양한 직업 탐색 경험과 함께 결정을 서두르지 않도록","student_id":5},{"session_date":"2026-09-22","student_name":"박지후","session_type":"학습","counselor_name":"박실장","summary":"MLST-2 LQ 74(정체형). 효능감·학습동기 저하, 우울·짜증 정서 높음. 수학 기초 결손이 주 원인으로 보여 성취 경험을 쌓는 방향으로 ","student_id":3},{"session_date":"2026-09-20","student_name":"김민준","session_type":"진로","counselor_name":"김원장","summary":"MLST-2 결과 LQ 88(정체형). 회피동기와 시험불안이 높고 시간관리·집중전략이 약함. 특목고 목표 동기를 활용해 주간 시간표를 함께 설계","student_id":1},{"session_date":"2026-09-18","student_name":"최수아","session_type":"진로","counselor_name":"박실장","summary":"NEO 안정·성실형. 성실성·친화성·개방성이 높아 어학·인문 분야 적합. 영어 강점을 살린 진로 설계와 인증시험 준비를 논의.","student_id":4},{"session_date":"2026-09-16","student_name":"이서연","session_type":"학습","counselor_name":"김원장","summary":"MLST-2 LQ 118(주도형). 전략 전반이 우수하나 경쟁동기 의존 경향. 내신 최상위 유지 전략과 심화 탐구 병행을 논의.","student_id":2}]},"wa_grades":{"rows":[{"student_name":"김민준","school_year":3,"semester":1,"subject_name":"과학","score":null,"grade_level":3,"student_id":1},{"student_name":"김민준","school_year":3,"semester":1,"subject_name":"국어","score":null,"grade_level":3,"student_id":1},{"student_name":"김민준","school_year":3,"semester":1,"subject_name":"수학","score":null,"grade_level":2,"student_id":1},{"student_name":"김민준","school_year":3,"semester":1,"subject_name":"역사","score":null,"grade_level":3,"student_id":1},{"student_name":"김민준","school_year":3,"semester":1,"subject_name":"영어","score":null,"grade_level":3,"student_id":1},{"student_name":"이서연","school_year":3,"semester":1,"subject_name":"과학","score":null,"grade_level":2,"student_id":2},{"student_name":"이서연","school_year":3,"semester":1,"subject_name":"국어","score":null,"grade_level":1,"student_id":2},{"student_name":"이서연","school_year":3,"semester":1,"subject_name":"수학","score":null,"grade_level":1,"student_id":2},{"student_name":"이서연","school_year":3,"semester":1,"subject_name":"역사","score":null,"grade_level":1,"student_id":2},{"student_name":"이서연","school_year":3,"semester":1,"subject_name":"영어","score":null,"grade_level":1,"student_id":2},{"student_name":"정현우","school_year":3,"semester":1,"subject_name":"과학","score":null,"grade_level":3,"student_id":5},{"student_name":"정현우","school_year":3,"semester":1,"subject_name":"국어","score":null,"grade_level":3,"student_id":5},{"student_name":"정현우","school_year":3,"semester":1,"subject_name":"수학","score":null,"grade_level":3,"student_id":5},{"student_name":"정현우","school_year":3,"semester":1,"subject_name":"역사","score":null,"grade_level":3,"student_id":5},{"student_name":"정현우","school_year":3,"semester":1,"subject_name":"영어","score":null,"grade_level":3,"student_id":5},{"student_name":"최수아","school_year":3,"semester":1,"subject_name":"과학","score":null,"grade_level":3,"student_id":4},{"student_name":"최수아","school_year":3,"semester":1,"subject_name":"국어","score":null,"grade_level":2,"student_id":4},{"student_name":"최수아","school_year":3,"semester":1,"subject_name":"수학","score":null,"grade_level":3,"student_id":4},{"student_name":"최수아","school_year":3,"semester":1,"subject_name":"역사","score":null,"grade_level":3,"student_id":4},{"student_name":"최수아","school_year":3,"semester":1,"subject_name":"영어","score":null,"grade_level":2,"student_id":4},{"student_name":"박지후","school_year":2,"semester":2,"subject_name":"과학","score":null,"grade_level":3,"student_id":3},{"student_name":"박지후","school_year":2,"semester":2,"subject_name":"국어","score":null,"grade_level":3,"student_id":3},{"student_name":"박지후","school_year":2,"semester":2,"subject_name":"사회","score":null,"grade_level":3,"student_id":3},{"student_name":"박지후","school_year":2,"semester":2,"subject_name":"수학","score":null,"grade_level":3,"student_id":3},{"student_name":"박지후","school_year":2,"semester":2,"subject_name":"영어","score":null,"grade_level":3,"student_id":3}]},"wa_home_attention":{"rows":[{"student_name":"정현우","subject_name":"수학","unit_name":"실수와 그 계산","progress_pct":30,"student_id":5},{"student_name":"박지후","subject_name":"수학","unit_name":"실수와 그 계산","progress_pct":40,"student_id":3},{"student_name":"최수아","subject_name":"영어","unit_name":"관계대명사","progress_pct":55,"student_id":4},{"student_name":"김민준","subject_name":"수학","unit_name":"이차방정식","progress_pct":65,"student_id":1}]},"wa_home_drafts":{"rows":[{"report_period":"2026-09-01 ~ 09-30","student_name":"최수아","created_at":"2026-10-06 16:00:55.218300","status":"초안","student_id":4},{"report_period":"2026-09-01 ~ 09-30","student_name":"정현우","created_at":"2026-10-06 16:00:55.218300","status":"초안","student_id":5}]},"wa_home_orgs":{"rows":[{"name":"강남구 진로진학센터","org_type":"지자체 진로진학센터","status":"운영중","student_count":0},{"name":"대한중학교","org_type":"학교","status":"운영중","student_count":1},{"name":"서울중학교","org_type":"학교","status":"운영중","student_count":2},{"name":"정현우 가정 (개인 컨설팅)","org_type":"개인 컨설팅","status":"준비","student_count":0},{"name":"한국중학교","org_type":"학교","status":"운영중","student_count":2}]},"wa_home_recent_classes":{"rows":[{"class_date":"2026-10-09","start_time":"18:30:00","student_name":"최수아","subject_name":"영어","topic":"회화 실전","status":"예정","student_id":4},{"class_date":"2026-10-08","start_time":"17:00:00","student_name":"박지후","subject_name":"수학","topic":"제곱근 복습","status":"예정","student_id":3},{"class_date":"2026-10-08","start_time":"19:00:00","student_name":"김민준","subject_name":"영어","topic":"관계대명사 심화","status":"예정","student_id":1},{"class_date":"2026-10-07","start_time":"17:30:00","student_name":"정현우","subject_name":"수학","topic":"2학년 과정 복습","status":"예정","student_id":5},{"class_date":"2026-10-07","start_time":"19:00:00","student_name":"김민준","subject_name":"수학","topic":"이차방정식 활용 문제","status":"예정","student_id":1},{"class_date":"2026-10-07","start_time":"19:30:00","student_name":"이서연","subject_name":"수학","topic":"심화 응용 문제","status":"예정","student_id":2},{"class_date":"2026-10-06","start_time":"17:00:00","student_name":"박지후","subject_name":"수학","topic":"제곱근 기초","status":"완료","student_id":3},{"class_date":"2026-10-06","start_time":"17:00:00","student_name":"박지후","subject_name":"수학","topic":"제곱근 기초","status":"완료","student_id":3},{"class_date":"2026-10-05","start_time":"17:30:00","student_name":"정현우","subject_name":"수학","topic":"2학년 과정 복습","status":"완료","student_id":5},{"class_date":"2026-10-05","start_time":"19:00:00","student_name":"김민준","subject_name":"수학","topic":"판별식과 근의 공식","status":"완료","student_id":1}]},"wa_home_schedule":{"rows":[]},"wa_homework":{"rows":[{"h_id":13,"student_id":1,"due_date":"2026-10-12","student_name":"김민준","subject_name":"사회","title":"사회 수행평가 자료 조사","status":"배부","score":null},{"h_id":10,"student_id":5,"due_date":"2026-10-09","student_name":"정현우","subject_name":"수학","title":"인수분해 유형별 정리","status":"배부","score":null},{"h_id":9,"student_id":4,"due_date":"2026-10-09","student_name":"최수아","subject_name":"수학","title":"제곱근 계산 20문항","status":"배부","score":null},{"h_id":7,"student_id":2,"due_date":"2026-10-08","student_name":"이서연","subject_name":"영어","title":"분사구문 전환 연습","status":"배부","score":null},{"h_id":6,"student_id":1,"due_date":"2026-10-08","student_name":"김민준","subject_name":"수학","title":"이차함수 최댓값·최솟값 응용","status":"배부","score":null},{"h_id":8,"student_id":3,"due_date":"2026-10-07","student_name":"박지후","subject_name":"수학","title":"이차방정식 근의 공식 문제","status":"배부","score":null},{"h_id":14,"student_id":2,"due_date":"2026-10-06","student_name":"이서연","subject_name":"수학","title":"이차방정식 활용 문제","status":"제출완료","score":"88"},{"h_id":12,"student_id":5,"due_date":"2026-10-06","student_name":"정현우","subject_name":"국어","title":"시어의 이미지 분류표","status":"미제출","score":null},{"h_id":5,"student_id":5,"due_date":"2026-10-05","student_name":"정현우","subject_name":"과학","title":"화학 반응식 완성 15문항","status":"미제출","score":null},{"h_id":4,"student_id":4,"due_date":"2026-10-05","student_name":"최수아","subject_name":"국어","title":"현대시 3편 감상문 쓰기","status":"제출완료","score":"78"},{"h_id":3,"student_id":3,"due_date":"2026-10-03","student_name":"박지후","subject_name":"수학","title":"이차함수 그래프 그리기 과제","status":"미제출","score":null},{"h_id":2,"student_id":2,"due_date":"2026-10-02","student_name":"이서연","subject_name":"영어","title":"관계대명사 워크북 Unit 3","status":"제출완료","score":"85"},{"h_id":1,"student_id":1,"due_date":"2026-10-02","student_name":"김민준","subject_name":"수학","title":"이차방정식 심화 문제 10문항","status":"제출완료","score":"90"},{"h_id":11,"student_id":3,"due_date":"2026-10-01","student_name":"박지후","subject_name":"영어","title":"관계대명사 that/which 비교","status":"제출완료","score":"72"}]},"wa_onboard":{"rows":[{"name":"강남구 진로진학센터","org_type":"지자체 진로진학센터","student_count":0,"done_steps":3,"progress_pct":"38"},{"name":"대한중학교","org_type":"학교","student_count":1,"done_steps":4,"progress_pct":"50"},{"name":"서울중학교","org_type":"학교","student_count":2,"done_steps":4,"progress_pct":"50"},{"name":"정현우 가정 (개인 컨설팅)","org_type":"개인 컨설팅","student_count":0,"done_steps":3,"progress_pct":"38"},{"name":"한국중학교","org_type":"학교","student_count":2,"done_steps":4,"progress_pct":"50"}]},"wa_org_detail#oid=1":{"rows":[{"id":1,"name":"서울중학교","org_type":"학교","region":"서울","address":null,"contact_name":null,"contact_phone":null,"contact_email":null,"program_name":"자유학기 진로진학 컨설팅","cohort":"2026-2","status":"운영중","start_date":"2026-03-02","end_date":null,"student_quota":null,"note":"중3 대상 진로진학 집중 컨설팅","student_count":2,"classes_month":9,"counsel_30d":2,"unsent_reports":1}]},"wa_org_detail#oid=2":{"rows":[{"id":2,"name":"한국중학교","org_type":"학교","region":"서울","address":null,"contact_name":null,"contact_phone":null,"contact_email":null,"program_name":"학습·진로 통합 컨설팅","cohort":"2026-2","status":"운영중","start_date":"2026-03-02","end_date":null,"student_quota":null,"note":null,"student_count":2,"classes_month":7,"counsel_30d":1,"unsent_reports":1}]},"wa_org_detail#oid=3":{"rows":[{"id":3,"name":"대한중학교","org_type":"학교","region":"서울","address":null,"contact_name":null,"contact_phone":null,"contact_email":null,"program_name":"기초학력·진로 탐색","cohort":"2026-2","status":"운영중","start_date":"2026-03-09","end_date":null,"student_quota":null,"note":"중2 대상","student_count":1,"classes_month":4,"counsel_30d":1,"unsent_reports":0}]},"wa_org_detail#oid=4":{"rows":[{"id":4,"name":"강남구 진로진학센터","org_type":"지자체 진로진학센터","region":"서울 강남구","address":null,"contact_name":null,"contact_phone":null,"contact_email":null,"program_name":"지역 청소년 진로진학 상담 운영","cohort":"2026","status":"운영중","start_date":"2026-01-06","end_date":null,"student_quota":null,"note":"예시 기관 — 실제 센터 정보로 수정하세요","student_count":0,"classes_month":0,"counsel_30d":0,"unsent_reports":0}]},"wa_org_detail#oid=5":{"rows":[{"id":5,"name":"정현우 가정 (개인 컨설팅)","org_type":"개인 컨설팅","region":"경기 성남","address":null,"contact_name":null,"contact_phone":null,"contact_email":null,"program_name":"개인 맞춤 진로진학 컨설팅","cohort":"2026","status":"준비","start_date":"2026-10-01","end_date":null,"student_quota":null,"note":"예시 대상 — 학생·학부모 개인 의뢰","student_count":0,"classes_month":0,"counsel_30d":0,"unsent_reports":0}]},"wa_org_students#oid=1":{"rows":[{"id":1,"name":"김민준","student_code":"S2026001","grade":"중3","school":"서울중학교","learning_style":"시각형","test_count":2,"counsel_count":1,"avg_progress":"88","unsent":0,"student_id":1},{"id":4,"name":"최수아","student_code":"S2026004","grade":"중3","school":"서울중학교","learning_style":"시각형","test_count":1,"counsel_count":1,"avg_progress":"78","unsent":1,"student_id":4}]},"wa_org_students#oid=2":{"rows":[{"id":2,"name":"이서연","student_code":"S2026002","grade":"중3","school":"한국중학교","learning_style":"청각형","test_count":1,"counsel_count":1,"avg_progress":"93","unsent":0,"student_id":2},{"id":5,"name":"정현우","student_code":"S2026005","grade":"중3","school":"한국중학교","learning_style":"혼합형","test_count":1,"counsel_count":1,"avg_progress":"30","unsent":1,"student_id":5}]},"wa_org_students#oid=3":{"rows":[{"id":3,"name":"박지후","student_code":"S2026003","grade":"중2","school":"대한중학교","learning_style":"체험형","test_count":1,"counsel_count":1,"avg_progress":"40","unsent":0,"student_id":3}]},"wa_org_students#oid=4":{"rows":[]},"wa_org_students#oid=5":{"rows":[]},"wa_orgs":{"rows":[{"name":"강남구 진로진학센터","org_type":"지자체 진로진학센터","region":"서울 강남구","cohort":"2026","status":"운영중","student_count":0},{"name":"대한중학교","org_type":"학교","region":"서울","cohort":"2026-2","status":"운영중","student_count":1},{"name":"서울중학교","org_type":"학교","region":"서울","cohort":"2026-2","status":"운영중","student_count":2},{"name":"정현우 가정 (개인 컨설팅)","org_type":"개인 컨설팅","region":"경기 성남","cohort":"2026","status":"준비","student_count":0},{"name":"한국중학교","org_type":"학교","region":"서울","cohort":"2026-2","status":"운영중","student_count":2}]},"wa_orgs_pick":{"rows":[{"id":4,"name":"강남구 진로진학센터","org_type":"지자체 진로진학센터","region":"서울 강남구","status":"운영중","student_count":0},{"id":3,"name":"대한중학교","org_type":"학교","region":"서울","status":"운영중","student_count":1},{"id":1,"name":"서울중학교","org_type":"학교","region":"서울","status":"운영중","student_count":2},{"id":5,"name":"정현우 가정 (개인 컨설팅)","org_type":"개인 컨설팅","region":"경기 성남","status":"준비","student_count":0},{"id":2,"name":"한국중학교","org_type":"학교","region":"서울","status":"운영중","student_count":2}]},"wa_paths":{"rows":[{"student_name":"정현우","subject_name":"수학","path_name":"정현우-수학 처방 경로","step_count":1,"status":"진행중","student_id":5},{"student_name":"김민준","subject_name":"영어","path_name":"김민준-영어 독해","step_count":2,"status":"진행중","student_id":1},{"student_name":"이서연","subject_name":"수학","path_name":"이서연-수학 완성","step_count":4,"status":"진행중","student_id":2},{"student_name":"김민준","subject_name":"수학","path_name":"김민준-수학 심화","step_count":4,"status":"진행중","student_id":1},{"student_name":"최수아","subject_name":"영어","path_name":"최수아-영어 회화","step_count":2,"status":"진행중","student_id":4},{"student_name":"정현우","subject_name":"수학","path_name":"정현우-수학 재정비","step_count":4,"status":"진행중","student_id":5},{"student_name":"박지후","subject_name":"수학","path_name":"박지후-수학 기초","step_count":4,"status":"진행중","student_id":3}]},"wa_prescription":{"rows":[{"student_name":"정현우","subject_name":null,"issued_date":"2026-09-23","focus_area":"월 1회 진로탐색 활동 + 흥미 기반 과목 선택 상담","status":"예정","student_id":5},{"student_name":"박지후","subject_name":null,"issued_date":"2026-09-22","focus_area":"수학 기초 단원부터 성공 경험 설계, 주 3회 짧은 학습으로 시작","status":"완료","student_id":3},{"student_name":"김민준","subject_name":null,"issued_date":"2026-09-20","focus_area":"주간 시간표 작성 후 2주간 매일 체크, 집중전략(뽀모도로) 적용","status":"완료","student_id":1},{"student_name":"최수아","subject_name":null,"issued_date":"2026-09-18","focus_area":"영어 인증시험 목표 설정, 영어 에세이 활동 시작","status":"진행중","student_id":4},{"student_name":"이서연","subject_name":null,"issued_date":"2026-09-16","focus_area":"심화 문제 비중 확대, 경영·경제 탐구보고서 착수","status":"완료","student_id":2}]},"wa_progress":{"rows":[{"student_name":"김민준","subject_name":"수학","unit_name":"실수와 그 계산","progress_pct":100,"achievement":95,"last_updated":"2026-10-06 15:59:35.942499","student_id":1},{"student_name":"김민준","subject_name":"수학","unit_name":"다항식의 곱셈과 인수분해","progress_pct":100,"achievement":88,"last_updated":"2026-10-06 15:59:35.942499","student_id":1},{"student_name":"김민준","subject_name":"수학","unit_name":"이차방정식","progress_pct":65,"achievement":null,"last_updated":"2026-10-06 15:59:35.942499","student_id":1},{"student_name":"이서연","subject_name":"수학","unit_name":"실수와 그 계산","progress_pct":100,"achievement":98,"last_updated":"2026-10-06 15:59:35.942499","student_id":2},{"student_name":"이서연","subject_name":"수학","unit_name":"다항식의 곱셈과 인수분해","progress_pct":100,"achievement":92,"last_updated":"2026-10-06 15:59:35.942499","student_id":2},{"student_name":"이서연","subject_name":"수학","unit_name":"이차방정식","progress_pct":80,"achievement":null,"last_updated":"2026-10-06 15:59:35.942499","student_id":2},{"student_name":"박지후","subject_name":"수학","unit_name":"실수와 그 계산","progress_pct":40,"achievement":null,"last_updated":"2026-10-06 15:59:35.942499","student_id":3},{"student_name":"최수아","subject_name":"영어","unit_name":"분사구문","progress_pct":100,"achievement":85,"last_updated":"2026-10-06 15:59:35.942499","student_id":4},{"student_name":"최수아","subject_name":"영어","unit_name":"관계대명사","progress_pct":55,"achievement":null,"last_updated":"2026-10-06 15:59:35.942499","student_id":4},{"student_name":"정현우","subject_name":"수학","unit_name":"실수와 그 계산","progress_pct":30,"achievement":null,"last_updated":"2026-10-06 15:59:35.942499","student_id":5}]},"wa_qbank":{"rows":[{"subject_name":"수학","unit_name":"다항식의 곱셈과 인수분해","question_type":"서술형","difficulty":"상","usage_count":41},{"subject_name":"수학","unit_name":"실수와 그 계산","question_type":"서술형","difficulty":"중","usage_count":40},{"subject_name":"영어","unit_name":"분사구문","question_type":"서술형","difficulty":"상","usage_count":30},{"subject_name":"영어","unit_name":"관계대명사","question_type":"객관식","difficulty":"중","usage_count":50},{"subject_name":"영어","unit_name":"관계대명사","question_type":"서술형","difficulty":"상","usage_count":32},{"subject_name":"수학","unit_name":"이차방정식","question_type":"서술형","difficulty":"상","usage_count":28},{"subject_name":"수학","unit_name":"이차함수","question_type":"객관식","difficulty":"중","usage_count":42},{"subject_name":"수학","unit_name":"이차방정식","question_type":"서술형","difficulty":"중","usage_count":52},{"subject_name":"수학","unit_name":"실수와 그 계산","question_type":"객관식","difficulty":"하","usage_count":58},{"subject_name":"영어","unit_name":"분사구문","question_type":"객관식","difficulty":"중","usage_count":45},{"subject_name":"수학","unit_name":"이차함수","question_type":"서술형","difficulty":"상","usage_count":28},{"subject_name":"수학","unit_name":"다항식의 곱셈과 인수분해","question_type":"객관식","difficulty":"중","usage_count":49},{"subject_name":"국어","unit_name":"현대시 감상","question_type":"객관식","difficulty":"중","usage_count":20},{"subject_name":"과학","unit_name":"화학 반응과 에너지","question_type":"서술형","difficulty":"상","usage_count":18},{"subject_name":"과학","unit_name":"화학 반응과 에너지","question_type":"객관식","difficulty":"상","usage_count":15},{"subject_name":"수학","unit_name":"이차방정식","question_type":"서술형","difficulty":"상","usage_count":35},{"subject_name":"수학","unit_name":"이차방정식","question_type":"객관식","difficulty":"중","usage_count":53},{"subject_name":"수학","unit_name":"실수와 그 계산","question_type":"객관식","difficulty":"하","usage_count":63},{"subject_name":"영어","unit_name":"관계대명사","question_type":"객관식","difficulty":"중","usage_count":50},{"subject_name":"수학","unit_name":"이차함수","question_type":"객관식","difficulty":"상","usage_count":34}]},"wa_report_one#rid=1":{"rows":[{"id":1,"student_id":1,"student_name":"김민준","report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","overall_progress":"수학 과목에서 꾸준한 상승세. 3차 모의고사 반 1등 달성.","attendance_summary":"총 12회 수업 중 12회 출석 (100%)","assessment_summary":"수학 94점 (1등), 전월 대비 2점 상승","strengths":"논리적 사고력, 꾸준함","areas_for_improvement":"그래프 해석, 통계","teacher_comments":"매우 모범적인 학생. 심화 과정 추천.","ai_summary":"AI 종합 분석: 전반적 우수. 특목고 대비 심화 커리큘럼 적용 권장","next_period_goals":"통계 단원 완성, 특목고 기출 10회 풀이","status":"발송완료","sent_date":"2026-10-01"}]},"wa_report_one#rid=2":{"rows":[{"id":2,"student_id":2,"student_name":"이서연","report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","overall_progress":"전과목 최상위권 유지. 3차 모의고사 만점 수준.","attendance_summary":"총 12회 수업 중 12회 출석 (100%)","assessment_summary":"수학 98점 (1등)","strengths":"전 영역 우수","areas_for_improvement":"없음","teacher_comments":"올림피아드 준비 적극 추천","ai_summary":"AI 종합 분석: 최상위권. 대회 수준 도전 권장","next_period_goals":"올림피아드 기출 문제 집중","status":"발송완료","sent_date":"2026-10-01"}]},"wa_report_one#rid=3":{"rows":[{"id":3,"student_id":3,"student_name":"박지후","report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","overall_progress":"기초 다지기 과정에서 꾸준한 성장.","attendance_summary":"총 10회 수업 중 9회 출석 (90%)","assessment_summary":"수학 72점, 전월 대비 7점 상승","strengths":"성실함","areas_for_improvement":"응용 문제","teacher_comments":"꾸준한 노력이 돋보임","ai_summary":"AI 종합 분석: 안정적 성장. 기본기 완성 단계","next_period_goals":"응용 문제 집중 훈련","status":"발송완료","sent_date":"2026-10-01"}]},"wa_report_one#rid=4":{"rows":[{"id":4,"student_id":4,"student_name":"최수아","report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","overall_progress":"영어 회화 능력 크게 향상.","attendance_summary":"총 10회 수업 중 10회 출석 (100%)","assessment_summary":"영어 85점","strengths":"자신감, 발화력","areas_for_improvement":"복잡한 문장","teacher_comments":"적극적 참여 돋보임","ai_summary":"AI 종합 분석: 실전 영어 능력 향상 중","next_period_goals":"영어 일기 및 토론 참여","status":"초안","sent_date":null}]},"wa_report_one#rid=5":{"rows":[{"id":5,"student_id":5,"student_name":"정현우","report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","overall_progress":"학습 경로 재설계 후 안정화 중.","attendance_summary":"총 10회 수업 중 10회 출석 (100%)","assessment_summary":"수학 58점 (기준선)","strengths":"꾸준한 출석","areas_for_improvement":"2학년 과정 전반","teacher_comments":"재정비 중, 격려 필요","ai_summary":"AI 종합 분석: 기초 보강 집중기. 2개월 후 재평가 예정","next_period_goals":"2학년 과정 완성","status":"초안","sent_date":null}]},"wa_report_one#rid=9":{"rows":[{"id":9,"student_id":1,"student_name":"김민준","report_period_start":"2026-10-01","report_period_end":"2026-10-31","report_type":"월간","overall_progress":"10월 전반적 진전 — 수정됨","attendance_summary":null,"assessment_summary":null,"strengths":"성실한 과제 수행","areas_for_improvement":"시간 관리","teacher_comments":"꾸준한 지도 유지","ai_summary":null,"next_period_goals":"11월 수능 모의고사 대비","status":"발송","sent_date":"2026-10-14"}]},"wa_reports":{"rows":[{"id":9,"student_id":1,"report_period":"2026-10-01 ~ 10-31","student_name":"김민준","created_at":"2026-10-14 07:46:33.488299","sent_at":"2026-10-14","status":"발송"},{"id":1,"student_id":1,"report_period":"2026-09-01 ~ 09-30","student_name":"김민준","created_at":"2026-10-06 16:00:55.218300","sent_at":"2026-10-01","status":"발송완료"},{"id":2,"student_id":2,"report_period":"2026-09-01 ~ 09-30","student_name":"이서연","created_at":"2026-10-06 16:00:55.218300","sent_at":"2026-10-01","status":"발송완료"},{"id":3,"student_id":3,"report_period":"2026-09-01 ~ 09-30","student_name":"박지후","created_at":"2026-10-06 16:00:55.218300","sent_at":"2026-10-01","status":"발송완료"},{"id":4,"student_id":4,"report_period":"2026-09-01 ~ 09-30","student_name":"최수아","created_at":"2026-10-06 16:00:55.218300","sent_at":null,"status":"초안"},{"id":5,"student_id":5,"report_period":"2026-09-01 ~ 09-30","student_name":"정현우","created_at":"2026-10-06 16:00:55.218300","sent_at":null,"status":"초안"}]},"wa_roadmap":{"rows":[{"student_name":"김민준","target_name":"KAIST · 기계공학과","step_order":4,"step_name":"자격 · 특목고 입학 전형 준비(자기소개서·면접)","due_period":"2026-11-30","status":"예정","student_id":1},{"student_name":"김민준","target_name":"KAIST · 기계공학과","step_order":3,"step_name":"비교과 · 수학·과학 경시대회 참가","due_period":"3학년 2학기","status":"예정","student_id":1},{"student_name":"김민준","target_name":"KAIST · 기계공학과","step_order":1,"step_name":"내신 · 수학·과학 심화 내신 1~2등급 진입","due_period":"3학년 2학기","status":"진행중","student_id":1},{"student_name":"김민준","target_name":"KAIST · 기계공학과","step_order":2,"step_name":"탐구 · 과학탐구 R&E 또는 심화 탐구보고서 1편","due_period":"3학년 2학기","status":"예정","student_id":1},{"student_name":"박지후","target_name":"서울시립대 · 컴퓨터과학부","step_order":8,"step_name":"내신 · 수학 기초 개념 완성(중2 전 범위)","due_period":"2학년 2학기","status":"진행중","student_id":3},{"student_name":"이서연","target_name":"서울대 · 경영대학","step_order":7,"step_name":"탐구 · 교내 경제 탐구 대회 참가","due_period":"2026-12-15","status":"예정","student_id":2},{"student_name":"이서연","target_name":"서울대 · 경영대학","step_order":5,"step_name":"내신 · 전 과목 1등급 유지(특히 수학)","due_period":"3학년 2학기","status":"진행중","student_id":2},{"student_name":"이서연","target_name":"서울대 · 경영대학","step_order":6,"step_name":"비교과 · 경영·경제 동아리 심화 활동 및 탐구보고서","due_period":"3학년 2학기","status":"예정","student_id":2},{"student_name":"정현우","target_name":"성균관대 · 사회과학계열","step_order":11,"step_name":"내신 · 전 과목 2등급 이내 진입","due_period":"3학년 2학기","status":"진행중","student_id":5},{"student_name":"정현우","target_name":"성균관대 · 사회과학계열","step_order":12,"step_name":"탐구 · 사회 탐구 주제 보고서 1편","due_period":"3학년 2학기","status":"예정","student_id":5},{"student_name":"최수아","target_name":"한국외국어대 · 영어통번역학과","step_order":10,"step_name":"비교과 · 영어 에세이·토론 활동, 영어 인증시험","due_period":"3학년 2학기","status":"예정","student_id":4},{"student_name":"최수아","target_name":"한국외국어대 · 영어통번역학과","step_order":9,"step_name":"내신 · 영어 1등급, 국어·수학 2등급 유지","due_period":"3학년 2학기","status":"진행중","student_id":4}]},"wa_rx_res":{"rows":[{"title":"최상위 수학","subject_name":"수학","resource_type":"교재","target_level":"중학"},{"title":"일품 중등 수학","subject_name":"수학","resource_type":"교재","target_level":"중학"},{"title":"쎈 중등 수학","subject_name":"수학","resource_type":"교재","target_level":"중학"},{"title":"개념원리 RPM","subject_name":"수학","resource_type":"교재","target_level":"중학"},{"title":"개념원리 중학 수학","subject_name":"수학","resource_type":"교재","target_level":"중학"},{"title":"EBSi 개념완성 수학","subject_name":"수학","resource_type":"EBSi","target_level":"고등"},{"title":"천일문 기본","subject_name":"영어","resource_type":"교재","target_level":"중학"},{"title":"자이스토리 중등 영어 독해","subject_name":"영어","resource_type":"교재","target_level":"중학"},{"title":"마더텅 중학영문법 3800제","subject_name":"영어","resource_type":"교재","target_level":"중학"},{"title":"워드마스터 중등","subject_name":"영어","resource_type":"교재","target_level":"중학"},{"title":"Grammar Inside (그래머 인사이드)","subject_name":"영어","resource_type":"교재","target_level":"중학"},{"title":"EBSi 교과서 진도특강 영어","subject_name":"영어","resource_type":"EBSi","target_level":"고등"},{"title":"한끝 중학 국어","subject_name":"국어","resource_type":"교재","target_level":"중학"},{"title":"매3비 (매일 지문 3개 비문학)","subject_name":"국어","resource_type":"교재","target_level":"중학"},{"title":"빠작 중학 국어 비문학 독해","subject_name":"국어","resource_type":"교재","target_level":"중학"},{"title":"하이탑 중학 과학","subject_name":"과학","resource_type":"교재","target_level":"중학"},{"title":"완자 중등 과학","subject_name":"과학","resource_type":"교재","target_level":"중학"},{"title":"오투 중등 과학","subject_name":"과학","resource_type":"교재","target_level":"중학"},{"title":"올쏘 중학 사회","subject_name":"사회","resource_type":"교재","target_level":"중학"},{"title":"완자 중등 사회","subject_name":"사회","resource_type":"교재","target_level":"중학"},{"title":"한끝 중학 사회","subject_name":"사회","resource_type":"교재","target_level":"중학"},{"title":"EBS 중학프리미엄 (중학 전 과목)","subject_name":null,"resource_type":"EBS중학","target_level":"중학"},{"title":"EBSi 성취수준별 추천 강좌","subject_name":null,"resource_type":"EBSi","target_level":"고등"},{"title":"EBSi 2026 강좌 현황표 · 연간 커리큘럼","subject_name":null,"resource_type":"EBSi","target_level":"고등"},{"title":"EBSi 고교강의 — 과목별 대표강사 커리큘럼","subject_name":null,"resource_type":"EBSi","target_level":"고등"}]},"wa_schedule":{"rows":[{"cs_id":5,"student_id":4,"class_date":"2026-10-09","start_time":"18:30:00","student_name":"최수아","subject_name":"영어","topic":"회화 실전","status":"예정"},{"cs_id":4,"student_id":3,"class_date":"2026-10-08","start_time":"17:00:00","student_name":"박지후","subject_name":"수학","topic":"제곱근 복습","status":"예정"},{"cs_id":2,"student_id":1,"class_date":"2026-10-08","start_time":"19:00:00","student_name":"김민준","subject_name":"영어","topic":"관계대명사 심화","status":"예정"},{"cs_id":6,"student_id":5,"class_date":"2026-10-07","start_time":"17:30:00","student_name":"정현우","subject_name":"수학","topic":"2학년 과정 복습","status":"예정"},{"cs_id":1,"student_id":1,"class_date":"2026-10-07","start_time":"19:00:00","student_name":"김민준","subject_name":"수학","topic":"이차방정식 활용 문제","status":"예정"},{"cs_id":3,"student_id":2,"class_date":"2026-10-07","start_time":"19:30:00","student_name":"이서연","subject_name":"수학","topic":"심화 응용 문제","status":"예정"},{"cs_id":23,"student_id":3,"class_date":"2026-10-06","start_time":"17:00:00","student_name":"박지후","subject_name":"수학","topic":"제곱근 기초","status":"완료"},{"cs_id":9,"student_id":3,"class_date":"2026-10-06","start_time":"17:00:00","student_name":"박지후","subject_name":"수학","topic":"제곱근 기초","status":"완료"},{"cs_id":25,"student_id":5,"class_date":"2026-10-05","start_time":"17:30:00","student_name":"정현우","subject_name":"수학","topic":"2학년 과정 복습","status":"완료"},{"cs_id":21,"student_id":1,"class_date":"2026-10-05","start_time":"19:00:00","student_name":"김민준","subject_name":"수학","topic":"판별식과 근의 공식","status":"완료"},{"cs_id":7,"student_id":1,"class_date":"2026-10-05","start_time":"19:00:00","student_name":"김민준","subject_name":"수학","topic":"판별식과 근의 공식","status":"완료"},{"cs_id":8,"student_id":2,"class_date":"2026-10-05","start_time":"19:30:00","student_name":"이서연","subject_name":"수학","topic":"최적화 문제","status":"완료"},{"cs_id":22,"student_id":2,"class_date":"2026-10-05","start_time":"19:30:00","student_name":"이서연","subject_name":"수학","topic":"최적화 문제","status":"완료"},{"cs_id":10,"student_id":4,"class_date":"2026-10-04","start_time":"18:30:00","student_name":"최수아","subject_name":"영어","topic":"관계대명사 회화","status":"완료"},{"cs_id":24,"student_id":4,"class_date":"2026-10-04","start_time":"18:30:00","student_name":"최수아","subject_name":"영어","topic":"관계대명사 회화","status":"완료"},{"cs_id":16,"student_id":3,"class_date":"2026-10-02","start_time":"17:00:00","student_name":"박지후","subject_name":"수학","topic":"다항식 입문","status":"완료"},{"cs_id":20,"student_id":5,"class_date":"2026-10-02","start_time":"17:30:00","student_name":"정현우","subject_name":"수학","topic":"2학년 심화","status":"완료"},{"cs_id":18,"student_id":4,"class_date":"2026-10-02","start_time":"18:30:00","student_name":"최수아","subject_name":"영어","topic":"회화 연습","status":"완료"},{"cs_id":14,"student_id":2,"class_date":"2026-10-01","start_time":"19:00:00","student_name":"이서연","subject_name":"영어","topic":"분사구문","status":"완료"},{"cs_id":12,"student_id":1,"class_date":"2026-10-01","start_time":"19:00:00","student_name":"김민준","subject_name":"영어","topic":"분사구문","status":"완료"},{"cs_id":19,"student_id":5,"class_date":"2026-09-30","start_time":"17:30:00","student_name":"정현우","subject_name":"수학","topic":"2학년 복습","status":"완료"},{"cs_id":17,"student_id":4,"class_date":"2026-09-30","start_time":"18:30:00","student_name":"최수아","subject_name":"영어","topic":"관계대명사","status":"완료"},{"cs_id":11,"student_id":1,"class_date":"2026-09-30","start_time":"19:00:00","student_name":"김민준","subject_name":"수학","topic":"이차방정식 복습","status":"완료"},{"cs_id":13,"student_id":2,"class_date":"2026-09-30","start_time":"19:30:00","student_name":"이서연","subject_name":"수학","topic":"심화 함수","status":"완료"},{"cs_id":15,"student_id":3,"class_date":"2026-09-29","start_time":"17:00:00","student_name":"박지후","subject_name":"수학","topic":"제곱근 복습","status":"완료"}]},"wa_stu_basic#sid=1":{"rows":[{"id":1,"name":"김민준","student_code":"S2026001","grade":"중3","school":"서울중학교","org_name":"서울중학교","org_type":"학교","parent_name":"김영희","parent_phone":"010-1111-3333","parent_email":"minjun.parent@email.com","learning_style":"시각형","learning_goal":"특목고 입학","status":"수강중","enrolled_date":"2026-03-02","student_id":1}]},"wa_stu_basic#sid=2":{"rows":[{"id":2,"name":"이서연","student_code":"S2026002","grade":"중3","school":"한국중학교","org_name":"한국중학교","org_type":"학교","parent_name":"이철수","parent_phone":"010-2222-4444","parent_email":"seoyeon.parent@email.com","learning_style":"청각형","learning_goal":"내신 1등급 유지","status":"수강중","enrolled_date":"2026-03-02","student_id":2}]},"wa_stu_basic#sid=3":{"rows":[{"id":3,"name":"박지후","student_code":"S2026003","grade":"중2","school":"대한중학교","org_name":"대한중학교","org_type":"학교","parent_name":"박미경","parent_phone":"010-3333-5555","parent_email":"jihoo.parent@email.com","learning_style":"체험형","learning_goal":"수학 기초 다지기","status":"수강중","enrolled_date":"2026-04-15","student_id":3}]},"wa_stu_basic#sid=4":{"rows":[{"id":4,"name":"최수아","student_code":"S2026004","grade":"중3","school":"서울중학교","org_name":"서울중학교","org_type":"학교","parent_name":"최동훈","parent_phone":"010-4444-6666","parent_email":"sua.parent@email.com","learning_style":"시각형","learning_goal":"영어 회화 능력 향상","status":"수강중","enrolled_date":"2026-03-10","student_id":4}]},"wa_stu_basic#sid=5":{"rows":[{"id":5,"name":"정현우","student_code":"S2026005","grade":"중3","school":"한국중학교","org_name":"한국중학교","org_type":"학교","parent_name":"정수진","parent_phone":"010-5555-7777","parent_email":"hyunwoo.parent@email.com","learning_style":"혼합형","learning_goal":"전과목 성적 향상","status":"수강중","enrolled_date":"2026-05-01","student_id":5}]},"wa_stu_counsel#sid=1":{"rows":[{"session_date":"2026-09-20","counselor":"김원장","topic":"진로","content_preview":"MLST-2 결과 LQ 88(정체형). 회피동기와 시험불안이 높고 시간관리·집중전략이 약함. 특목고 목표 동기를 활용해 주간 시간표를 함께 설계함.","prescription_preview":"주간 시간표 작성 후 2주간 매일 체크, 집중전략(뽀모도로) 적용","next_date":"2026-10-04","status":"완료"}]},"wa_stu_counsel#sid=2":{"rows":[{"session_date":"2026-09-16","counselor":"김원장","topic":"학습","content_preview":"MLST-2 LQ 118(주도형). 전략 전반이 우수하나 경쟁동기 의존 경향. 내신 최상위 유지 전략과 심화 탐구 병행을 논의.","prescription_preview":"심화 문제 비중 확대, 경영·경제 탐구보고서 착수","next_date":"2026-10-07","status":"완료"}]},"wa_stu_counsel#sid=3":{"rows":[{"session_date":"2026-09-22","counselor":"박실장","topic":"학습","content_preview":"MLST-2 LQ 74(정체형). 효능감·학습동기 저하, 우울·짜증 정서 높음. 수학 기초 결손이 주 원인으로 보여 성취 경험을 쌓는 방향으로 접근.","prescription_preview":"수학 기초 단원부터 성공 경험 설계, 주 3회 짧은 학습으로 시작","next_date":"2026-10-06","status":"완료"}]},"wa_stu_counsel#sid=4":{"rows":[{"session_date":"2026-09-18","counselor":"박실장","topic":"진로","content_preview":"NEO 안정·성실형. 성실성·친화성·개방성이 높아 어학·인문 분야 적합. 영어 강점을 살린 진로 설계와 인증시험 준비를 논의.","prescription_preview":"영어 인증시험 목표 설정, 영어 에세이 활동 시작","next_date":"2026-10-11","status":"진행중"}]},"wa_stu_counsel#sid=5":{"rows":[{"session_date":"2026-09-23","counselor":"김원장","topic":"진로","content_preview":"MCDT 진로결정지수 46(미결정). 직업이해·의사결정기술이 낮고 신념·정서 장벽이 높음. 다양한 직업 탐색 경험과 함께 결정을 서두르지 않도록 안내.","prescription_preview":"월 1회 진로탐색 활동 + 흥미 기반 과목 선택 상담","next_date":"2026-10-14","status":"예정"}]},"wa_stu_grades#sid=1":{"rows":[{"school_year":3,"semester":1,"subject_name":"과학","achievement":"C","grade":3,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"국어","achievement":"C","grade":3,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"수학","achievement":"B","grade":2,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"역사","achievement":"C","grade":3,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"영어","achievement":"C","grade":3,"exam_period":"1학기 기말"}]},"wa_stu_grades#sid=2":{"rows":[{"school_year":3,"semester":1,"subject_name":"과학","achievement":"B","grade":2,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"국어","achievement":"A","grade":1,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"수학","achievement":"A","grade":1,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"역사","achievement":"A","grade":1,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"영어","achievement":"A","grade":1,"exam_period":"1학기 기말"}]},"wa_stu_grades#sid=3":{"rows":[{"school_year":2,"semester":2,"subject_name":"과학","achievement":"C","grade":3,"exam_period":"2학기 기말"},{"school_year":2,"semester":2,"subject_name":"국어","achievement":"C","grade":3,"exam_period":"2학기 기말"},{"school_year":2,"semester":2,"subject_name":"사회","achievement":"C","grade":3,"exam_period":"2학기 기말"},{"school_year":2,"semester":2,"subject_name":"수학","achievement":"C","grade":3,"exam_period":"2학기 기말"},{"school_year":2,"semester":2,"subject_name":"영어","achievement":"C","grade":3,"exam_period":"2학기 기말"}]},"wa_stu_grades#sid=4":{"rows":[{"school_year":3,"semester":1,"subject_name":"과학","achievement":"C","grade":3,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"국어","achievement":"B","grade":2,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"수학","achievement":"C","grade":3,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"역사","achievement":"C","grade":3,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"영어","achievement":"B","grade":2,"exam_period":"1학기 기말"}]},"wa_stu_grades#sid=5":{"rows":[{"school_year":3,"semester":1,"subject_name":"과학","achievement":"C","grade":3,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"국어","achievement":"C","grade":3,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"수학","achievement":"C","grade":3,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"역사","achievement":"C","grade":3,"exam_period":"1학기 기말"},{"school_year":3,"semester":1,"subject_name":"영어","achievement":"C","grade":3,"exam_period":"1학기 기말"}]},"wa_stu_progress#sid=1":{"rows":[{"subject_name":"수학","unit_name":"실수와 그 계산","progress_pct":100,"achievement":95,"updated_at":"2026-10-06 15:59:35.942499"},{"subject_name":"수학","unit_name":"다항식의 곱셈과 인수분해","progress_pct":100,"achievement":88,"updated_at":"2026-10-06 15:59:35.942499"},{"subject_name":"수학","unit_name":"이차방정식","progress_pct":65,"achievement":null,"updated_at":"2026-10-06 15:59:35.942499"}]},"wa_stu_progress#sid=2":{"rows":[{"subject_name":"수학","unit_name":"실수와 그 계산","progress_pct":100,"achievement":98,"updated_at":"2026-10-06 15:59:35.942499"},{"subject_name":"수학","unit_name":"다항식의 곱셈과 인수분해","progress_pct":100,"achievement":92,"updated_at":"2026-10-06 15:59:35.942499"},{"subject_name":"수학","unit_name":"이차방정식","progress_pct":80,"achievement":null,"updated_at":"2026-10-06 15:59:35.942499"}]},"wa_stu_progress#sid=3":{"rows":[{"subject_name":"수학","unit_name":"실수와 그 계산","progress_pct":40,"achievement":null,"updated_at":"2026-10-06 15:59:35.942499"}]},"wa_stu_progress#sid=4":{"rows":[{"subject_name":"영어","unit_name":"분사구문","progress_pct":100,"achievement":85,"updated_at":"2026-10-06 15:59:35.942499"},{"subject_name":"영어","unit_name":"관계대명사","progress_pct":55,"achievement":null,"updated_at":"2026-10-06 15:59:35.942499"}]},"wa_stu_progress#sid=5":{"rows":[{"subject_name":"수학","unit_name":"실수와 그 계산","progress_pct":30,"achievement":null,"updated_at":"2026-10-06 15:59:35.942499"}]},"wa_stu_recent#sid=1":{"rows":[{"kind":"숙제","d":"2026-10-12","subject":"사회","title":"사회 수행평가 자료 조사","status":"배부","score":null},{"kind":"수업","d":"2026-10-08","subject":"영어","title":"관계대명사 심화","status":"예정","score":null},{"kind":"숙제","d":"2026-10-08","subject":"수학","title":"이차함수 최댓값·최솟값 응용","status":"배부","score":null},{"kind":"수업","d":"2026-10-07","subject":"수학","title":"이차방정식 활용 문제","status":"예정","score":null},{"kind":"수업","d":"2026-10-05","subject":"수학","title":"판별식과 근의 공식","status":"출석","score":null},{"kind":"수업","d":"2026-10-05","subject":"수학","title":"판별식과 근의 공식","status":"출석","score":null},{"kind":"숙제","d":"2026-10-02","subject":"수학","title":"이차방정식 심화 문제 10문항","status":"제출완료","score":"90"},{"kind":"수업","d":"2026-10-01","subject":"영어","title":"분사구문","status":"출석","score":null},{"kind":"수업","d":"2026-09-30","subject":"수학","title":"이차방정식 복습","status":"출석","score":null}]},"wa_stu_recent#sid=2":{"rows":[{"kind":"숙제","d":"2026-10-08","subject":"영어","title":"분사구문 전환 연습","status":"배부","score":null},{"kind":"수업","d":"2026-10-07","subject":"수학","title":"심화 응용 문제","status":"예정","score":null},{"kind":"숙제","d":"2026-10-06","subject":"수학","title":"이차방정식 활용 문제","status":"제출완료","score":"88"},{"kind":"수업","d":"2026-10-05","subject":"수학","title":"최적화 문제","status":"출석","score":null},{"kind":"수업","d":"2026-10-05","subject":"수학","title":"최적화 문제","status":"출석","score":null},{"kind":"숙제","d":"2026-10-02","subject":"영어","title":"관계대명사 워크북 Unit 3","status":"제출완료","score":"85"},{"kind":"수업","d":"2026-10-01","subject":"영어","title":"분사구문","status":"출석","score":null},{"kind":"수업","d":"2026-09-30","subject":"수학","title":"심화 함수","status":"출석","score":null}]},"wa_stu_recent#sid=3":{"rows":[{"kind":"수업","d":"2026-10-08","subject":"수학","title":"제곱근 복습","status":"예정","score":null},{"kind":"숙제","d":"2026-10-07","subject":"수학","title":"이차방정식 근의 공식 문제","status":"배부","score":null},{"kind":"수업","d":"2026-10-06","subject":"수학","title":"제곱근 기초","status":"출석","score":null},{"kind":"수업","d":"2026-10-06","subject":"수학","title":"제곱근 기초","status":"출석","score":null},{"kind":"숙제","d":"2026-10-03","subject":"수학","title":"이차함수 그래프 그리기 과제","status":"미제출","score":null},{"kind":"수업","d":"2026-10-02","subject":"수학","title":"다항식 입문","status":"출석","score":null},{"kind":"숙제","d":"2026-10-01","subject":"영어","title":"관계대명사 that/which 비교","status":"제출완료","score":"72"},{"kind":"수업","d":"2026-09-29","subject":"수학","title":"제곱근 복습","status":"지각","score":null}]},"wa_stu_recent#sid=4":{"rows":[{"kind":"숙제","d":"2026-10-09","subject":"수학","title":"제곱근 계산 20문항","status":"배부","score":null},{"kind":"수업","d":"2026-10-09","subject":"영어","title":"회화 실전","status":"예정","score":null},{"kind":"숙제","d":"2026-10-05","subject":"국어","title":"현대시 3편 감상문 쓰기","status":"제출완료","score":"78"},{"kind":"수업","d":"2026-10-04","subject":"영어","title":"관계대명사 회화","status":"출석","score":null},{"kind":"수업","d":"2026-10-04","subject":"영어","title":"관계대명사 회화","status":"출석","score":null},{"kind":"수업","d":"2026-10-02","subject":"영어","title":"회화 연습","status":"결석","score":null},{"kind":"수업","d":"2026-09-30","subject":"영어","title":"관계대명사","status":"출석","score":null}]},"wa_stu_recent#sid=5":{"rows":[{"kind":"숙제","d":"2026-10-09","subject":"수학","title":"인수분해 유형별 정리","status":"배부","score":null},{"kind":"수업","d":"2026-10-07","subject":"수학","title":"2학년 과정 복습","status":"예정","score":null},{"kind":"숙제","d":"2026-10-06","subject":"국어","title":"시어의 이미지 분류표","status":"미제출","score":null},{"kind":"숙제","d":"2026-10-05","subject":"과학","title":"화학 반응식 완성 15문항","status":"미제출","score":null},{"kind":"수업","d":"2026-10-05","subject":"수학","title":"2학년 과정 복습","status":"출석","score":null},{"kind":"수업","d":"2026-10-02","subject":"수학","title":"2학년 심화","status":"출석","score":null},{"kind":"수업","d":"2026-09-30","subject":"수학","title":"2학년 복습","status":"출석","score":null}]},"wa_stu_reports#sid=1":{"rows":[{"id":9,"student_id":1,"report_period_start":"2026-10-01","report_period_end":"2026-10-31","report_type":"월간","status":"발송","sent_date":"2026-10-14","created_at":"2026-10-14 07:46:33.488299"},{"id":1,"student_id":1,"report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","status":"발송완료","sent_date":"2026-10-01","created_at":"2026-10-06 16:00:55.218300"}]},"wa_stu_reports#sid=2":{"rows":[{"id":2,"student_id":2,"report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","status":"발송완료","sent_date":"2026-10-01","created_at":"2026-10-06 16:00:55.218300"}]},"wa_stu_reports#sid=3":{"rows":[{"id":3,"student_id":3,"report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","status":"발송완료","sent_date":"2026-10-01","created_at":"2026-10-06 16:00:55.218300"}]},"wa_stu_reports#sid=4":{"rows":[{"id":4,"student_id":4,"report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","status":"초안","sent_date":null,"created_at":"2026-10-06 16:00:55.218300"}]},"wa_stu_reports#sid=5":{"rows":[{"id":5,"student_id":5,"report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","status":"초안","sent_date":null,"created_at":"2026-10-06 16:00:55.218300"}]},"wa_stu_roadmap#sid=1":{"rows":[{"target_id":1,"university":"KAIST","department":"기계공학과","admission_type":"학생부종합","target_year":2029,"required_grade":"2.00","priority":1,"target_status":"검토","step_count":4,"done_steps":0},{"target_id":2,"university":"서울대","department":"자연계열","admission_type":"학생부종합","target_year":2029,"required_grade":"1.80","priority":2,"target_status":"검토","step_count":0,"done_steps":0},{"target_id":16,"university":"서울대학교","department":"컴퓨터공학부","admission_type":"학생부종합","target_year":2029,"required_grade":"1.50","priority":2,"target_status":"검토","step_count":0,"done_steps":0},{"target_id":3,"university":"한양대","department":"공과대학","admission_type":"학생부교과","target_year":2029,"required_grade":"2.20","priority":3,"target_status":"검토","step_count":0,"done_steps":0}]},"wa_stu_roadmap#sid=2":{"rows":[{"target_id":4,"university":"서울대","department":"경영대학","admission_type":"학생부종합","target_year":2029,"required_grade":"1.30","priority":1,"target_status":"검토","step_count":3,"done_steps":0},{"target_id":5,"university":"연세대","department":"경영학과","admission_type":"학생부교과","target_year":2029,"required_grade":"1.20","priority":2,"target_status":"검토","step_count":0,"done_steps":0},{"target_id":6,"university":"고려대","department":"경영대학","admission_type":"학생부교과","target_year":2029,"required_grade":"1.30","priority":3,"target_status":"검토","step_count":0,"done_steps":0}]},"wa_stu_roadmap#sid=3":{"rows":[{"target_id":7,"university":"서울시립대","department":"컴퓨터과학부","admission_type":"학생부종합","target_year":2030,"required_grade":"3.00","priority":1,"target_status":"검토","step_count":1,"done_steps":0}]},"wa_stu_roadmap#sid=4":{"rows":[{"target_id":8,"university":"한국외국어대","department":"영어통번역학과","admission_type":"학생부종합","target_year":2029,"required_grade":"2.00","priority":1,"target_status":"검토","step_count":2,"done_steps":0},{"target_id":9,"university":"이화여대","department":"영어영문학부","admission_type":"학생부교과","target_year":2029,"required_grade":"2.20","priority":2,"target_status":"검토","step_count":0,"done_steps":0}]},"wa_stu_roadmap#sid=5":{"rows":[{"target_id":10,"university":"성균관대","department":"사회과학계열","admission_type":"학생부종합","target_year":2029,"required_grade":"2.50","priority":1,"target_status":"검토","step_count":2,"done_steps":0},{"target_id":11,"university":"중앙대","department":"경영경제대학","admission_type":"학생부교과","target_year":2029,"required_grade":"2.80","priority":2,"target_status":"검토","step_count":0,"done_steps":0}]},"wa_stu_roadmap_steps#sid=1":{"rows":[{"id":4,"target_id":1,"university":"KAIST","department":"기계공학과","school_year":null,"semester":null,"category":"자격","title":"특목고 입학 전형 준비(자기소개서·면접)","target_date":"2026-11-30","status":"예정"},{"id":3,"target_id":1,"university":"KAIST","department":"기계공학과","school_year":3,"semester":2,"category":"비교과","title":"수학·과학 경시대회 참가","target_date":"2027-05-30","status":"예정"},{"id":1,"target_id":1,"university":"KAIST","department":"기계공학과","school_year":3,"semester":2,"category":"내신","title":"수학·과학 심화 내신 1~2등급 진입","target_date":"2027-07-15","status":"진행중"},{"id":2,"target_id":1,"university":"KAIST","department":"기계공학과","school_year":3,"semester":2,"category":"탐구","title":"과학탐구 R&E 또는 심화 탐구보고서 1편","target_date":"2027-08-31","status":"예정"}]},"wa_stu_roadmap_steps#sid=2":{"rows":[{"id":7,"target_id":4,"university":"서울대","department":"경영대학","school_year":null,"semester":null,"category":"탐구","title":"교내 경제 탐구 대회 참가","target_date":"2026-12-15","status":"예정"},{"id":5,"target_id":4,"university":"서울대","department":"경영대학","school_year":3,"semester":2,"category":"내신","title":"전 과목 1등급 유지(특히 수학)","target_date":"2027-07-15","status":"진행중"},{"id":6,"target_id":4,"university":"서울대","department":"경영대학","school_year":3,"semester":2,"category":"비교과","title":"경영·경제 동아리 심화 활동 및 탐구보고서","target_date":"2027-08-31","status":"예정"}]},"wa_stu_roadmap_steps#sid=3":{"rows":[{"id":8,"target_id":7,"university":"서울시립대","department":"컴퓨터과학부","school_year":2,"semester":2,"category":"내신","title":"수학 기초 개념 완성(중2 전 범위)","target_date":"2026-12-20","status":"진행중"}]},"wa_stu_roadmap_steps#sid=4":{"rows":[{"id":10,"target_id":8,"university":"한국외국어대","department":"영어통번역학과","school_year":3,"semester":2,"category":"비교과","title":"영어 에세이·토론 활동, 영어 인증시험","target_date":"2027-06-30","status":"예정"},{"id":9,"target_id":8,"university":"한국외국어대","department":"영어통번역학과","school_year":3,"semester":2,"category":"내신","title":"영어 1등급, 국어·수학 2등급 유지","target_date":"2027-07-15","status":"진행중"}]},"wa_stu_roadmap_steps#sid=5":{"rows":[{"id":11,"target_id":10,"university":"성균관대","department":"사회과학계열","school_year":3,"semester":2,"category":"내신","title":"전 과목 2등급 이내 진입","target_date":"2027-07-15","status":"진행중"},{"id":12,"target_id":10,"university":"성균관대","department":"사회과학계열","school_year":3,"semester":2,"category":"탐구","title":"사회 탐구 주제 보고서 1편","target_date":"2027-08-31","status":"예정"}]},"wa_stu_tests#sid=1":{"rows":[{"id":4,"test_date":"2026-09-19","test_type":"MCDT","test_name":"MCDT 다차원 진로진단검사","overall_label":"신중형","overall_index":"72","summary":""},{"id":1,"test_date":"2026-09-12","test_type":"MLST2","test_name":"MLST-2 학습전략검사","overall_label":"정체형","overall_index":"88","summary":""}]},"wa_stu_tests#sid=2":{"rows":[{"id":2,"test_date":"2026-09-10","test_type":"MLST2","test_name":"MLST-2 학습전략검사","overall_label":"주도형","overall_index":"118","summary":""}]},"wa_stu_tests#sid=3":{"rows":[{"id":3,"test_date":"2026-09-15","test_type":"MLST2","test_name":"MLST-2 학습전략검사","overall_label":"정체형","overall_index":"74","summary":""}]},"wa_stu_tests#sid=4":{"rows":[{"id":6,"test_date":"2026-09-17","test_type":"NEO","test_name":"NEO 성격검사(청소년용)","overall_label":"안정·성실형","overall_index":null,"summary":""}]},"wa_stu_tests#sid=5":{"rows":[{"id":5,"test_date":"2026-09-22","test_type":"MCDT","test_name":"MCDT 다차원 진로진단검사","overall_label":"미결정","overall_index":"46","summary":""}]},"wa_students":{"rows":[{"name":"김민준","student_code":"S2026001","grade":"중3","school_name":"서울중학교","org_name":"서울중학교","learning_style":"시각형","student_id":1},{"name":"박지후","student_code":"S2026003","grade":"중2","school_name":"대한중학교","org_name":"대한중학교","learning_style":"체험형","student_id":3},{"name":"이서연","student_code":"S2026002","grade":"중3","school_name":"한국중학교","org_name":"한국중학교","learning_style":"청각형","student_id":2},{"name":"정현우","student_code":"S2026005","grade":"중3","school_name":"한국중학교","org_name":"한국중학교","learning_style":"혼합형","student_id":5},{"name":"최수아","student_code":"S2026004","grade":"중3","school_name":"서울중학교","org_name":"서울중학교","learning_style":"시각형","student_id":4}]},"wa_students_pick":{"rows":[{"id":1,"name":"김민준","grade":"중3","school":"서울중학교","org_name":"서울중학교"},{"id":3,"name":"박지후","grade":"중2","school":"대한중학교","org_name":"대한중학교"},{"id":2,"name":"이서연","grade":"중3","school":"한국중학교","org_name":"한국중학교"},{"id":5,"name":"정현우","grade":"중3","school":"한국중학교","org_name":"한국중학교"},{"id":4,"name":"최수아","grade":"중3","school":"서울중학교","org_name":"서울중학교"}]},"wa_subjects":{"rows":[{"id":1,"subject_name":"수학"},{"id":2,"subject_name":"영어"},{"id":3,"subject_name":"국어"},{"id":4,"subject_name":"과학"},{"id":5,"subject_name":"사회"}]},"wa_summary":{"rows":[{"students":5,"orgs":5,"classes_month":20,"tests":6,"counsel":5,"unsent":2}]},"wa_tests":{"rows":[{"test_date":"2026-09-22","student_name":"정현우","test_type":"MCDT","result_summary":"미결정","student_id":5},{"test_date":"2026-09-19","student_name":"김민준","test_type":"MCDT","result_summary":"신중형","student_id":1},{"test_date":"2026-09-17","student_name":"최수아","test_type":"NEO","result_summary":"안정·성실형","student_id":4},{"test_date":"2026-09-15","student_name":"박지후","test_type":"MLST2","result_summary":"정체형","student_id":3},{"test_date":"2026-09-12","student_name":"김민준","test_type":"MLST2","result_summary":"정체형","student_id":1},{"test_date":"2026-09-10","student_name":"이서연","test_type":"MLST2","result_summary":"주도형","student_id":2}]},"wa_tutor":{"rows":[{"session_date":"2026-10-06 19:00:00","student_name":"김민준","subject_name":"수학","session_type":"개념설명","duration_min":45,"engagement":"높음","student_id":1},{"session_date":"2026-10-06 17:00:00","student_name":"박지후","subject_name":"수학","session_type":"복습","duration_min":40,"engagement":"보통","student_id":3},{"session_date":"2026-10-05 19:30:00","student_name":"이서연","subject_name":"수학","session_type":"문제풀이","duration_min":50,"engagement":"매우 높음","student_id":2},{"session_date":"2026-10-05 17:30:00","student_name":"정현우","subject_name":"수학","session_type":"기초다지기","duration_min":40,"engagement":"보통","student_id":5},{"session_date":"2026-10-04 18:30:00","student_name":"최수아","subject_name":"영어","session_type":"회화연습","duration_min":35,"engagement":"높음","student_id":4},{"session_date":"2026-10-02 18:30:00","student_name":"정현우","subject_name":"수학","session_type":"복습","duration_min":45,"engagement":"높음","student_id":5},{"session_date":"2026-10-02 18:00:00","student_name":"박지후","subject_name":"수학","session_type":"개념설명","duration_min":45,"engagement":"높음","student_id":3},{"session_date":"2026-10-01 19:30:00","student_name":"이서연","subject_name":"영어","session_type":"회화","duration_min":35,"engagement":"높음","student_id":2},{"session_date":"2026-10-01 19:30:00","student_name":"김민준","subject_name":"영어","session_type":"개념설명","duration_min":40,"engagement":"보통","student_id":1},{"session_date":"2026-09-30 20:30:00","student_name":"이서연","subject_name":"수학","session_type":"심화문제","duration_min":55,"engagement":"매우 높음","student_id":2},{"session_date":"2026-09-30 20:00:00","student_name":"김민준","subject_name":"수학","session_type":"문제풀이","duration_min":50,"engagement":"높음","student_id":1},{"session_date":"2026-09-30 19:30:00","student_name":"최수아","subject_name":"영어","session_type":"회화","duration_min":35,"engagement":"높음","student_id":4},{"session_date":"2026-09-30 18:30:00","student_name":"정현우","subject_name":"수학","session_type":"기초다지기","duration_min":40,"engagement":"보통","student_id":5},{"session_date":"2026-09-29 18:00:00","student_name":"박지후","subject_name":"수학","session_type":"기초다지기","duration_min":40,"engagement":"보통","student_id":3}]},"wa_weak":{"rows":[{"student_name":"정현우","subject_name":"수학","unit_name":"실수와 그 계산","progress_pct":30,"achievement":null,"student_id":5},{"student_name":"박지후","subject_name":"수학","unit_name":"실수와 그 계산","progress_pct":40,"achievement":null,"student_id":3},{"student_name":"최수아","subject_name":"영어","unit_name":"관계대명사","progress_pct":55,"achievement":null,"student_id":4},{"student_name":"김민준","subject_name":"수학","unit_name":"이차방정식","progress_pct":65,"achievement":null,"student_id":1},{"student_name":"이서연","subject_name":"수학","unit_name":"이차방정식","progress_pct":80,"achievement":null,"student_id":2}]}};
+window.__SEARCH__ = {"students":[{"id":1,"name":"김민준","student_code":"S2026001","school":"서울중학교","grade":"중3"},{"id":2,"name":"이서연","student_code":"S2026002","school":"한국중학교","grade":"중3"},{"id":3,"name":"박지후","student_code":"S2026003","school":"대한중학교","grade":"중2"},{"id":4,"name":"최수아","student_code":"S2026004","school":"서울중학교","grade":"중3"},{"id":5,"name":"정현우","student_code":"S2026005","school":"한국중학교","grade":"중3"}],"orgs":[{"id":1,"name":"서울중학교","org_type":"학교","region":"서울"},{"id":2,"name":"한국중학교","org_type":"학교","region":"서울"},{"id":3,"name":"대한중학교","org_type":"학교","region":"서울"},{"id":4,"name":"강남구 진로진학센터","org_type":"지자체 진로진학센터","region":"서울 강남구"},{"id":5,"name":"정현우 가정 (개인 컨설팅)","org_type":"개인 컨설팅","region":"경기 성남"}],"tests":[{"id":1,"test_date":"2026-09-12","test_type":"MLST2","test_name":"MLST-2 학습전략검사","summary":null,"overall_label":"정체형","student_name":"김민준"},{"id":2,"test_date":"2026-09-10","test_type":"MLST2","test_name":"MLST-2 학습전략검사","summary":null,"overall_label":"주도형","student_name":"이서연"},{"id":3,"test_date":"2026-09-15","test_type":"MLST2","test_name":"MLST-2 학습전략검사","summary":null,"overall_label":"정체형","student_name":"박지후"},{"id":4,"test_date":"2026-09-19","test_type":"MCDT","test_name":"MCDT 다차원 진로진단검사","summary":null,"overall_label":"신중형","student_name":"김민준"},{"id":5,"test_date":"2026-09-22","test_type":"MCDT","test_name":"MCDT 다차원 진로진단검사","summary":null,"overall_label":"미결정","student_name":"정현우"},{"id":6,"test_date":"2026-09-17","test_type":"NEO","test_name":"NEO 성격검사(청소년용)","summary":null,"overall_label":"안정·성실형","student_name":"최수아"}],"counsels":[{"id":1,"session_date":"2026-09-20","topic":"진로","content":"MLST-2 결과 LQ 88(정체형). 회피동기와 시험불안이 높고 시간관리·집중전략이 약함. 특목고 목표 동기를 활용해 주간 시간표를 함께 설계함.","student_name":"김민준"},{"id":2,"session_date":"2026-09-16","topic":"학습","content":"MLST-2 LQ 118(주도형). 전략 전반이 우수하나 경쟁동기 의존 경향. 내신 최상위 유지 전략과 심화 탐구 병행을 논의.","student_name":"이서연"},{"id":3,"session_date":"2026-09-22","topic":"학습","content":"MLST-2 LQ 74(정체형). 효능감·학습동기 저하, 우울·짜증 정서 높음. 수학 기초 결손이 주 원인으로 보여 성취 경험을 쌓는 방향으로 접근.","student_name":"박지후"},{"id":4,"session_date":"2026-09-23","topic":"진로","content":"MCDT 진로결정지수 46(미결정). 직업이해·의사결정기술이 낮고 신념·정서 장벽이 높음. 다양한 직업 탐색 경험과 함께 결정을 서두르지 않도록 안내.","student_name":"정현우"},{"id":5,"session_date":"2026-09-18","topic":"진로","content":"NEO 안정·성실형. 성실성·친화성·개방성이 높아 어학·인문 분야 적합. 영어 강점을 살린 진로 설계와 인증시험 준비를 논의.","student_name":"최수아"}]};
+</script>
+<script>
+/* =====================================================================
+   오프라인 단독 실행 어댑터 (Standalone Adapter)
+   - 이 파일은 서버·DB 없이 브라우저에서 단독 실행하기 위한 shim 입니다.
+   - window.__DATA__ 에 내장된 스냅샷으로 등록 쿼리 결과를 대신 돌려줍니다.
+   - 쓰기(등록/수정)는 이 브라우저의 localStorage 에만 저장됩니다.
+   ===================================================================== */
+(function () {
+  'use strict';
+  var DATA = window.__DATA__ || {};
+  var LS_KEY = 'daum_dashboard_state_v1';
+  var SNAPSHOT_AT = (window.__SNAPSHOT__ && window.__SNAPSHOT__.generated_at) || '';
+
+  function num(v){ var n = Number(v); return isFinite(n) ? n : null; }
+  function today(){
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+  function iso10(v){ return v == null ? null : String(v).slice(0,10); }
+
+  /* ---------- localStorage 복원 ---------- */
+  try {
+    var raw = localStorage.getItem(LS_KEY);
+    if (raw) {
+      var saved = JSON.parse(raw);
+      if (saved && saved.v === 1 && saved.data) {
+        for (var kk in saved.data) DATA[kk] = saved.data[kk];
+      }
+    }
+  } catch (e) { /* file:// 등에서 차단될 수 있음 — 무시하고 내장 스냅샷 사용 */ }
+
+  function persist(){
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ v:1, at:new Date().toISOString(), data:DATA })); }
+    catch (e) { /* 저장 불가 환경: 세션 내 메모리 상태만 유지 */ }
+  }
+  window.__resetStandalone = function(){
+    try { localStorage.removeItem(LS_KEY); } catch (e) {}
+    location.reload();
+  };
+
+  /* ---------- 쿼리 키 ---------- */
+  function keyOf(name, params){
+    if (!params) return name;
+    var ks = Object.keys(params).filter(function(k){ return params[k] !== undefined; });
+    if (!ks.length) return name;
+    ks.sort();
+    return name + '#' + ks.map(function(k){ return k + '=' + params[k]; }).join('&');
+  }
+
+  /* ---------- 파생 상태 (쓰기 대상) ---------- */
+  var STUDENTS = {}, NAME2SID = {};
+  ((DATA['wa_students_pick'] || {}).rows || []).forEach(function(r){ STUDENTS[r.id] = r; NAME2SID[r.name] = r.id; });
+
+  var REPORTS = {};
+  Object.keys(DATA).forEach(function(k){
+    var m = /^wa_report_one#rid=(\d+)$/.exec(k);
+    if (m) { var r = (DATA[k].rows || [])[0]; if (r) REPORTS[r.id] = Object.assign({}, r); }
+  });
+
+  var TARGETS = {}, STEPS = {}, COUNSELS = [];
+  var TORD = 0, SORD = 0;
+  Object.keys(DATA).forEach(function(k){
+    var m1 = /^wa_stu_roadmap#sid=(\d+)$/.exec(k);
+    if (m1) {
+      var sid1 = +m1[1];
+      ((DATA[k] || {}).rows || []).forEach(function(r){
+        if (!TARGETS[r.target_id]) { r.sid = sid1; r.__ord = TORD++; TARGETS[r.target_id] = r; }
+      });
+    }
+    var m2 = /^wa_stu_roadmap_steps#sid=(\d+)$/.exec(k);
+    if (m2) {
+      var sid2 = +m2[1];
+      ((DATA[k] || {}).rows || []).forEach(function(r){
+        if (!STEPS[r.id]) { r.sid = sid2; r.__ord = SORD++; STEPS[r.id] = r; }
+      });
+    }
+    var m3 = /^wa_stu_counsel#sid=(\d+)$/.exec(k);
+    if (m3) {
+      var sid3 = +m3[1];
+      ((DATA[k] || {}).rows || []).forEach(function(r){
+        COUNSELS.push({ sid:sid3, session_date:r.session_date, counselor:r.counselor, topic:r.topic,
+          content:r.content_preview || '', prescription:r.prescription_preview || '',
+          next_date:r.next_date, status:r.status });
+      });
+    }
+  });
+
+  var CLASSES = {};
+  ((DATA['wa_schedule'] || {}).rows || []).forEach(function(r){ CLASSES[r.cs_id] = r; });
+  var HOMEWORK = {};
+  ((DATA['wa_homework'] || {}).rows || []).forEach(function(r){ HOMEWORK[r.h_id] = r; });
+
+  /* ---------- 재생성 ---------- */
+  function period(start, end, type){
+    if (start && end) return iso10(start) + ' ~ ' + iso10(end).slice(5);
+    return type || '';
+  }
+  function rebuildReports(){
+    var all = Object.keys(REPORTS).map(function(id){ return REPORTS[id]; });
+    var byCreated = function(a,b){ return String(b.created_at || '').localeCompare(String(a.created_at || '')); };
+
+    Object.keys(DATA).forEach(function(k){
+      var m = /^wa_stu_reports#sid=(\d+)$/.exec(k);
+      if (!m) return;
+      var sid = +m[1];
+      DATA[k] = { rows: all.filter(function(r){ return +r.student_id === sid; }).sort(byCreated).slice(0,20)
+        .map(function(r){ return { id:r.id, student_id:r.student_id,
+          report_period_start:r.report_period_start, report_period_end:r.report_period_end,
+          report_type:r.report_type, status:r.status, sent_date:r.sent_date || null, created_at:r.created_at }; }) };
+    });
+
+    if (DATA['wa_reports']) DATA['wa_reports'] = { rows: all.sort(byCreated).slice(0,100)
+      .map(function(r){ return { id:r.id, student_id:r.student_id,
+        report_period:period(r.report_period_start, r.report_period_end, r.report_type),
+        student_name:r.student_name, created_at:r.created_at, sent_at:r.sent_date || null, status:r.status }; }) };
+
+    if (DATA['wa_home_drafts']) DATA['wa_home_drafts'] = { rows: all.filter(function(r){ return !r.sent_date; })
+      .sort(byCreated).slice(0,20)
+      .map(function(r){ return { report_period:period(r.report_period_start, r.report_period_end, r.report_type),
+        student_name:r.student_name, created_at:r.created_at, status:r.status }; }) };
+
+    all.forEach(function(r){ DATA['wa_report_one#rid=' + r.id] = { rows:[r] }; });
+
+    var sm = (DATA['wa_summary'] || {}).rows && DATA['wa_summary'].rows[0];
+    if (sm) sm.unsent = all.filter(function(r){ return !r.sent_date; }).length;
+  }
+
+  function rebuildRoadmaps(){
+    var tlist = Object.keys(TARGETS).map(function(id){ return TARGETS[id]; });
+    var slist = Object.keys(STEPS).map(function(id){ return STEPS[id]; });
+
+    Object.keys(DATA).forEach(function(k){
+      var m = /^wa_stu_roadmap#sid=(\d+)$/.exec(k);
+      if (!m) return;
+      var sid = +m[1];
+      DATA[k] = { rows: tlist.filter(function(t){ return +t.sid === sid; }).sort(function(a,b){ return a.__ord - b.__ord; })
+        .map(function(t){
+          var st = slist.filter(function(s){ return +s.target_id === +t.target_id; });
+          return { target_id:t.target_id, university:t.university, department:t.department,
+            admission_type:t.admission_type, target_year:t.target_year, required_grade:t.required_grade,
+            priority:t.priority, target_status:t.target_status,
+            step_count:st.length, done_steps:st.filter(function(s){ return s.status === '완료'; }).length };
+        }) };
+    });
+
+    Object.keys(DATA).forEach(function(k){
+      var m = /^wa_stu_roadmap_steps#sid=(\d+)$/.exec(k);
+      if (!m) return;
+      var sid = +m[1];
+      DATA[k] = { rows: slist.filter(function(s){ return +s.sid === sid; }).sort(function(a,b){ return a.__ord - b.__ord; })
+        .map(function(s){ return { id:s.id, target_id:s.target_id, university:s.university, department:s.department,
+          school_year:s.school_year, semester:s.semester, category:s.category, title:s.title,
+          target_date:s.target_date, status:s.status }; }) };
+    });
+
+    if (DATA['wa_roadmap']) {
+      var rows = slist.map(function(s){
+        var t = TARGETS[s.target_id]; if (!t) return null;
+        return { student_name:(STUDENTS[t.sid] || {}).name || '',
+          target_name: t.university + (t.department ? ' · ' + t.department : ''),
+          step_order: s.id,
+          step_name: (s.category ? s.category + ' · ' : '') + s.title,
+          due_period: s.school_year ? (s.school_year + '학년 ' + s.semester + '학기') : (s.target_date || ''),
+          status: s.status, __pri: t.priority == null ? 9999 : t.priority, __t: s.target_date || '' };
+      }).filter(Boolean);
+      rows.sort(function(a,b){
+        return String(a.student_name).localeCompare(String(b.student_name)) || (a.__pri - b.__pri)
+          || String(a.__t).localeCompare(String(b.__t)) || (a.step_order - b.step_order);
+      });
+      DATA['wa_roadmap'] = { rows: rows.slice(0,100).map(function(r){ delete r.__pri; delete r.__t; return r; }) };
+    }
+  }
+
+  function rebuildCounsels(){
+    Object.keys(DATA).forEach(function(k){
+      var m = /^wa_stu_counsel#sid=(\d+)$/.exec(k);
+      if (!m) return;
+      var sid = +m[1];
+      DATA[k] = { rows: COUNSELS.filter(function(c){ return +c.sid === sid; })
+        .sort(function(a,b){ return String(b.session_date || '').localeCompare(String(a.session_date || '')); })
+        .slice(0,10)
+        .map(function(c){ return { session_date:c.session_date, counselor:c.counselor, topic:c.topic,
+          content_preview:String(c.content || '').slice(0,140), prescription_preview:String(c.prescription || '').slice(0,120),
+          next_date:c.next_date, status:c.status }; }) };
+    });
+    if (DATA['wa_counsel']) DATA['wa_counsel'] = { rows: COUNSELS
+      .sort(function(a,b){ return String(b.session_date || '').localeCompare(String(a.session_date || '')); })
+      .slice(0,100)
+      .map(function(c){ return { session_date:c.session_date, student_name:(STUDENTS[c.sid] || {}).name || '',
+        session_type:c.topic, counselor_name:c.counselor, summary:String(c.content || '').slice(0,80) }; }) };
+  }
+
+  function rebuildStudentRecent(sid){
+    var k = 'wa_stu_recent#sid=' + sid;
+    if (!DATA[k]) return;
+    var cls = Object.keys(CLASSES).map(function(id){ return CLASSES[id]; })
+      .filter(function(c){ return +c.student_id === sid; })
+      .map(function(c){ return { kind:'수업', d:c.class_date, subject:c.subject_name, title:c.topic || '',
+        status:c.attendance || c.status, score:null }; })
+      .sort(function(a,b){ return String(b.d || '').localeCompare(String(a.d || '')); }).slice(0,10);
+    var hw = Object.keys(HOMEWORK).map(function(id){ return HOMEWORK[id]; })
+      .filter(function(h){ return +h.student_id === sid; })
+      .map(function(h){ return { kind:'숙제', d:h.due_date, subject:h.subject_name, title:h.title,
+        status:h.status, score:h.score }; })
+      .sort(function(a,b){ return String(b.d || '').localeCompare(String(a.d || '')); }).slice(0,10);
+    DATA[k] = { rows: cls.concat(hw).sort(function(a,b){ return String(b.d || '').localeCompare(String(a.d || '')); }).slice(0,20) };
+  }
+
+  /* ---------- 검색 (wa_search 대체) ---------- */
+  function doSearch(kw){
+    var q = kw.toLowerCase();
+    var hit = function(v){ return v != null && String(v).toLowerCase().indexOf(q) >= 0; };
+    var C = window.__SEARCH__ || {};
+    var out = [];
+    (C.students || []).forEach(function(s){
+      if (hit(s.name) || hit(s.student_code) || hit(s.school))
+        out.push({ kind:'student', ref_id:String(s.id), title:s.name,
+          subtitle:[s.student_code, s.school, s.grade].filter(Boolean).join(' · '), as_of:null });
+    });
+    (C.orgs || []).forEach(function(o){
+      if (hit(o.name) || hit(o.region))
+        out.push({ kind:'org', ref_id:String(o.id), title:o.name,
+          subtitle:[o.org_type, o.region].filter(Boolean).join(' · '), as_of:null });
+    });
+    (C.tests || []).forEach(function(t){
+      if (hit(t.test_type) || hit(t.test_name) || hit(t.summary) || hit(t.student_name))
+        out.push({ kind:'test', ref_id:String(t.id), title:(t.student_name || '') + ' · ' + (t.test_type || ''),
+          subtitle:(t.overall_label || String(t.summary || '').slice(0,40)), as_of:t.test_date });
+    });
+    (C.counsels || []).forEach(function(c){
+      if (hit(c.content) || hit(c.topic) || hit(c.student_name))
+        out.push({ kind:'counsel', ref_id:String(c.id), title:(c.student_name || '') + ' · ' + (c.topic || '상담'),
+          subtitle:String(c.content || '').slice(0,50), as_of:c.session_date });
+    });
+    out.sort(function(a,b){
+      if (a.kind !== b.kind) return a.kind < b.kind ? -1 : 1;
+      var av = a.as_of || '', bv = b.as_of || '';
+      if (av === bv) return 0;
+      if (!av) return 1;
+      if (!bv) return -1;
+      return av < bv ? 1 : -1;
+    });
+    return out.slice(0,30);
+  }
+
+  /* ---------- 쓰기 ---------- */
+  var W = {
+    wa_m_step_toggle: function(p){
+      var id = num(p.sid);
+      Object.keys(STEPS).forEach(function(k){ if (num(STEPS[k].id) === id) STEPS[k].status = p.status; });
+      rebuildRoadmaps();
+    },
+    wa_m_report_send: function(p){
+      var r = REPORTS[num(p.rid)];
+      if (r) { r.sent_date = today(); r.status = '발송'; }
+      rebuildReports();
+    },
+    wa_m_report_update: function(p){
+      var r = REPORTS[num(p.rid)]; if (!r) return;
+      if (p.start) r.report_period_start = p.start;
+      if (p.end) r.report_period_end = p.end;
+      if (p.rtype) r.report_type = p.rtype;
+      r.overall_progress = p.overall || null; r.strengths = p.strengths || null;
+      r.areas_for_improvement = p.improve || null; r.teacher_comments = p.comments || null;
+      r.next_period_goals = p.goals || null;
+      rebuildReports();
+    },
+    wa_m_report_add: function(p){
+      var sid = num(p.sid);
+      var id = 0;
+      Object.keys(REPORTS).forEach(function(k){ id = Math.max(id, Number(k)); });
+      REPORTS[id + 1] = { id:id + 1, student_id:sid, student_name:(STUDENTS[sid] || {}).name || '',
+        report_period_start:p.start, report_period_end:p.end, report_type:p.rtype,
+        overall_progress:p.overall || null, strengths:p.strengths || null,
+        areas_for_improvement:p.improve || null, teacher_comments:p.comments || null,
+        next_period_goals:p.goals || null, status:'초안', sent_date:null, created_at:new Date().toISOString() };
+      rebuildReports();
+    },
+    wa_m_target_add: function(p){
+      var sid = num(p.sid), id = 0;
+      Object.keys(TARGETS).forEach(function(k){ id = Math.max(id, Number(k)); });
+      TARGETS[id + 1] = { sid:sid, target_id:id + 1, university:p.university, department:p.department || '',
+        admission_type:p.admission_type || '', target_year:p.target_year ? Number(p.target_year) : null,
+        required_grade:p.required_grade || null, priority:p.priority ? Number(p.priority) : 3,
+        target_status:'검토', __ord:1e6 + id };
+      rebuildRoadmaps();
+    },
+    wa_m_counsel_add: function(p){
+      var sid = num(p.sid);
+      COUNSELS.push({ sid:sid, session_date:p.d, counselor:p.counselor, topic:p.topic,
+        content:p.content || '', prescription:p.prescription || '',
+        next_date:p.next_date || null, status:'완료' });
+      rebuildCounsels();
+      var sm = (DATA['wa_summary'] || {}).rows && DATA['wa_summary'].rows[0];
+      if (sm) sm.counsel = (Number(sm.counsel) || 0) + 1;
+    },
+    wa_m_cls_att: function(p){
+      var c = CLASSES[num(p.cid)]; if (!c) return;
+      c.attendance = p.attendance; c.status = p.attendance;
+      ((DATA['wa_home_recent_classes'] || {}).rows || []).forEach(function(r){
+        if (r.class_date === c.class_date && r.start_time === c.start_time && r.student_name === c.student_name)
+          r.status = c.status;
+      });
+      if (c.student_id != null) rebuildStudentRecent(num(c.student_id));
+    },
+    wa_m_hw_score: function(p){
+      var h = HOMEWORK[num(p.hid)]; if (!h) return;
+      h.status = p.status; h.score = (p.score == null ? '' : p.score);
+      if (h.student_id != null) rebuildStudentRecent(num(h.student_id));
+    }
+  };
+
+  /* ---------- Bridge 대체 ---------- */
+  window.agentdb = {
+    executeQuery: async function(name, params){
+      params = params || {};
+      if (name === 'wa_search') return { rows: doSearch(String(params.kw || '')) };
+      var k = keyOf(name, params);
+      if (DATA[k]) return { rows: DATA[k].rows || [] };
+      if (W[name]) { W[name](params); persist(); return { rows: [] }; }
+      if (DATA[name]) return { rows: DATA[name].rows || [] };
+      throw new Error('오프라인 모드에 "' + name + '" 데이터가 없습니다');
+    },
+    getSchema: async function(){ return { tables: [] }; },
+    getAppInfo: async function(){
+      return { id:'standalone', name:'다움 통합 웹앱 (단독 실행)', scope:'workspace' };
+    },
+    print: function(){ window.print(); },
+    downloadPdf: function(){ window.print(); }
+  };
+
+  /* ---------- 배너 ---------- */
+  window.__standaloneInfo = { snapshot_at: SNAPSHOT_AT };
+
+  window.addEventListener('DOMContentLoaded', function(){
+    var rst = document.getElementById('sa-reset');
+    if (rst) rst.onclick = function(){
+      if (confirm('내장 스냅샷 상태로 되돌립니다. 이 브라우저에 저장된 변경사항이 삭제됩니다. 계속할까요?'))
+        window.__resetStandalone();
+    };
+  });
+})();
+
+</script>
+<script>
+// 라우트 레지스트리 — 핵심 8개 1단 + 나머지는 '더 보기'로 접기.
+// kind: 'home' | 'student_search' | 'student_hub' | 'prep' | 'orgs_list' | 'org_detail'
+//     | 'daily' | 'tests_reports' | 'rx_paths' | 'settings' | 'table' | 'intro'
+window.CORE_NAV = [
+  { id: 'home',     label: '홈',               icon: '🏠' },
+  { id: 'students', label: '학생 찾기',         icon: '👥' },
+  { id: 'orgs',     label: '기관 현황',         icon: '🏫' },
+  { id: 'prep',     label: '상담 준비',         icon: '📋' },
+  { id: 'daily',    label: '오늘 처리',         icon: '📅' },
+  { id: 'tests',    label: '검사·리포트',       icon: '🧭' },
+  { id: 'rx',       label: '처방·경로',         icon: '💊' },
+  { id: 'settings', label: '설정·입력',         icon: '⚙️' },
+];
+
+// '더 보기' 아래 접히는 상세 화면 — 기존 전용 화면으로의 바로가기 모음
+window.MORE_NAV = [
+  { id: 'schedule',    label: '수업 캘린더(전체)' },
+  { id: 'homework',    label: '숙제(전체)' },
+  { id: 'overview',    label: '학생 전체 목록' },
+  { id: 'progress',    label: '진도·성취(전체)' },
+  { id: 'attendance',  label: '출결·AI 세션' },
+  { id: 'contents',    label: '학습 콘텐츠' },
+  { id: 'books',       label: '교재' },
+  { id: 'qbank',       label: '문제은행' },
+  { id: 'prescription',label: '학습 처방(이력)' },
+  { id: 'paths',       label: '학습 경로(전체)' },
+  { id: 'diagnosis',   label: '취약 단원 진단(전체)' },
+  { id: 'gpa',         label: '내신 등급 계산기' },
+  { id: 'roadmap',     label: '대입 로드맵(전체)' },
+  { id: 'rx_res',      label: '학습 처방 자료실' },
+  { id: 'counsel',     label: '상담 기록(전체)' },
+  { id: 'parent',      label: '학부모 리포트(전체)' },
+  { id: 'onboarding',  label: '기관 온보딩 가이드' },
+  { id: 'guide',       label: '프로그램 소개' },
+];
+
+// 각 '더 보기' 라우트의 쿼리/컬럼 매핑 (조회 전용 테이블 뷰)
+window.TABLE_ROUTES = {
+  schedule:    { q:'wa_schedule',     label:'수업 캘린더', hint:'최근 30일 ~ 7일 뒤 수업', cols:[
+    {k:'class_date',h:'일자',fmt:'date'},{k:'start_time',h:'시간'},{k:'student_name',h:'학생',link:'stu'},
+    {k:'subject_name',h:'과목'},{k:'topic',h:'주제'},{k:'status',h:'상태',fmt:'pill'}]},
+  homework:    { q:'wa_homework',     label:'숙제',       hint:'최근 숙제 배부·제출', cols:[
+    {k:'due_date',h:'마감',fmt:'date'},{k:'student_name',h:'학생',link:'stu'},{k:'subject_name',h:'과목'},
+    {k:'title',h:'제목'},{k:'status',h:'상태',fmt:'pill'},{k:'score',h:'점수',fmt:'num'}]},
+  overview:    { q:'wa_students',     label:'학생 전체 목록', hint:'학생 이름을 클릭하면 요약 페이지로', linkMode:'stu', cols:[
+    {k:'name',h:'이름',link:'stu'},{k:'student_code',h:'학번'},{k:'grade',h:'학년'},
+    {k:'school_name',h:'학교'},{k:'org_name',h:'소속 기관'},{k:'learning_style',h:'학습 스타일'}]},
+  progress:    { q:'wa_progress',     label:'진도·성취',  hint:'단원별 진도율·성취', cols:[
+    {k:'student_name',h:'학생',link:'stu'},{k:'subject_name',h:'과목'},{k:'unit_name',h:'단원'},
+    {k:'progress_pct',h:'진도 %',fmt:'num'},{k:'achievement',h:'성취',fmt:'num'},{k:'last_updated',h:'최근',fmt:'date'}]},
+  attendance:  { q:'wa_tutor',        label:'출결·AI 세션', hint:'AI 튜터 세션', cols:[
+    {k:'session_date',h:'일자',fmt:'date'},{k:'student_name',h:'학생',link:'stu'},{k:'subject_name',h:'과목'},
+    {k:'session_type',h:'유형'},{k:'duration_min',h:'분',fmt:'num'},{k:'engagement',h:'참여도'}]},
+  contents:    { q:'wa_contents',     label:'학습 콘텐츠', hint:'영상·문제·설명', cols:[
+    {k:'title',h:'제목'},{k:'subject_name',h:'과목'},{k:'content_type',h:'유형'},
+    {k:'difficulty',h:'난이도'},{k:'duration_min',h:'시간(분)',fmt:'num'}]},
+  books:       { q:'wa_books',        label:'교재',       hint:'출판사·대상 학년', cols:[
+    {k:'title',h:'교재'},{k:'publisher',h:'출판사'},{k:'subject_name',h:'과목'},
+    {k:'target_grade',h:'대상'},{k:'difficulty',h:'난이도'}]},
+  qbank:       { q:'wa_qbank',        label:'문제은행',   hint:'과목·단원·난이도', cols:[
+    {k:'subject_name',h:'과목'},{k:'unit_name',h:'단원'},{k:'question_type',h:'유형'},
+    {k:'difficulty',h:'난이도'},{k:'usage_count',h:'사용',fmt:'num'}]},
+  prescription:{ q:'wa_prescription', label:'학습 처방 이력', hint:'상담 세션에서 발부된 처방', cols:[
+    {k:'student_name',h:'학생',link:'stu'},{k:'subject_name',h:'과목'},
+    {k:'issued_date',h:'발부일',fmt:'date'},{k:'focus_area',h:'중점'},{k:'status',h:'상태',fmt:'pill'}]},
+  paths:       { q:'wa_paths',        label:'학습 경로(전체)', hint:'경로별 단계 수', cols:[
+    {k:'student_name',h:'학생',link:'stu'},{k:'subject_name',h:'과목'},{k:'path_name',h:'경로'},
+    {k:'step_count',h:'단계',fmt:'num'},{k:'status',h:'상태',fmt:'pill'}]},
+  diagnosis:   { q:'wa_weak',         label:'취약 단원(전체)', hint:'진도<70 또는 성취<70', cols:[
+    {k:'student_name',h:'학생',link:'stu'},{k:'subject_name',h:'과목'},{k:'unit_name',h:'단원'},
+    {k:'progress_pct',h:'진도 %',fmt:'num'},{k:'achievement',h:'성취',fmt:'num'}]},
+  gpa:         { q:'wa_grades',       label:'내신 등급',  hint:'학기별 성적·등급', cols:[
+    {k:'student_name',h:'학생',link:'stu'},{k:'school_year',h:'학년도'},{k:'semester',h:'학기'},
+    {k:'subject_name',h:'과목'},{k:'grade_level',h:'등급',fmt:'num'}]},
+  roadmap:     { q:'wa_roadmap',      label:'대입 로드맵(전체)', hint:'학생×목표×단계', cols:[
+    {k:'student_name',h:'학생',link:'stu'},{k:'target_name',h:'목표'},{k:'step_order',h:'#',fmt:'num'},
+    {k:'step_name',h:'단계'},{k:'due_period',h:'시기'},{k:'status',h:'상태',fmt:'pill'}]},
+  rx_res:      { q:'wa_rx_res',       label:'학습 처방 자료실', hint:'교재·영상·문제', cols:[
+    {k:'title',h:'자료'},{k:'subject_name',h:'과목'},{k:'resource_type',h:'유형'},{k:'target_level',h:'대상'}]},
+  counsel:     { q:'wa_counsel',      label:'상담 기록(전체)', hint:'진학/학습 상담 세션', cols:[
+    {k:'session_date',h:'일자',fmt:'date'},{k:'student_name',h:'학생',link:'stu'},
+    {k:'session_type',h:'유형'},{k:'counselor_name',h:'상담사'},{k:'summary',h:'요약'}]},
+  parent:      { q:'wa_reports',      label:'학부모 리포트(전체)', hint:'발행·발송 상태', cols:[
+    {k:'report_period',h:'기간'},{k:'student_name',h:'학생',link:'stu'},
+    {k:'created_at',h:'작성일',fmt:'date'},{k:'sent_at',h:'발송일',fmt:'date'},{k:'status',h:'상태',fmt:'pill'}]},
+  onboarding:  { q:'wa_onboard',      label:'기관 온보딩', hint:'기관별 8단계 진행률', cols:[
+    {k:'name',h:'기관'},{k:'org_type',h:'유형'},{k:'student_count',h:'학생',fmt:'num'},
+    {k:'done_steps',h:'완료 단계',fmt:'num'},{k:'progress_pct',h:'진행률 %',fmt:'num'}]},
+  guide:       { kind:'intro' },
+};
+
+</script>
+<script>
+// 다움 통합 웹앱 — 메인 셸, 라우팅, 전역 검색, 학생 요약, 인라인 편집, 모바일 햄버거.
+(function () {
+  const CORE = window.CORE_NAV, MORE = window.MORE_NAV, T = window.TABLE_ROUTES;
+  const db = window.agentdb;
+
+  // ---------- 유틸 ----------
+  function esc(v){const d=document.createElement('div');d.textContent=v==null?'':String(v);return d.innerHTML;}
+  function fmtDate(v){if(!v)return'';return String(v).slice(0,10);}
+  function fmtNum(v){if(v==null||v==='')return'';const n=Number(v);if(!isFinite(n))return esc(v);return n.toLocaleString('ko-KR');}
+  function pillClass(v){const s=String(v||'');
+    if(/완료|발송|운영중|정상|진행|확정|제출|출석/i.test(s))return'pill pill-ok';
+    if(/대기|예정|미발송|초안|준비|보류|지각|배부/i.test(s))return'pill pill-warn';
+    if(/실패|지연|미제출|경고|취소|중단|종료|결석/i.test(s))return'pill pill-danger';
+    return'pill';}
+  function updateTs(){const el=document.getElementById('ts');if(!el)return;
+    el.textContent='기준 '+new Date().toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});}
+  function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
+
+  // ---------- 사이드바 ----------
+  function renderNav(){
+    const nav = document.getElementById('nav');
+    nav.replaceChildren();
+    const lab = document.createElement('div');lab.className='nav-section-label';lab.textContent='핵심 메뉴';nav.append(lab);
+    CORE.forEach(r=>{
+      const a=document.createElement('a');a.className='nav-item';a.href='#'+r.id;a.dataset.id=r.id;
+      a.innerHTML='<span class="ic">'+esc(r.icon)+'</span><span>'+esc(r.label)+'</span>';
+      nav.append(a);
+    });
+    const more = document.createElement('div');more.className='nav-more';more.id='moreToggle';
+    more.innerHTML='<span class="caret">▸</span> 더 보기 ('+MORE.length+')';
+    nav.append(more);
+    const moreList = document.createElement('div');moreList.id='moreList';moreList.style.display='none';
+    MORE.forEach(r=>{
+      const a=document.createElement('a');a.className='nav-item';a.href='#'+r.id;a.dataset.id=r.id;
+      a.innerHTML='<span class="ic">·</span><span style="font-size:12px">'+esc(r.label)+'</span>';
+      moreList.append(a);
+    });
+    nav.append(moreList);
+    more.onclick = ()=>{const open = moreList.style.display!=='none';moreList.style.display=open?'none':'block';more.classList.toggle('open',!open);};
+    // 모바일 메뉴 선택 시 닫기
+    nav.addEventListener('click',(e)=>{if(e.target.closest('.nav-item')){document.getElementById('side').classList.remove('open');document.getElementById('mobile-mask').classList.remove('show');}});
+  }
+  function setActive(id){
+    document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.dataset.id===id));
+  }
+
+  // ---------- 라우팅 ----------
+  function parseHash(){
+    const h = (location.hash||'#home').replace(/^#/,'');
+    const [id, arg] = h.split('/');
+    return {id, arg};
+  }
+  function go(path){if('#'+path!==location.hash)location.hash=path;else render();}
+  async function render(){
+    const {id, arg} = parseHash();
+    const root = document.getElementById('route');
+    const navId = (id==='stu'||id==='org') ? (id==='stu'?'students':'orgs') : id;
+    setActive(navId);
+    root.innerHTML = '<div class="skl" style="width:40%; margin-bottom:10px"></div><div class="skl" style="width:85%; margin-bottom:6px"></div><div class="skl" style="width:70%"></div>';
+    try{
+      if(id==='home')         return await renderHome(root);
+      if(id==='students')     return await renderStudentsPick(root);
+      if(id==='stu')          return await renderStudentHub(root, parseInt(arg,10));
+      if(id==='orgs')         return await renderOrgsList(root);
+      if(id==='org')          return await renderOrgDetail(root, parseInt(arg,10));
+      if(id==='prep')         return await renderPrep(root, parseInt(arg,10));
+      if(id==='daily')        return await renderDaily(root);
+      if(id==='tests')        return await renderTestsReports(root);
+      if(id==='rx')           return await renderRxPaths(root);
+      if(id==='settings')     return renderSettings(root);
+      if(id==='guide')        return renderGuide(root);
+      if(T[id])               return await renderTable(root, id);
+      root.innerHTML = '<div class="err-note">알 수 없는 화면: '+esc(id)+'</div>';
+    }catch(e){
+      console.error(e);
+      root.innerHTML = '<div class="err-note">오류: '+esc(e.message||e)+'</div>';
+    }
+    updateTs();
+  }
+
+  // ---------- 홈 ----------
+  async function renderHome(root){
+    root.innerHTML =
+      '<div class="hero"><div class="micro">홈</div><h1>전체 운영 현황</h1><p>학생·기관·일정·관리 필요·리포트 요약.</p></div>'+
+      '<div class="kpis" id="kpis"></div>'+
+      '<div class="panels two"><div class="panel" id="pa"></div><div class="panel" id="pb"></div></div>'+
+      '<div class="panels two" style="margin-top:14px"><div class="panel" id="pc"></div><div class="panel" id="pd"></div></div>';
+
+    async function stage(fn){try{await fn();}catch(e){console.error(e);}await new Promise(r=>setTimeout(r,0));}
+
+    await stage(async()=>{
+      const r = await db.executeQuery('wa_summary',{});
+      const s = (r.rows&&r.rows[0])||{};
+      document.getElementById('kpis').innerHTML = [
+        ['관리 중 학생',s.students],['등록 기관',s.orgs],['이번 달 수업',s.classes_month],
+        ['진단 검사',s.tests],['상담 기록',s.counsel],['미발송 리포트',s.unsent]
+      ].map(x=>'<div class="kpi"><div class="k">'+esc(x[0])+'</div><div class="v">'+esc(fmtNum(x[1]))+'</div></div>').join('');
+    });
+
+    await stage(async()=>{
+      const r = await db.executeQuery('wa_home_recent_classes',{});
+      document.getElementById('pa').innerHTML =
+        '<div class="ph"><div class="pt">최근·다가오는 수업</div><div class="pa">일자 가까운 순 10건</div></div>'+
+        tableHtml(r.rows,[{k:'class_date',h:'일자',fmt:'date'},{k:'start_time',h:'시간'},{k:'student_name',h:'학생',link:'stu'},
+          {k:'subject_name',h:'과목'},{k:'status',h:'상태',fmt:'pill'}]);
+    });
+
+    await stage(async()=>{
+      const r = await db.executeQuery('wa_home_attention',{});
+      document.getElementById('pb').innerHTML =
+        '<div class="ph"><div class="pt">관리 필요</div><div class="pa">진도<70%</div></div>'+
+        tableHtml(r.rows,[{k:'student_name',h:'학생',link:'stu'},{k:'subject_name',h:'과목'},
+          {k:'unit_name',h:'단원'},{k:'progress_pct',h:'진도 %',fmt:'num'}]);
+    });
+
+    await stage(async()=>{
+      const r = await db.executeQuery('wa_home_drafts',{});
+      document.getElementById('pc').innerHTML =
+        '<div class="ph"><div class="pt">미발송 리포트</div><div class="pa">학부모 리포트</div></div>'+
+        tableHtml(r.rows,[{k:'report_period',h:'기간'},{k:'student_name',h:'학생',link:'stu'},
+          {k:'created_at',h:'작성일',fmt:'date'},{k:'status',h:'상태',fmt:'pill'}]);
+    });
+
+    await stage(async()=>{
+      const r = await db.executeQuery('wa_home_orgs',{});
+      document.getElementById('pd').innerHTML =
+        '<div class="ph"><div class="pt">기관 현황</div><div class="pa">학생 수</div></div>'+
+        tableHtml(r.rows,[{k:'name',h:'기관'},{k:'org_type',h:'유형'},
+          {k:'student_count',h:'학생',fmt:'num'},{k:'status',h:'상태',fmt:'pill'}]);
+    });
+  }
+
+  // ---------- 학생 찾기 ----------
+  async function renderStudentsPick(root){
+    root.innerHTML =
+      '<div class="hero"><div class="micro">학생</div><h1>학생 찾기</h1><p>상단 검색창 또는 아래 목록에서 학생을 선택하면 요약 페이지가 열립니다.</p></div>'+
+      '<div class="panel" id="pSt"></div>';
+    const r = await db.executeQuery('wa_students_pick',{});
+    document.getElementById('pSt').innerHTML =
+      '<div class="ph"><div class="pt">전체 학생</div><div class="pa">'+r.rows.length+'명</div></div>'+
+      tableHtml(r.rows,[{k:'name',h:'이름',link:'stu'},{k:'grade',h:'학년'},
+        {k:'school',h:'학교'},{k:'org_name',h:'소속 기관'}], 'stu');
+  }
+
+  // ---------- 학생 요약 페이지 (#stu/<id>) ----------
+  async function renderStudentHub(root, sid){
+    if(!sid){root.innerHTML='<div class="err-note">학생 번호가 없습니다.</div>';return;}
+    root.innerHTML =
+      '<div id="stuHead"></div>'+
+      '<div class="grid2" style="margin-bottom:14px"><div class="panel" id="sB"></div><div class="panel" id="sR"></div></div>'+
+      '<div class="grid2" style="margin-bottom:14px"><div class="panel" id="sP"></div><div class="panel" id="sT"></div></div>'+
+      '<div class="grid2" style="margin-bottom:14px"><div class="panel" id="sG"></div><div class="panel" id="sRm"></div></div>'+
+      '<div class="grid2"><div class="panel" id="sC"></div><div class="panel" id="sRep"></div></div>';
+
+    async function stage(fn){try{await fn();}catch(e){console.error(e);}}
+
+    await stage(async()=>{
+      const r = await db.executeQuery('wa_stu_basic',{sid});
+      const s = (r.rows&&r.rows[0])||null;
+      if(!s){document.getElementById('stuHead').innerHTML='<div class="err-note">학생을 찾을 수 없습니다.</div>';return;}
+      document.getElementById('stuHead').innerHTML =
+        '<div class="stu-head"><div class="av">'+esc((s.name||'?').charAt(0))+'</div>'+
+        '<div><div class="nm">'+esc(s.name)+'</div><div class="sub">'+
+        [...new Set([s.student_code,s.grade,s.school,s.org_name].filter(Boolean))].map(esc).join(' · ')+'</div></div>'+
+        '<div class="right-btns">'+
+        '<button class="btn" id="btnCounsel">+ 상담 기록</button>'+
+        '<button class="btn primary" id="btnPrep">상담 준비 열기</button>'+
+        '</div></div>';
+      document.getElementById('btnCounsel').onclick=()=>openCounselModal(sid, s.name);
+      document.getElementById('btnPrep').onclick=()=>go('prep/'+sid);
+
+      document.getElementById('sB').innerHTML =
+        '<div class="ph"><div class="pt">기본정보</div></div>'+
+        '<div class="kv">'+
+        kvRow('학교', s.school)+kvRow('학년', s.grade)+
+        kvRow('소속 기관', (s.org_name||'')+(s.org_type?' ('+s.org_type+')':''))+
+        kvRow('학부모', [s.parent_name,s.parent_phone,s.parent_email].filter(Boolean).join(' · '))+
+        kvRow('학습 스타일', s.learning_style)+kvRow('목표', s.learning_goal)+
+        kvRow('상태', s.status)+kvRow('등록일', fmtDate(s.enrolled_date))+
+        '</div>';
+    });
+
+    await stage(async()=>{
+      const r = await db.executeQuery('wa_stu_recent',{sid});
+      document.getElementById('sR').innerHTML =
+        '<div class="ph"><div class="pt">최근 수업·숙제</div><div class="pa">최신 20건</div></div>'+
+        tableHtml(r.rows,[{k:'kind',h:'',fmt:'pill'},{k:'d',h:'일자',fmt:'date'},
+          {k:'subject',h:'과목'},{k:'title',h:'내용'},{k:'status',h:'상태',fmt:'pill'}]);
+    });
+
+    await stage(async()=>{
+      const r = await db.executeQuery('wa_stu_progress',{sid});
+      document.getElementById('sP').innerHTML =
+        '<div class="ph"><div class="pt">진도·성취</div><div class="pa">단원별</div></div>'+
+        tableHtml(r.rows,[{k:'subject_name',h:'과목'},{k:'unit_name',h:'단원'},
+          {k:'progress_pct',h:'진도 %',fmt:'num'},{k:'achievement',h:'성취',fmt:'num'}]);
+    });
+
+    await stage(async()=>{
+      const r = await db.executeQuery('wa_stu_tests',{sid});
+      document.getElementById('sT').innerHTML =
+        '<div class="ph"><div class="pt">검사 결과</div><div class="pa">MLST·MCDT·NEO</div></div>'+
+        tableHtml(r.rows,[{k:'test_date',h:'일자',fmt:'date'},{k:'test_type',h:'검사'},
+          {k:'overall_label',h:'결과'},{k:'summary',h:'요약'}]);
+    });
+
+    await stage(async()=>{
+      const r = await db.executeQuery('wa_stu_grades',{sid});
+      document.getElementById('sG').innerHTML =
+        '<div class="ph"><div class="pt">내신 성적·등급</div></div>'+
+        tableHtml(r.rows,[{k:'school_year',h:'학년도'},{k:'semester',h:'학기'},
+          {k:'subject_name',h:'과목'},{k:'achievement',h:'성취'},{k:'grade',h:'등급',fmt:'num'}]);
+    });
+
+    await stage(async()=>{
+      const [tr, sr] = await Promise.all([
+        db.executeQuery('wa_stu_roadmap',{sid}),
+        db.executeQuery('wa_stu_roadmap_steps',{sid}),
+      ]);
+      const panel = document.getElementById('sRm');
+      panel.innerHTML =
+        '<div class="ph"><div class="pt">진학 목표·로드맵</div>'+
+        '<div><button class="mini-btn" id="btnAddTarget">+ 희망 대학</button></div></div>'+
+        tableHtml(tr.rows,[{k:'university',h:'대학'},{k:'department',h:'학과'},
+          {k:'admission_type',h:'전형'},{k:'target_year',h:'연도',fmt:'num'},
+          {k:'done_steps',h:'완료',fmt:'num'},{k:'step_count',h:'전체',fmt:'num'}])+
+        renderRoadmapSteps(sr.rows||[]);
+      panel.querySelector('#btnAddTarget').onclick=()=>openTargetModal(sid);
+      panel.querySelectorAll('input[data-step]').forEach(cb=>cb.onchange=async()=>{
+        const stepId = parseInt(cb.dataset.step,10);
+        const newStatus = cb.checked ? '완료' : '예정';
+        try{ await db.executeQuery('wa_m_step_toggle',{sid:stepId, status:newStatus}); toast(newStatus+' 처리됨'); render(); }
+        catch(err){ toast('실패: '+(err.message||err)); cb.checked=!cb.checked; }
+      });
+    });
+
+    await stage(async()=>{
+      const r = await db.executeQuery('wa_stu_counsel',{sid});
+      document.getElementById('sC').innerHTML =
+        '<div class="ph"><div class="pt">상담 기록·처방</div></div>'+
+        tableHtml(r.rows,[{k:'session_date',h:'일자',fmt:'date'},{k:'topic',h:'주제'},
+          {k:'content_preview',h:'내용'},{k:'next_date',h:'다음',fmt:'date'}]);
+    });
+
+    await stage(async()=>{
+      const r = await db.executeQuery('wa_stu_reports',{sid});
+      const rows = (r.rows||[]).map(x=>{
+        const isDraft = !x.sent_date;
+        const parts = [];
+        if(isDraft) parts.push('<button class="mini-btn" data-edit="'+x.id+'">수정</button>');
+        if(isDraft) parts.push('<button class="mini-btn" data-send="'+x.id+'">발송</button>');
+        return {...x, action: parts.join(' ')};
+      });
+      const panel = document.getElementById('sRep');
+      panel.innerHTML =
+        '<div class="ph"><div class="pt">학부모 리포트</div>'+
+        '<div><button class="mini-btn" id="btnAddReport">+ 리포트 작성</button></div></div>'+
+        tableHtml(rows,[{k:'report_period_start',h:'시작',fmt:'date'},{k:'report_period_end',h:'종료',fmt:'date'},
+          {k:'status',h:'상태',fmt:'pill'},{k:'sent_date',h:'발송',fmt:'date'},{k:'action',h:'',raw:true}]);
+      panel.querySelector('#btnAddReport').onclick=()=>openReportModal(sid, null);
+      panel.querySelectorAll('button[data-edit]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();openReportModal(sid, parseInt(b.dataset.edit,10));});
+      panel.querySelectorAll('button[data-send]').forEach(b=>b.onclick=async(e)=>{
+        e.stopPropagation();
+        const rid = parseInt(b.dataset.send,10);
+        try{ await db.executeQuery('wa_m_report_send',{rid}); toast('리포트 발송 처리됨'); render(); }
+        catch(err){ toast('실패: '+(err.message||err)); }
+      });
+    });
+  }
+
+  function kvRow(k,v){return '<div class="k">'+esc(k)+'</div><div class="v">'+esc(v==null||v===''?'-':v)+'</div>';}
+
+  // ---------- 기관 현황 (목록 + 상세) ----------
+  async function renderOrgsList(root){
+    root.innerHTML =
+      '<div class="hero"><div class="micro">기관</div><h1>기관 현황</h1><p>학교·지자체 센터·개인 — 기관을 선택하면 상세 현황이 열립니다.</p></div>'+
+      '<div class="panel" id="pO"></div>';
+    const r = await db.executeQuery('wa_orgs_pick',{});
+    const rows = r.rows.map(x=>({...x, _link_org: x.id}));
+    document.getElementById('pO').innerHTML =
+      '<div class="ph"><div class="pt">전체 기관</div><div class="pa">'+r.rows.length+'곳</div></div>'+
+      tableHtml(rows,[{k:'name',h:'기관',link:'org'},{k:'org_type',h:'유형',fmt:'pill'},
+        {k:'region',h:'지역'},{k:'student_count',h:'학생',fmt:'num'},{k:'status',h:'상태',fmt:'pill'}], 'org');
+  }
+
+  async function renderOrgDetail(root, oid){
+    if(!oid){root.innerHTML='<div class="err-note">기관 번호가 없습니다.</div>';return;}
+    root.innerHTML =
+      '<div id="orgHead"></div>'+
+      '<div class="kpis" id="orgKpis"></div>'+
+      '<div class="panels two"><div class="panel" id="orgInfo"></div><div class="panel" id="orgStu"></div></div>';
+
+    const [d, st] = await Promise.all([
+      db.executeQuery('wa_org_detail',{oid}),
+      db.executeQuery('wa_org_students',{oid}),
+    ]);
+    const o = (d.rows&&d.rows[0])||null;
+    if(!o){root.innerHTML='<div class="err-note">기관을 찾을 수 없습니다.</div>';return;}
+
+    document.getElementById('orgHead').innerHTML =
+      '<div class="stu-head"><div class="av" style="background:var(--ink-700)">'+esc((o.name||'?').charAt(0))+'</div>'+
+      '<div><div class="nm">'+esc(o.name)+'</div><div class="sub">'+
+      [o.org_type,o.region,o.program_name,o.cohort].filter(Boolean).map(esc).join(' · ')+'</div></div>'+
+      '<div class="right-btns"><button class="btn" onclick="location.hash=\'#orgs\'">← 목록</button></div></div>';
+
+    document.getElementById('orgKpis').innerHTML = [
+      ['학생',o.student_count],['이번 달 수업',o.classes_month],
+      ['30일 상담',o.counsel_30d],['미발송 리포트',o.unsent_reports],
+    ].map(x=>'<div class="kpi"><div class="k">'+esc(x[0])+'</div><div class="v">'+esc(fmtNum(x[1]))+'</div></div>').join('');
+
+    document.getElementById('orgInfo').innerHTML =
+      '<div class="ph"><div class="pt">기관 정보</div></div>'+
+      '<div class="kv">'+
+      kvRow('유형',o.org_type)+kvRow('지역',o.region)+kvRow('주소',o.address)+
+      kvRow('담당',[o.contact_name,o.contact_phone,o.contact_email].filter(Boolean).join(' · '))+
+      kvRow('프로그램',o.program_name)+kvRow('기수',o.cohort)+
+      kvRow('기간',[fmtDate(o.start_date),fmtDate(o.end_date)].filter(Boolean).join(' ~ '))+
+      kvRow('정원',o.student_quota)+kvRow('상태',o.status)+kvRow('비고',o.note)+
+      '</div>';
+
+    document.getElementById('orgStu').innerHTML =
+      '<div class="ph"><div class="pt">소속 학생</div><div class="pa">'+(st.rows||[]).length+'명</div></div>'+
+      tableHtml(st.rows,[{k:'name',h:'이름',link:'stu'},{k:'grade',h:'학년'},
+        {k:'avg_progress',h:'평균 진도',fmt:'num'},{k:'test_count',h:'검사',fmt:'num'},
+        {k:'counsel_count',h:'상담',fmt:'num'},{k:'unsent',h:'미발송',fmt:'num'}], 'stu');
+  }
+
+  // ---------- 상담 준비 (#prep 또는 #prep/<sid>) ----------
+  async function renderPrep(root, sid){
+    if(!sid){
+      // 학생 선택 화면
+      const r = await db.executeQuery('wa_students_pick',{});
+      root.innerHTML =
+        '<div class="hero"><div class="micro">상담 준비</div><h1>상담 전 1분 요약</h1><p>학생을 선택하면 내신·로드맵·최근 상담·검사가 한 화면에 요약됩니다.</p></div>'+
+        '<div class="panel"><div class="ph"><div class="pt">학생 선택</div></div>'+
+        tableHtml(r.rows.map(x=>({...x, _link_prep:x.id})),[{k:'name',h:'이름',link:'prep'},
+          {k:'grade',h:'학년'},{k:'school',h:'학교'},{k:'org_name',h:'소속 기관'}], 'stu')+'</div>';
+      return;
+    }
+    // 선택된 학생의 요약
+    root.innerHTML =
+      '<div id="pH"></div>'+
+      '<div class="grid3"><div class="panel" id="pA"></div><div class="panel" id="pB"></div><div class="panel" id="pC"></div></div>'+
+      '<div style="margin-top:14px" class="panel" id="pD"></div>';
+    const [b,g,rm,co] = await Promise.all([
+      db.executeQuery('wa_stu_basic',{sid}),
+      db.executeQuery('wa_stu_grades',{sid}),
+      db.executeQuery('wa_stu_roadmap',{sid}),
+      db.executeQuery('wa_stu_counsel',{sid}),
+    ]);
+    const s = (b.rows&&b.rows[0])||null;
+    if(!s){root.innerHTML='<div class="err-note">학생을 찾을 수 없습니다.</div>';return;}
+    document.getElementById('pH').innerHTML =
+      '<div class="stu-head"><div class="av">'+esc(s.name.charAt(0))+'</div>'+
+      '<div><div class="nm">'+esc(s.name)+' <span style="font-size:12px;color:var(--ink-500);font-weight:400">· 상담 준비</span></div>'+
+      '<div class="sub">'+[...new Set([s.student_code,s.grade,s.school,s.org_name].filter(Boolean))].map(esc).join(' · ')+'</div></div>'+
+      '<div class="right-btns"><button class="btn" onclick="location.hash=\'#stu/'+sid+'\'">학생 전체 보기</button>'+
+      '<button class="btn primary" id="pBtnC">+ 상담 기록 추가</button></div></div>';
+    document.getElementById('pBtnC').onclick=()=>openCounselModal(sid, s.name);
+
+    document.getElementById('pA').innerHTML =
+      '<div class="ph"><div class="pt">내신</div><div class="pa">최근 학기 등급</div></div>'+
+      tableHtml((g.rows||[]).slice(0,10),[{k:'school_year',h:'학년도'},{k:'semester',h:'학기'},
+        {k:'subject_name',h:'과목'},{k:'grade',h:'등급',fmt:'num'}]);
+
+    document.getElementById('pB').innerHTML =
+      '<div class="ph"><div class="pt">진학 목표·로드맵</div></div>'+
+      tableHtml(rm.rows,[{k:'university',h:'대학'},{k:'department',h:'학과'},
+        {k:'done_steps',h:'완료',fmt:'num'},{k:'step_count',h:'전체',fmt:'num'}]);
+
+    document.getElementById('pC').innerHTML =
+      '<div class="ph"><div class="pt">최근 상담 요약</div></div>'+
+      tableHtml((co.rows||[]).slice(0,5),[{k:'session_date',h:'일자',fmt:'date'},
+        {k:'topic',h:'주제'},{k:'content_preview',h:'내용'}]);
+
+    document.getElementById('pD').innerHTML =
+      '<div class="ph"><div class="pt">기본정보 · 학부모 연락</div></div>'+
+      '<div class="kv">'+
+      kvRow('학부모', [s.parent_name,s.parent_phone,s.parent_email].filter(Boolean).join(' · '))+
+      kvRow('목표',s.learning_goal)+kvRow('학습 스타일',s.learning_style)+
+      '</div>';
+  }
+
+  // ---------- 오늘 처리 (수업+숙제) ----------
+  async function renderDaily(root){
+    root.innerHTML =
+      '<div class="hero"><div class="micro">오늘 처리</div><h1>수업 출결 · 숙제 점수</h1><p>표에서 ✎ 를 누르면 바로 수정됩니다.</p></div>'+
+      '<div class="panels two"><div class="panel" id="dC"></div><div class="panel" id="dH"></div></div>';
+
+    const [cs, hw] = await Promise.all([
+      db.executeQuery('wa_schedule',{}),
+      db.executeQuery('wa_homework',{}),
+    ]);
+    const cRows = (cs.rows||[]).slice(0,30).map(x=>({...x, _edit:'<button class="mini-btn" data-att="'+x.cs_id+'" data-s="'+esc(x.student_name||'')+'">✎ 출결</button>'}));
+    document.getElementById('dC').innerHTML =
+      '<div class="ph"><div class="pt">수업</div><div class="pa">최근 30일</div></div>'+
+      tableHtml(cRows,[{k:'class_date',h:'일자',fmt:'date'},{k:'student_name',h:'학생',link:'stu'},
+        {k:'subject_name',h:'과목'},{k:'status',h:'상태',fmt:'pill'},{k:'_edit',h:'',raw:true}]);
+    document.getElementById('dC').querySelectorAll('button[data-att]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();openAttModal(parseInt(b.dataset.att,10),b.dataset.s);});
+
+    const hRows = (hw.rows||[]).slice(0,30).map(x=>({...x, _edit:'<button class="mini-btn" data-hw="'+x.h_id+'" data-s="'+esc(x.student_name||'')+'" data-t="'+esc(x.title||'')+'">✎ 점수</button>'}));
+    document.getElementById('dH').innerHTML =
+      '<div class="ph"><div class="pt">숙제</div><div class="pa">마감 가까운 순</div></div>'+
+      tableHtml(hRows,[{k:'due_date',h:'마감',fmt:'date'},{k:'student_name',h:'학생',link:'stu'},
+        {k:'title',h:'제목'},{k:'status',h:'상태',fmt:'pill'},{k:'score',h:'점수',fmt:'num'},{k:'_edit',h:'',raw:true}]);
+    document.getElementById('dH').querySelectorAll('button[data-hw]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();openHwModal(parseInt(b.dataset.hw,10),b.dataset.s,b.dataset.t);});
+  }
+
+  // ---------- 검사·리포트 ----------
+  async function renderTestsReports(root){
+    root.innerHTML =
+      '<div class="hero"><div class="micro">검사·리포트</div><h1>검사 세션과 학부모 리포트</h1><p>MLST·MCDT·NEO 결과와 리포트 발행 현황.</p></div>'+
+      '<div class="panels two"><div class="panel" id="tT"></div><div class="panel" id="tR"></div></div>';
+    const [t,r] = await Promise.all([
+      db.executeQuery('wa_tests',{}),
+      db.executeQuery('wa_reports',{}),
+    ]);
+    document.getElementById('tT').innerHTML =
+      '<div class="ph"><div class="pt">검사 세션</div></div>'+
+      tableHtml(t.rows,[{k:'test_date',h:'일자',fmt:'date'},{k:'student_name',h:'학생',link:'stu'},
+        {k:'test_type',h:'검사'},{k:'result_summary',h:'요약'}]);
+    const rRows = (r.rows||[]).map(x=>{
+      const isDraft = !x.sent_at;
+      const parts = [];
+      if(isDraft) parts.push('<button class="mini-btn" data-edit="'+x.id+'">수정</button>');
+      if(isDraft) parts.push('<button class="mini-btn" data-send="'+x.id+'">발송</button>');
+      return {...x, _snd: parts.join(' ')};
+    });
+    document.getElementById('tR').innerHTML =
+      '<div class="ph"><div class="pt">학부모 리포트</div></div>'+
+      tableHtml(rRows,[{k:'report_period',h:'기간'},{k:'student_name',h:'학생',link:'stu'},
+        {k:'status',h:'상태',fmt:'pill'},{k:'sent_at',h:'발송',fmt:'date'},{k:'_snd',h:'',raw:true}]);
+    document.getElementById('tR').querySelectorAll('button[data-edit]').forEach(b=>b.onclick=async(e)=>{
+      e.stopPropagation();
+      const rid = parseInt(b.dataset.edit,10);
+      const one = await db.executeQuery('wa_report_one',{rid});
+      const sidRow = one.rows && one.rows[0];
+      openReportModal(sidRow ? sidRow.student_id : null, rid);
+    });
+    document.getElementById('tR').querySelectorAll('button[data-send]').forEach(b=>b.onclick=async(e)=>{
+      e.stopPropagation();
+      try{ await db.executeQuery('wa_m_report_send',{rid:parseInt(b.dataset.send,10)}); toast('발송 처리됨'); render(); }
+      catch(err){ toast('실패: '+(err.message||err)); }
+    });
+  }
+
+  // ---------- 처방·경로 ----------
+  async function renderRxPaths(root){
+    root.innerHTML =
+      '<div class="hero"><div class="micro">처방·경로</div><h1>학습 처방 · 학습 경로</h1><p>학생별 처방 이력과 경로 진행 상황.</p></div>'+
+      '<div class="panels two"><div class="panel" id="rP"></div><div class="panel" id="rPa"></div></div>'+
+      '<div style="margin-top:14px" class="panel" id="rW"></div>';
+    const [p,pa,w] = await Promise.all([
+      db.executeQuery('wa_prescription',{}),
+      db.executeQuery('wa_paths',{}),
+      db.executeQuery('wa_weak',{}),
+    ]);
+    document.getElementById('rP').innerHTML =
+      '<div class="ph"><div class="pt">학습 처방 이력</div></div>'+
+      tableHtml(p.rows,[{k:'student_name',h:'학생',link:'stu'},{k:'issued_date',h:'발부',fmt:'date'},
+        {k:'focus_area',h:'중점'},{k:'status',h:'상태',fmt:'pill'}]);
+    document.getElementById('rPa').innerHTML =
+      '<div class="ph"><div class="pt">학습 경로</div></div>'+
+      tableHtml(pa.rows,[{k:'student_name',h:'학생',link:'stu'},{k:'subject_name',h:'과목'},
+        {k:'path_name',h:'경로'},{k:'step_count',h:'단계',fmt:'num'},{k:'status',h:'상태',fmt:'pill'}]);
+    document.getElementById('rW').innerHTML =
+      '<div class="ph"><div class="pt">취약 단원</div><div class="pa">진도<70 또는 성취<70</div></div>'+
+      tableHtml(w.rows,[{k:'student_name',h:'학생',link:'stu'},{k:'subject_name',h:'과목'},
+        {k:'unit_name',h:'단원'},{k:'progress_pct',h:'진도 %',fmt:'num'},{k:'achievement',h:'성취',fmt:'num'}]);
+  }
+
+  // ---------- 설정·입력 ----------
+  function renderSettings(root){
+    root.innerHTML =
+      '<div class="hero"><div class="micro">설정·입력</div><h1>데이터 등록과 전용 화면</h1><p>원본 데이터의 대량 입력·시험지 생성·CSV 등록은 각 전용 화면을 사용합니다.</p></div>'+
+      '<div class="panel"><div class="ph"><div class="pt">전용 화면 바로가기</div></div>'+
+      '<div class="core">'+[
+        ['기관·대상 관리','orgs','기관 등록·학생 소속'],
+        ['기관 온보딩','onboarding','8단계 체크리스트'],
+        ['학습 콘텐츠','contents','콘텐츠 등록'],
+        ['교재','books','출판사·대상 학년'],
+        ['문제은행','qbank','문항 등록'],
+        ['학습 처방 자료실','rx_res','자료 등록'],
+        ['내신 등급 계산기','gpa','점수 입력'],
+        ['학부모 리포트(전체)','parent','발행·발송'],
+      ].map(c=>'<a class="ccard" href="#'+c[1]+'"><div class="ck">열기</div><div class="ct">'+esc(c[0])+'</div><div class="cd">'+esc(c[2])+'</div></a>').join('')+'</div></div>';
+  }
+
+  // ---------- 가이드 ----------
+  function renderGuide(root){
+    const steps=[['01','진단','MLST·MCDT·NEO 로 학습 성향과 상태 파악.'],
+      ['02','성적·목표','내신 등급 계산 + 희망 진학 로드맵.'],
+      ['03','처방','취약 단원 → 학습 경로·자료 발부.'],
+      ['04','상담·리포트','상담 기록과 학부모 리포트.']];
+    root.innerHTML =
+      '<div class="hero"><div class="micro">프로그램 소개</div><h1>다움진로진학컨설팅 · 진학 및 학습 맞춤엔진</h1></div>'+
+      '<div class="steps">'+steps.map(s=>'<div class="step"><div class="no">'+esc(s[0])+'</div><div class="ti">'+esc(s[1])+'</div><div class="de">'+esc(s[2])+'</div></div>').join('')+'</div>';
+  }
+
+  // ---------- 범용 테이블 뷰 (더 보기) ----------
+  async function renderTable(root, id){
+    const def = T[id];
+    root.innerHTML = '<div class="hero"><div class="micro">'+esc(id)+'</div><h1>'+esc(def.label)+'</h1><p>'+esc(def.hint||'')+'</p></div><div class="panel" id="tb"></div>';
+    const r = await db.executeQuery(def.q,{});
+    document.getElementById('tb').innerHTML =
+      '<div class="ph"><div class="pt">'+esc(def.label)+'</div><div class="pa">'+r.rows.length+'건</div></div>'+
+      tableHtml(r.rows, def.cols, def.linkMode);
+  }
+
+  // ---------- 표 유틸 ----------
+  // forceLink: 'stu' → 이 표의 row.id 는 학생 id / 'org' → row.id 는 기관 id
+  // student_id 컬럼이 있으면 그 값이 항상 우선한다(리포트·수업처럼 id 가 다른 엔티티일 때).
+  const A = 'style="color:var(--brand-500);text-decoration:none;font-weight:600" onclick="event.stopPropagation()"';
+  function tableHtml(rows, cols, forceLink){
+    if(!rows||!rows.length) return '<div class="empty">표시할 자료가 없습니다.</div>';
+    const stuIdOf = r => (r.student_id!=null ? r.student_id : (forceLink==='stu' ? r.id : null));
+    const head = '<tr>'+cols.map(c=>'<th class="'+(c.fmt==='num'?'num':'')+'">'+esc(c.h)+'</th>').join('')+'</tr>';
+    const body = rows.slice(0,100).map(row=>{
+      const stu = stuIdOf(row);
+      const linkTo = row._link_prep ? ('prep/'+row._link_prep) :
+                     row._link_org  ? ('org/'+row._link_org) :
+                     forceLink==='org' ? (row.id ? 'org/'+row.id : '') :
+                     (stu!=null ? ('stu/'+stu) : '');
+      const trAttr = linkTo ? ' class="row-link" data-link="'+esc(linkTo)+'"' : '';
+      return '<tr'+trAttr+'>'+cols.map(c=>{
+        let v = row[c.k];
+        if(c.raw) return '<td>'+(v||'')+'</td>';
+        if(c.fmt==='date') v = fmtDate(v);
+        else if(c.fmt==='num') v = fmtNum(v);
+        else if(c.fmt==='pill' && v!=null && v!=='') return '<td data-label="'+esc(c.h)+'"><span class="'+pillClass(v)+'">'+esc(v)+'</span></td>';
+        if((c.link==='stu'||c.link==='prep') && stu!=null) return '<td data-label="'+esc(c.h)+'"><a href="#'+(c.link==='prep'?'prep/':'stu/')+stu+'" '+A+'>'+esc(v)+'</a></td>';
+        if(c.link==='org' && row.id) return '<td data-label="'+esc(c.h)+'"><a href="#org/'+row.id+'" '+A+'>'+esc(v)+'</a></td>';
+        return '<td data-label="'+esc(c.h)+'" class="'+(c.fmt==='num'?'num':'')+'">'+esc(v==null?'':v)+'</td>';
+      }).join('')+'</tr>';
+    }).join('');
+    const more = rows.length>100 ? '<div class="pa" style="margin-top:8px">상위 100건만 표시</div>' : '';
+    const html = '<table class="tbl m-cards"><thead>'+head+'</thead><tbody>'+body+'</tbody></table>'+more;
+    // 행 클릭 바인딩은 호출부 밖에서 — 간단히 inline onclick 생략, 대신 아래 전역 바인딩 사용
+    return html;
+  }
+
+  // ---------- 전역 행 클릭 (row-link data-link) ----------
+  document.addEventListener('click',(e)=>{
+    const tr = e.target.closest('tr.row-link');
+    if(tr && !e.target.closest('a,button')){
+      const lk = tr.dataset.link;
+      if(lk) location.hash = '#'+lk;
+    }
+  });
+
+  // ---------- 전역 검색 ----------
+  let srTimer=null;
+  function initSearch(){
+    const inp = document.getElementById('srInput');
+    const drop = document.getElementById('srDrop');
+    const clr = document.getElementById('srClear');
+    inp.addEventListener('input',()=>{
+      clr.style.display = inp.value ? 'inline' : 'none';
+      clearTimeout(srTimer);
+      const kw = inp.value.trim();
+      if(!kw){drop.style.display='none';return;}
+      srTimer = setTimeout(()=>runSearch(kw), 220);
+    });
+    clr.onclick=()=>{inp.value='';clr.style.display='none';drop.style.display='none';inp.focus();};
+    document.addEventListener('click',(e)=>{if(!e.target.closest('.search')) drop.style.display='none';});
+    inp.addEventListener('focus',()=>{if(drop.innerHTML) drop.style.display='block';});
+  }
+  async function runSearch(kw){
+    const drop = document.getElementById('srDrop');
+    drop.innerHTML = '<div class="sr-empty">검색 중…</div>';drop.style.display='block';
+    try{
+      const r = await db.executeQuery('wa_search',{kw});
+      const rows = r.rows||[];
+      if(!rows.length){drop.innerHTML='<div class="sr-empty">검색 결과 없음</div>';return;}
+      const groups = {student:[],org:[],test:[],counsel:[]};
+      rows.forEach(x=>{(groups[x.kind]||(groups[x.kind]=[])).push(x);});
+      const labels = {student:'학생', org:'기관', test:'검사', counsel:'상담'};
+      let html = '';
+      ['student','org','test','counsel'].forEach(k=>{
+        if(!groups[k]||!groups[k].length) return;
+        html += '<div class="sr-section">'+labels[k]+'</div>';
+        groups[k].forEach(x=>{
+          const hash = k==='student' ? 'stu/'+x.ref_id : k==='org' ? 'org/'+x.ref_id : k==='test' ? 'tests' : 'counsel';
+          html += '<div class="sr-item" data-h="'+esc(hash)+'">'+
+            '<div><div class="sr-t">'+esc(x.title)+'</div><div class="sr-sub">'+esc(x.subtitle||'')+'</div></div>'+
+            '<div style="color:var(--ink-400);font-size:11px;align-self:center">'+esc(fmtDate(x.as_of))+'</div></div>';
+        });
+      });
+      drop.innerHTML = html;
+      drop.querySelectorAll('.sr-item').forEach(el=>el.onclick=()=>{location.hash='#'+el.dataset.h;drop.style.display='none';document.getElementById('srInput').value='';document.getElementById('srClear').style.display='none';});
+    }catch(e){drop.innerHTML='<div class="sr-empty">오류: '+esc(e.message||e)+'</div>';}
+  }
+
+  // ---------- 모달 ----------
+  function openModal(html){const m=document.getElementById('modal');m.innerHTML='<div class="modal">'+html+'</div>';m.classList.add('show');
+    m.onclick=(e)=>{if(e.target===m) closeModal();};}
+  function closeModal(){const m=document.getElementById('modal');m.classList.remove('show');m.innerHTML='';}
+  window._closeModal = closeModal;
+
+  function openHwModal(hid, sName, title){
+    openModal(
+      '<h3>숙제 점수 — '+esc(sName)+'</h3>'+
+      '<div style="font-size:12px;color:var(--ink-500);margin-bottom:8px">'+esc(title)+'</div>'+
+      '<label>상태</label><select id="mSt"><option>제출</option><option>미제출</option><option>배부</option><option>지연</option></select>'+
+      '<label>점수 (0-100, 선택)</label><input type="number" id="mSc" min="0" max="100" step="1" />'+
+      '<div class="foot"><button class="btn" onclick="_closeModal()">취소</button><button class="btn primary" id="mSave">저장</button></div>'
+    );
+    document.getElementById('mSave').onclick=async()=>{
+      const st = document.getElementById('mSt').value;
+      const scRaw = document.getElementById('mSc').value;
+      const sc = scRaw==='' ? null : parseFloat(scRaw);
+      try{ await db.executeQuery('wa_m_hw_score',{hid, score:sc, status:st}); closeModal(); toast('저장됨'); render(); }
+      catch(e){ toast('실패: '+(e.message||e)); }
+    };
+  }
+  function openAttModal(cid, sName){
+    openModal(
+      '<h3>수업 출결 — '+esc(sName)+'</h3>'+
+      '<label>출결</label><select id="mA"><option>출석</option><option>지각</option><option>조퇴</option><option>결석</option></select>'+
+      '<div class="foot"><button class="btn" onclick="_closeModal()">취소</button><button class="btn primary" id="mSave">저장</button></div>'
+    );
+    document.getElementById('mSave').onclick=async()=>{
+      const att = document.getElementById('mA').value;
+      try{ await db.executeQuery('wa_m_cls_att',{cid, attendance:att}); closeModal(); toast('저장됨'); render(); }
+      catch(e){ toast('실패: '+(e.message||e)); }
+    };
+  }
+  function openCounselModal(sid, sName){
+    const today = new Date().toISOString().slice(0,10);
+    openModal(
+      '<h3>상담 기록 — '+esc(sName)+'</h3>'+
+      '<label>일자</label><input type="date" id="mD" value="'+today+'" />'+
+      '<label>상담사</label><input type="text" id="mCn" placeholder="예: 다움컨설턴트" />'+
+      '<label>주제</label><select id="mT"><option>진학</option><option>학습</option><option>진로</option><option>생활</option></select>'+
+      '<label>상담 내용</label><textarea id="mCo" placeholder="상담 요지"></textarea>'+
+      '<label>처방 (선택)</label><textarea id="mPr" placeholder="학습 처방"></textarea>'+
+      '<label>다음 상담 예정일 (선택)</label><input type="date" id="mN" />'+
+      '<div class="foot"><button class="btn" onclick="_closeModal()">취소</button><button class="btn primary" id="mSave">저장</button></div>'
+    );
+    document.getElementById('mSave').onclick=async()=>{
+      const d=document.getElementById('mD').value;
+      const counselor=document.getElementById('mCn').value||'다움컨설턴트';
+      const topic=document.getElementById('mT').value;
+      const content=document.getElementById('mCo').value;
+      const presc=document.getElementById('mPr').value;
+      const nd=document.getElementById('mN').value;
+      if(!content.trim()){toast('상담 내용을 입력하세요');return;}
+      try{
+        await db.executeQuery('wa_m_counsel_add',{sid, d, counselor, topic, content, prescription:presc||null, next_date:nd||null});
+        closeModal(); toast('상담 기록 추가됨'); render();
+      }catch(e){ toast('실패: '+(e.message||e)); }
+    };
+  }
+
+  // 로드맵 단계 체크리스트(목표별로 그룹)
+  function renderRoadmapSteps(steps){
+    if(!steps.length) return '<div class="empty" style="padding:14px">등록된 로드맵 단계가 없습니다.</div>';
+    const grouped = {};
+    steps.forEach(s=>{
+      const key = s.target_id || 'none';
+      if(!grouped[key]) grouped[key] = {uni: s.university||'(목표 없음)', dept: s.department||'', items: []};
+      grouped[key].items.push(s);
+    });
+    const blocks = Object.keys(grouped).map(k=>{
+      const g = grouped[k];
+      const title = esc(g.uni) + (g.dept?' · '+esc(g.dept):'');
+      const items = g.items.map(s=>{
+        const done = s.status==='완료';
+        const when = s.school_year ? (s.school_year+'학년 '+s.semester+'학기') : (s.target_date?fmtDate(s.target_date):'');
+        return '<label style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--ink-50);font-size:12.5px;cursor:pointer">'+
+          '<input type="checkbox" data-step="'+s.id+'" '+(done?'checked':'')+' />'+
+          '<span style="flex:1;color:'+(done?'var(--ink-400)':'var(--ink-800)')+';text-decoration:'+(done?'line-through':'none')+'">'+
+          (s.category?'<span class="pill pill-brand" style="margin-right:6px">'+esc(s.category)+'</span>':'')+
+          esc(s.title)+'</span>'+
+          '<span style="color:var(--ink-500);font-size:11px">'+esc(when)+'</span></label>';
+      }).join('');
+      return '<div style="margin-top:10px"><div style="font-size:11px;font-weight:700;color:var(--brand-500);margin-bottom:4px">'+title+'</div>'+items+'</div>';
+    }).join('');
+    return '<div style="margin-top:10px;border-top:1px solid var(--ink-100);padding-top:10px">'+
+      '<div class="pa" style="margin-bottom:4px">단계 체크</div>'+blocks+'</div>';
+  }
+
+  // 희망 대학 추가 모달
+  function openTargetModal(sid){
+    openModal(
+      '<h3>희망 대학 추가</h3>'+
+      '<label>대학 *</label><input type="text" id="tU" placeholder="예: 서울대학교" />'+
+      '<label>학과</label><input type="text" id="tD" placeholder="예: 컴퓨터공학과" />'+
+      '<label>전형</label><select id="tA"><option value="">선택</option><option>학생부종합</option><option>학생부교과</option><option>논술</option><option>정시</option><option>특기자</option><option>기타</option></select>'+
+      '<label>목표 연도</label><input type="number" id="tY" placeholder="예: 2028" min="2026" max="2035" />'+
+      '<label>필요 등급 (평균)</label><input type="number" id="tG" placeholder="예: 2.5" step="0.1" min="1" max="9" />'+
+      '<label>우선순위 (1-5, 작을수록 높음)</label><input type="number" id="tP" value="3" min="1" max="5" />'+
+      '<label>메모</label><textarea id="tN" placeholder="메모"></textarea>'+
+      '<div class="foot"><button class="btn" onclick="_closeModal()">취소</button><button class="btn primary" id="mSave">추가</button></div>'
+    );
+    document.getElementById('mSave').onclick=async()=>{
+      const uni=document.getElementById('tU').value.trim();
+      if(!uni){toast('대학명을 입력하세요');return;}
+      try{
+        await db.executeQuery('wa_m_target_add',{
+          sid, university:uni,
+          department:document.getElementById('tD').value,
+          admission_type:document.getElementById('tA').value,
+          target_year:document.getElementById('tY').value,
+          required_grade:document.getElementById('tG').value,
+          priority:document.getElementById('tP').value,
+          note:document.getElementById('tN').value,
+        });
+        closeModal(); toast('목표 추가됨'); render();
+      }catch(e){ toast('실패: '+(e.message||e)); }
+    };
+  }
+
+  // 리포트 작성/수정 모달 (rid=null 이면 신규)
+  async function openReportModal(sid, rid){
+    let r = null;
+    if(rid){
+      try{ const q = await db.executeQuery('wa_report_one',{rid}); r = q.rows && q.rows[0]; sid = sid || (r && r.student_id); }
+      catch(e){ toast('불러오기 실패: '+(e.message||e)); return; }
+    }
+    if(!sid){toast('학생을 알 수 없습니다');return;}
+    const today = new Date();
+    const monStart = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().slice(0,10);
+    const monEnd = new Date(today.getFullYear(), today.getMonth()+1, 0).toISOString().slice(0,10);
+    const v = (k, def)=> esc(r && r[k]!=null ? r[k] : (def==null?'':def));
+    openModal(
+      '<h3>'+(rid?'리포트 수정':'리포트 작성')+(r?' — '+esc(r.student_name||''):'')+'</h3>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
+        '<div><label>기간 시작</label><input type="date" id="rS" value="'+(r?fmtDate(r.report_period_start):monStart)+'" /></div>'+
+        '<div><label>기간 종료</label><input type="date" id="rE" value="'+(r?fmtDate(r.report_period_end):monEnd)+'" /></div>'+
+      '</div>'+
+      '<label>유형</label><select id="rT">'+
+        ['월간','주간','학기','특별'].map(x=>'<option '+(r&&r.report_type===x?'selected':'')+'>'+x+'</option>').join('')+
+      '</select>'+
+      '<label>전반적 진전</label><textarea id="rOv" placeholder="학습 전반의 진척">'+v('overall_progress')+'</textarea>'+
+      '<label>강점</label><textarea id="rSt" placeholder="학생의 강점">'+v('strengths')+'</textarea>'+
+      '<label>개선 영역</label><textarea id="rIm" placeholder="보완할 점">'+v('areas_for_improvement')+'</textarea>'+
+      '<label>컨설턴트 코멘트</label><textarea id="rCm">'+v('teacher_comments')+'</textarea>'+
+      '<label>다음 기간 목표</label><textarea id="rGl">'+v('next_period_goals')+'</textarea>'+
+      '<div class="foot"><button class="btn" onclick="_closeModal()">취소</button><button class="btn primary" id="mSave">저장</button></div>'
+    );
+    document.getElementById('mSave').onclick=async()=>{
+      const payload = {
+        start:document.getElementById('rS').value,
+        end:document.getElementById('rE').value,
+        rtype:document.getElementById('rT').value,
+        overall:document.getElementById('rOv').value,
+        strengths:document.getElementById('rSt').value,
+        improve:document.getElementById('rIm').value,
+        comments:document.getElementById('rCm').value,
+        goals:document.getElementById('rGl').value,
+      };
+      try{
+        if(rid) await db.executeQuery('wa_m_report_update',{rid, ...payload});
+        else    await db.executeQuery('wa_m_report_add',{sid, ...payload});
+        closeModal(); toast(rid?'리포트 수정됨':'리포트 작성됨'); render();
+      }catch(e){ toast('실패: '+(e.message||e)); }
+    };
+  }
+
+  // ---------- 모바일 햄버거 ----------
+  function initHamb(){
+    const hamb = document.getElementById('hamb');
+    const side = document.getElementById('side');
+    const mask = document.getElementById('mobile-mask');
+    hamb.onclick=()=>{side.classList.add('open');mask.classList.add('show');};
+    mask.onclick=()=>{side.classList.remove('open');mask.classList.remove('show');};
+  }
+
+  // ---------- 부팅 ----------
+  function boot(){
+    renderNav(); initSearch(); initHamb();
+    window.addEventListener('hashchange',()=>{render();updateTs();});
+    document.getElementById('refresh').onclick=()=>{render();updateTs();};
+    render();
+    console.log('[init] done');
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
+
+</script>
+</body>
+</html>

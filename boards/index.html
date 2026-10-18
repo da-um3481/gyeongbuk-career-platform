@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko" data-palette="sand" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>다움 학습관리 — 전체 보드 (오프라인 스냅샷 2026-10-18)</title>
+<style id="gs-kit-css">
+:root { --brand-50: #EEF2FF; --brand-100: #DCE3FB; --brand-200: #B9C7F7; --brand-300: #8FA4F0; --brand-400: #6580E6; --brand-500: #3B5BDB; --brand-600: #2F4BC7; --brand-700: #243BA8; --brand-800: #1B2D85; --brand-900: #14215F; --ink-0: #FFFFFF; --ink-25: #FAFAF8; --ink-50: #F5F4F0; --ink-100: #EFEDE7; --ink-200: #E8E6E1; --ink-300: #D6D3CC; --ink-400: #A8A29E; --ink-500: #78716C; --ink-600: #57534E; --ink-700: #3F3D3A; --ink-800: #292724; --ink-900: #1A1A17; --success-50: #ECFDF5; --success-500: #0F8A5E; --warn-50: #FEF7EC; --warn-500: #B86E16; --danger-50: #FEF2F2; --danger-500: #B42318; --accent-500: #C2410C; --viz-1: #3B5BDB; --viz-2: #5B8DEF; --viz-3: #7DA3C7; --viz-4: #B5A98A; --viz-5: #C2410C; --viz-6: #6B7280; --grid-line: color-mix(in srgb, var(--ink-900) 30%, var(--ink-0)); --r-xs: 2px; --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-pill: 999px; --shadow-flat: 0 0 0 1px rgba(26,26,23,0.06); --shadow-card: 0 1px 2px rgba(26,26,23,0.04), 0 0 0 1px rgba(26,26,23,0.06); --shadow-pop: 0 4px 12px rgba(26,26,23,0.06), 0 0 0 1px rgba(26,26,23,0.08); --shadow-focus: 0 0 0 3px rgba(59,91,219,0.18); --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif; --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace; --font-serif: 'Tiempos Text', 'Source Serif Pro', Georgia, serif; font-feature-settings: "cv11", "ss01", "ss03", "cv02"; }
+@supports (font-variation-settings: normal) {
+  :root { --font-sans: 'Inter var', 'Inter', ui-sans-serif, system-ui, sans-serif; }
+}
+[data-theme="dark"] { --ink-0: #1A1A17; --ink-25: #0E0E0C; --ink-50: #1A1A17; --ink-100: #232320; --ink-200: #2D2D29; --ink-300: #3D3D38; --ink-400: #6B6B65; --ink-500: #8A8A82; --ink-600: #B5B3AC; --ink-700: #D6D3CC; --ink-800: #EAE7E0; --ink-900: #F5F4F0; --brand-500: #6B85F0; --brand-600: #8AA0F4; --brand-50: #1B2240; --brand-100: #232C56; --viz-1: #6B85F0; --viz-2: #8AA0F4; --viz-3: #92ACC9; --viz-4: #BDB196; --viz-5: #E07A47; --viz-6: #A1A6AE; --grid-line: color-mix(in srgb, var(--ink-900) 22%, var(--ink-0)); --shadow-flat: 0 0 0 1px rgba(255,255,255,0.06); --shadow-card: 0 1px 2px rgba(0,0,0,0.30), 0 0 0 1px rgba(255,255,255,0.06); --shadow-pop: 0 4px 12px rgba(0,0,0,0.40), 0 0 0 1px rgba(255,255,255,0.08); }
+* { box-sizing: border-box; }
+html, body { margin: 0px; padding: 0px; font-family: var(--font-sans); color: var(--ink-800); background-color: var(--ink-25); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; font-feature-settings: "cv11", "ss01"; }
+.num, .num * { font-variant-numeric: tabular-nums; font-feature-settings: "tnum", "cv11"; }
+.t-display { font-size: 48px; line-height: 1.05; letter-spacing: -0.025em; font-weight: 500; color: var(--ink-900); }
+.t-h1 { font-size: 32px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 500; color: var(--ink-900); }
+.t-h2 { font-size: 22px; line-height: 1.25; letter-spacing: -0.015em; font-weight: 500; color: var(--ink-800); }
+.t-h3 { font-size: 16px; line-height: 1.35; letter-spacing: -0.01em; font-weight: 500; color: var(--ink-800); }
+.t-body { font-size: 14px; line-height: 1.55; font-weight: 400; color: var(--ink-600); }
+.t-small { font-size: 12.5px; line-height: 1.5; font-weight: 400; color: var(--ink-500); }
+.t-micro { font-size: 11px; line-height: 1.4; font-weight: 500; color: var(--ink-500); letter-spacing: 0.04em; text-transform: uppercase; }
+.t-mono { font-family: var(--font-mono); font-size: 12px; color: var(--ink-500); letter-spacing: 0px; }
+.surface { background-color: var(--ink-0); border-radius: var(--r-sm); box-shadow: var(--shadow-card); }
+.surface-flat { background-color: var(--ink-0); border-radius: var(--r-sm); box-shadow: var(--shadow-flat); }
+.surface-glass { background: color-mix(in srgb, var(--ink-0) 70%, transparent); backdrop-filter: blur(20px) saturate(140%); border-radius: var(--r-sm); box-shadow: var(--shadow-card); }
+.divider { height: 1px; background-color: var(--ink-200); border: 0px; }
+.vdivider { width: 1px; background-color: var(--ink-200); align-self: stretch; }
+.btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0px 12px; border-radius: var(--r-pill); font: 500 13px/1 var(--font-sans); letter-spacing: -0.005em; border: 1px solid transparent; cursor: pointer; transition: background 120ms, color 120ms, border-color 120ms; }
+.btn-primary { background-color: var(--brand-500); color: white; }
+.btn-primary:hover { background-color: var(--brand-600); }
+.btn-secondary { background-color: var(--ink-0); color: var(--ink-800); border-color: var(--ink-200); }
+.btn-secondary:hover { background-color: var(--ink-50); }
+.btn-ghost { background: transparent; color: var(--ink-700); }
+.btn-ghost:hover { background-color: var(--ink-100); }
+.btn-danger { background-color: var(--danger-500); color: white; }
+.btn-sm { height: 26px; padding: 0px 10px; font-size: 12px; }
+.btn-lg { height: 38px; padding: 0px 16px; font-size: 14px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0px 10px; border-radius: var(--r-pill); font: 500 12px/1 var(--font-sans); background-color: var(--ink-50); color: var(--ink-700); }
+.pill-active { background-color: var(--brand-50); color: var(--brand-700); }
+.pill-dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentcolor; opacity: 0.7; }
+.card { background-color: var(--ink-0); border-radius: var(--r-sm); box-shadow: var(--shadow-card); padding: var(--s-5); }
+.input { height: 32px; padding: 0px 10px; background-color: var(--ink-0); border: 1px solid var(--ink-200); border-radius: var(--r-sm); font: 400 13px/1 var(--font-sans); color: var(--ink-800); }
+.input:focus { outline: 0px; border-color: var(--brand-500); box-shadow: var(--shadow-focus); }
+.dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; }
+.dot-success { background-color: var(--success-500); }
+.dot-warn { background-color: var(--warn-500); }
+.dot-danger { background-color: var(--danger-500); }
+.dot-brand { background-color: var(--brand-500); }
+.dot-muted { background-color: var(--ink-400); }
+[data-palette="graphite"][data-theme="light"], [data-palette="graphite"][data-frame-theme="light"] { --brand-50: #EEF2FF; --brand-100: #DCE3FB; --brand-300: #8FA4F0; --brand-500: #3B5BDB; --brand-600: #2F4BC7; --brand-700: #243BA8; --ink-0: #FFFFFF; --ink-25: #FAFAF8; --ink-50: #F5F4F0; --ink-100: #EFEDE7; --ink-200: #E8E6E1; --ink-300: #D6D3CC; --ink-400: #A8A29E; --ink-500: #78716C; --ink-600: #57534E; --ink-700: #3F3D3A; --ink-800: #292724; --ink-900: #1A1A17; --accent-500: #C2410C; --viz-1: #3B5BDB; --viz-2: #5B8DEF; --viz-3: #7DA3C7; --viz-4: #B5A98A; --viz-5: #C2410C; --viz-6: #6B7280; }
+[data-palette="graphite"][data-theme="dark"], [data-palette="graphite"][data-frame-theme="dark"] { --brand-50: #1B2240; --brand-100: #232C56; --brand-300: #4A5FB8; --brand-500: #6B85F0; --brand-600: #8AA0F4; --brand-700: #A8B8F7; --ink-0: #1A1A17; --ink-25: #0E0E0C; --ink-50: #1A1A17; --ink-100: #232320; --ink-200: #2D2D29; --ink-300: #3D3D38; --ink-400: #6B6B65; --ink-500: #8A8A82; --ink-600: #B5B3AC; --ink-700: #D6D3CC; --ink-800: #EAE7E0; --ink-900: #F5F4F0; --accent-500: #E07A47; --viz-1: #6B85F0; --viz-2: #8AA0F4; --viz-3: #92ACC9; --viz-4: #BDB196; --viz-5: #E07A47; --viz-6: #A1A6AE; }
+[data-palette="forest"][data-theme="light"], [data-palette="forest"][data-frame-theme="light"] { --brand-50: #ECF2EE; --brand-100: #D4E2DA; --brand-300: #7FA68F; --brand-500: #2F6B4F; --brand-600: #265841; --brand-700: #1D4632; --ink-0: #FFFFFE; --ink-25: #FBFAF5; --ink-50: #F4F2EB; --ink-100: #EDEBE2; --ink-200: #E2DFD3; --ink-300: #CFCBBC; --ink-400: #A39E8E; --ink-500: #74715F; --ink-600: #4E4C40; --ink-700: #3A382F; --ink-800: #26251F; --ink-900: #161613; --accent-500: #B07D2E; --viz-1: #2F6B4F; --viz-2: #5B9476; --viz-3: #9CB8A6; --viz-4: #C9B584; --viz-5: #B07D2E; --viz-6: #6E6A57; }
+[data-palette="forest"][data-theme="dark"], [data-palette="forest"][data-frame-theme="dark"] { --brand-50: #14241C; --brand-100: #1A2F25; --brand-300: #4A8067; --brand-500: #6CB390; --brand-600: #88C5A7; --brand-700: #A4D6BD; --ink-0: #1B1B15; --ink-25: #0F0F0B; --ink-50: #1A1A15; --ink-100: #23231C; --ink-200: #2D2D26; --ink-300: #3F3E36; --ink-400: #6B6957; --ink-500: #8A876F; --ink-600: #B5B196; --ink-700: #D2CEB3; --ink-800: #E8E3C9; --ink-900: #F4F0D8; --accent-500: #D4A263; --viz-1: #6CB390; --viz-2: #88C5A7; --viz-3: #B5C9B0; --viz-4: #DCC78F; --viz-5: #D4A263; --viz-6: #A8A48B; }
+[data-palette="obsidian"][data-theme="light"], [data-palette="obsidian"][data-frame-theme="light"] { --brand-50: #F0F0F2; --brand-100: #DDDDE0; --brand-300: #6B6B72; --brand-500: #1A1A17; --brand-600: #0F0F0D; --brand-700: #050504; --ink-0: #FFFFFF; --ink-25: #F8F8F9; --ink-50: #F1F1F3; --ink-100: #E8E8EB; --ink-200: #DDDDE0; --ink-300: #C2C2C7; --ink-400: #8E8E94; --ink-500: #6B6B72; --ink-600: #48484E; --ink-700: #2D2D32; --ink-800: #18181C; --ink-900: #0A0A0C; --accent-500: #7C3AED; --viz-1: #18181C; --viz-2: #7C3AED; --viz-3: #A78BFA; --viz-4: #6B6B72; --viz-5: #C2C2C7; --viz-6: #4338CA; }
+[data-palette="obsidian"][data-theme="dark"], [data-palette="obsidian"][data-frame-theme="dark"] { --brand-50: #1A1A1F; --brand-100: #232328; --brand-300: #88888F; --brand-500: #F4F4F5; --brand-600: #FFFFFF; --brand-700: #FFFFFF; --ink-0: #18181C; --ink-25: #0A0A0C; --ink-50: #131316; --ink-100: #1D1D21; --ink-200: #28282E; --ink-300: #3A3A41; --ink-400: #6B6B72; --ink-500: #88888F; --ink-600: #B0B0B6; --ink-700: #D0D0D5; --ink-800: #E8E8EA; --ink-900: #F4F4F5; --accent-500: #A78BFA; --viz-1: #F4F4F5; --viz-2: #A78BFA; --viz-3: #7C3AED; --viz-4: #88888F; --viz-5: #3A3A41; --viz-6: #6366F1; }
+[data-palette="carbon"][data-theme="light"], [data-palette="carbon"][data-frame-theme="light"] { --brand-50: #EEF2F6; --brand-100: #D9E1EA; --brand-300: #8AA0B6; --brand-500: #475569; --brand-600: #3A4658; --brand-700: #2D3747; --ink-0: #FFFFFF; --ink-25: #F8F9FA; --ink-50: #F1F2F4; --ink-100: #E7E9EC; --ink-200: #DCDFE3; --ink-300: #C1C5CC; --ink-400: #8B919A; --ink-500: #656B75; --ink-600: #424852; --ink-700: #2A2F38; --ink-800: #181C23; --ink-900: #0C0F14; --accent-500: #EA580C; --viz-1: #475569; --viz-2: #7B8FA8; --viz-3: #A8B5C5; --viz-4: #EA580C; --viz-5: #F59E5B; --viz-6: #94A3B8; }
+[data-palette="eclipse"] { --r-sm: 6px; }
+[data-palette="eclipse"][data-frame-theme], [data-palette="eclipse"]:not([data-frame-theme]) { }
+[data-palette="eclipse"][data-theme="light"], [data-palette="eclipse"][data-frame-theme="light"] { --brand-50: #EEF0FA; --brand-100: #DCE0F4; --brand-300: #9CA4E0; --brand-500: #5E6AD2; --brand-600: #4A56C0; --brand-700: #3A45A0; --ink-0: #FFFFFF; --ink-25: #F7F8F8; --ink-50: #F1F1F2; --ink-100: #E8E8EA; --ink-200: #DDDDE0; --ink-300: #BDBDC2; --ink-400: #8A8F98; --ink-500: #6B6F78; --ink-600: #4A4D54; --ink-700: #2E3036; --ink-800: #1A1C20; --ink-900: #08090A; --accent-500: #5E6AD2; --viz-1: #5E6AD2; --viz-2: #7C86DE; --viz-3: #9CA4E0; --viz-4: #B8BCE5; --viz-5: #4A56C0; --viz-6: #6B6F78; }
+[data-palette="aurora"][data-theme="light"], [data-palette="aurora"][data-frame-theme="light"] { --brand-50: #ECFAFB; --brand-100: #CFF1F4; --brand-300: #6FC9D2; --brand-500: #0891B2; --brand-600: #0E7490; --brand-700: #155E75; --ink-0: #FFFFFF; --ink-25: #F6F9FA; --ink-50: #EEF3F5; --ink-100: #E2E9EC; --ink-200: #D5DCE0; --ink-300: #BAC2C8; --ink-400: #8A9298; --ink-500: #5E6770; --ink-600: #404952; --ink-700: #2A323A; --ink-800: #181D24; --ink-900: #0A0E13; --accent-500: #D97B2C; --viz-1: #0891B2; --viz-2: #3BAEC4; --viz-3: #6FC9D2; --viz-4: #D97B2C; --viz-5: #C39D6D; --viz-6: #8A9298; }
+[data-palette="aurora"][data-theme="dark"], [data-palette="aurora"][data-frame-theme="dark"] { --brand-50: #06283A; --brand-100: #0A3A4F; --brand-300: #2389A8; --brand-500: #38BDC7; --brand-600: #5BCFD7; --brand-700: #80DEE3; --ink-0: #131A20; --ink-25: #0A0F14; --ink-50: #131A20; --ink-100: #1D2530; --ink-200: #28313D; --ink-300: #3A4452; --ink-400: #6B7682; --ink-500: #8C97A1; --ink-600: #B0B9C2; --ink-700: #D0D6DC; --ink-800: #E5E9ED; --ink-900: #F1F4F7; --accent-500: #F4A05F; --viz-1: #38BDC7; --viz-2: #6CD2D8; --viz-3: #9DDEE2; --viz-4: #F4A05F; --viz-5: #E0BC8C; --viz-6: #8C97A1; }
+[data-palette="sand"][data-theme="light"], [data-palette="sand"][data-frame-theme="light"] { --brand-50: #FBEDE3; --brand-100: #F3D5BE; --brand-300: #D89C6E; --brand-500: #A0501F; --brand-600: #88421A; --brand-700: #6D3414; --ink-0: #FFFEFB; --ink-25: #FAF7F0; --ink-50: #F3EFE5; --ink-100: #ECE6D7; --ink-200: #DFD7C3; --ink-300: #C8BEA5; --ink-400: #9A8E72; --ink-500: #6E6450; --ink-600: #4A4234; --ink-700: #322C22; --ink-800: #1F1B15; --ink-900: #100E0B; --accent-500: #4A6BAA; --viz-1: #A0501F; --viz-2: #C8804A; --viz-3: #D89C6E; --viz-4: #4A6BAA; --viz-5: #7F8AAE; --viz-6: #9A8E72; }
+[data-palette="sand"][data-theme="dark"], [data-palette="sand"][data-frame-theme="dark"] { --brand-50: #2A1A0F; --brand-100: #3A2412; --brand-300: #A87245; --brand-500: #D88D5C; --brand-600: #E5A175; --brand-700: #EFB892; --ink-0: #1A1611; --ink-25: #100D08; --ink-50: #18140F; --ink-100: #221D16; --ink-200: #2D261D; --ink-300: #3F3729; --ink-400: #6E6450; --ink-500: #8E8470; --ink-600: #B5AB95; --ink-700: #D2C9B5; --ink-800: #E8E0CC; --ink-900: #F4EDD9; --accent-500: #7F95C8; --viz-1: #D88D5C; --viz-2: #E5A175; --viz-3: #EFB892; --viz-4: #7F95C8; --viz-5: #A8B0CB; --viz-6: #8E8470; }
+[data-palette="plum"][data-theme="light"], [data-palette="plum"][data-frame-theme="light"] { --brand-50: #FAF0FE; --brand-100: #EFDAFC; --brand-300: #C998EE; --brand-500: #9333EA; --brand-600: #7E22CE; --brand-700: #6B21A8; --ink-0: #FFFDFE; --ink-25: #FBF7FA; --ink-50: #F4EFF3; --ink-100: #ECE5EA; --ink-200: #DDD3DA; --ink-300: #C2B5BD; --ink-400: #9C8E97; --ink-500: #6F646C; --ink-600: #4D4448; --ink-700: #322B2E; --ink-800: #1E191B; --ink-900: #0E0A0C; --accent-500: #E11D74; --viz-1: #9333EA; --viz-2: #B968F0; --viz-3: #D8A6F5; --viz-4: #E11D74; --viz-5: #F26AA3; --viz-6: #9C8E97; }
+[data-palette="plum"][data-theme="dark"], [data-palette="plum"][data-frame-theme="dark"] { --brand-50: #2A0F3D; --brand-100: #3A1554; --brand-300: #A26FD8; --brand-500: #C58CF0; --brand-600: #D4A6F4; --brand-700: #E3C0F7; --ink-0: #1A1320; --ink-25: #0E0913; --ink-50: #15101C; --ink-100: #1F1828; --ink-200: #2A2233; --ink-300: #3D3445; --ink-400: #6E6478; --ink-500: #8E8398; --ink-600: #B4A9BC; --ink-700: #D1C7D6; --ink-800: #E7DEEB; --ink-900: #F2EBF5; --accent-500: #F084B6; --viz-1: #C58CF0; --viz-2: #D4A6F4; --viz-3: #E3C0F7; --viz-4: #F084B6; --viz-5: #F5A8CB; --viz-6: #8E8398; }
+[data-palette="mercury"][data-theme="light"], [data-palette="mercury"][data-frame-theme="light"] { --brand-50: #F2F3F5; --brand-100: #E1E3E8; --brand-300: #8E939D; --brand-500: #3F4651; --brand-600: #2C323B; --brand-700: #1E232A; --ink-0: #FFFFFF; --ink-25: #F9FAFB; --ink-50: #F2F3F5; --ink-100: #E8EAEE; --ink-200: #DCDFE4; --ink-300: #C2C6CD; --ink-400: #8E939D; --ink-500: #636872; --ink-600: #41464E; --ink-700: #2A2E34; --ink-800: #181B1F; --ink-900: #0A0C0E; --accent-500: #B89556; --viz-1: #3F4651; --viz-2: #6B727D; --viz-3: #9CA1A9; --viz-4: #B89556; --viz-5: #D4B783; --viz-6: #C2C6CD; }
+[data-palette="mercury"][data-theme="dark"], [data-palette="mercury"][data-frame-theme="dark"] { --brand-50: #1A1D22; --brand-100: #23272D; --brand-300: #8E939D; --brand-500: #D8DCE2; --brand-600: #E8EAEE; --brand-700: #F2F3F5; --ink-0: #16181C; --ink-25: #0B0D0F; --ink-50: #131519; --ink-100: #1C1F23; --ink-200: #262A2F; --ink-300: #383D43; --ink-400: #6B7079; --ink-500: #8E939D; --ink-600: #B5BAC2; --ink-700: #D2D6DC; --ink-800: #E7EAEE; --ink-900: #F2F4F6; --accent-500: #D4B783; --viz-1: #D8DCE2; --viz-2: #B5BAC2; --viz-3: #8E939D; --viz-4: #D4B783; --viz-5: #E8D4A6; --viz-6: #6B7079; }
+[data-palette="eclipse"][data-theme="dark"], [data-palette="eclipse"][data-frame-theme="dark"] { --brand-50: #161830; --brand-100: #1F2241; --brand-300: #4A56C0; --brand-500: #7C86DE; --brand-600: #9CA4E0; --brand-700: #B8BCE5; --ink-0: #101113; --ink-25: #08090A; --ink-50: #131418; --ink-100: #181A1E; --ink-200: #1F2023; --ink-300: #2A2C30; --ink-400: #5C616A; --ink-500: #8A8F98; --ink-600: #B4B8BE; --ink-700: #D0D2D6; --ink-800: #E6E7E9; --ink-900: #F7F8F8; --accent-500: #7C86DE; --viz-1: #7C86DE; --viz-2: #5E6AD2; --viz-3: #4A56C0; --viz-4: #9CA4E0; --viz-5: #B8BCE5; --viz-6: #5C616A; }
+[data-palette="carbon"][data-theme="dark"], [data-palette="carbon"][data-frame-theme="dark"] { --brand-50: #1A2230; --brand-100: #232C3E; --brand-300: #6E8499; --brand-500: #94A8BD; --brand-600: #B0C0D1; --brand-700: #C7D3E0; --ink-0: #14181F; --ink-25: #0A0D12; --ink-50: #13161C; --ink-100: #1C2028; --ink-200: #262B34; --ink-300: #383E48; --ink-400: #6B7280; --ink-500: #8B919A; --ink-600: #B0B5BD; --ink-700: #D0D4DA; --ink-800: #E5E8EC; --ink-900: #F1F3F6; --accent-500: #FB7F35; --viz-1: #94A8BD; --viz-2: #B0C0D1; --viz-3: #C7D3E0; --viz-4: #FB7F35; --viz-5: #FCAA72; --viz-6: #8B919A; }
+body { background: var(--ink-25); }
+.gs-wrap { max-width: 1240px; margin: 0px auto; padding: 32px; }
+.gs-card, .card { background: var(--ink-0); border-radius: 8px; box-shadow: var(--shadow-card); padding: var(--s-5); }
+.gs-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+.gs-pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: var(--r-pill); background: var(--ink-0); box-shadow: var(--shadow-flat); color: var(--ink-500); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gs-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success-500); }
+.gs-kpis { display: grid; gap: 16px; margin-bottom: 24px; grid-template-columns: repeat(var(--gs-kpi-cols,4), minmax(0,1fr)); }
+.gs-kpi { display: flex; flex-direction: column; gap: 12px; }
+.gs-kpi .num.good { color: var(--success-500); }
+.gs-kpi .num.alert { color: var(--danger-500); }
+.gs-kpi-sub { color: var(--ink-400); margin-top: 2px; }
+.gs-panels { display: grid; gap: 16px; grid-template-columns: var(--gs-panel-cols, 1fr 1fr); align-items: stretch; }
+.gs-phead { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.gs-donut-body { display: flex; align-items: center; gap: 22px; }
+.gs-chart { display: block; overflow: visible; max-width: 100%; height: auto; }
+.gs-legend { flex: 1 1 0%; display: flex; flex-direction: column; gap: 9px; min-width: 0px; }
+.gs-leg { display: grid; grid-template-columns: 12px 1fr auto auto; align-items: center; gap: 10px; }
+.gs-leg .sw { width: 8px; height: 8px; border-radius: 2px; }
+.gs-leg .nm { font-size: 13px; color: var(--ink-700); text-transform: capitalize; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gs-leg .vv { font-size: 13px; color: var(--ink-900); font-weight: 500; }
+.gs-leg .pp { width: 42px; text-align: right; }
+.gs-feed { display: flex; flex-direction: column; }
+.gs-feed .row { display: flex; align-items: center; gap: 10px; padding: 11px 0px; border-top: 1px solid var(--ink-100); }
+.gs-feed .row:first-child { border-top-width: medium; border-top-style: none; border-top-color: currentcolor; }
+.gs-feed .main { flex: 1 1 0%; min-width: 0px; }
+.gs-feed .ttl { font-size: 13.5px; color: var(--ink-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gs-feed .sub { font-size: 11px; color: var(--ink-400); }
+.gs-feed .meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; font-size: 12px; color: var(--ink-400); font-variant-numeric: tabular-nums; }
+.gs-avatar { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; box-shadow: rgba(26, 26, 23, 0.05) 0px 0px 0px 1px inset; }
+.gs-badge { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 500; text-transform: capitalize; white-space: nowrap; }
+.gs-badge .bd { width: 5px; height: 5px; border-radius: 50%; }
+.gs-b-success { background: var(--success-50); color: var(--success-500); }
+.gs-b-success .bd { background: var(--success-500); }
+.gs-b-warn { background: var(--warn-50); color: var(--warn-500); }
+.gs-b-warn .bd { background: var(--warn-500); }
+.gs-b-danger { background: var(--danger-50); color: var(--danger-500); }
+.gs-b-danger .bd { background: var(--danger-500); }
+.gs-b-brand { background: var(--brand-50); color: var(--brand-700); }
+.gs-b-brand .bd { background: var(--brand-500); }
+.gs-b-neutral { background: var(--ink-50); color: var(--ink-600); }
+.gs-b-neutral .bd { background: var(--ink-400); }
+.gs-empty { display: flex; align-items: center; justify-content: center; min-height: 150px; color: var(--ink-400); font-size: 13px; }
+.gs-vtable { display: flex; flex-direction: column; min-width: 0px; }
+.gs-vt-head { display: grid; gap: 12px; padding: 0px 12px 8px; border-bottom: 1px solid var(--ink-100); }
+.gs-vt-th { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-400); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gs-vt-notice { margin: 8px 0px 0px; padding: 6px 12px; border-radius: 6px; background: var(--warn-50); color: var(--warn-500); font-size: 11.5px; }
+.gs-vt-viewport { overflow-y: auto; position: relative; }
+.gs-vt-sizer { position: relative; }
+.gs-vt-slice { position: absolute; left: 0px; right: 0px; }
+.gs-vt-row { display: grid; gap: 12px; align-items: center; padding: 0px 12px; border-bottom: 1px solid var(--ink-100); font-size: 13px; color: var(--ink-800); box-sizing: border-box; }
+.gs-vt-cell { min-width: 0px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gs-vt-cell.ta-r { text-align: right; }
+.gs-vt-status { display: flex; align-items: center; gap: 10px; padding: 10px 12px; font-size: 12px; color: var(--ink-400); }
+.gs-vt-retry, .gs-sec-retry { padding: 4px 10px; border-radius: 6px; border: 1px solid var(--ink-200); background: var(--ink-0); color: var(--ink-700); font-size: 12px; cursor: pointer; }
+.gs-sec-loading { display: flex; align-items: center; justify-content: center; min-height: 90px; color: var(--ink-400); font-size: 12.5px; }
+.gs-sec-error { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 90px; color: var(--danger-500); font-size: 12.5px; }
+@media (max-width: 1000px) {
+  .gs-kpis { grid-template-columns: repeat(2, minmax(0px, 1fr)); }
+}
+@media (max-width: 960px) {
+  .gs-panels { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .gs-wrap { padding: 18px; }
+  .gs-donut-body { flex-direction: column; }
+}
+</style>
+<style>
+  body { background: var(--ink-25); }
+  .hub { max-width: 1080px; margin: 0 auto; padding: 40px 22px 80px; }
+  .hub h1 { font-size: 30px; letter-spacing: -0.02em; margin: 0 0 6px; color: var(--ink-900); font-weight: 600; }
+  .hub .sub { color: var(--ink-500); font-size: 13px; margin-bottom: 26px; line-height: 1.7; }
+  .hub .sub b { color: var(--brand-500); }
+  .hub h2 { font-size: 12px; text-transform: none; letter-spacing: .04em; color: var(--ink-500);
+            margin: 30px 0 10px; font-weight: 700; }
+  .grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); }
+  .card { display: block; padding: 13px 14px; border-radius: 10px; background: var(--ink-0);
+          border: 1px solid var(--ink-200); text-decoration: none; box-shadow: var(--shadow-card);
+          transition: border-color .12s, transform .12s; }
+  .card:hover { border-color: var(--brand-500); transform: translateY(-1px); }
+  .card .t { color: var(--ink-900); font-size: 13.5px; font-weight: 600; }
+  .card .f { color: var(--ink-400); font-size: 11px; margin-top: 5px; font-variant-numeric: tabular-nums; }
+  .note { margin-top: 34px; padding: 13px 15px; border-radius: 10px; background: var(--ink-50);
+          border: 1px dashed var(--ink-300); color: var(--ink-600); font-size: 12px; line-height: 1.75; }
+  .note b { color: var(--ink-800); }
+  .wide { grid-column: 1 / -1; }
+</style>
+</head>
+<body>
+<div class="hub">
+  <h1>다움 학습관리 — 전체 보드</h1>
+  <div class="sub">
+    총 <b>26</b>개 보드 · 데이터 스냅샷 <b>2026-10-18</b><br />
+    서버·데이터베이스 없이 이 폴더만 있으면 모든 보드를 열 수 있습니다. 각 보드는 <b>읽기 전용</b>입니다.
+  </div>
+  <h2>통합 웹앱</h2>
+  <div class="grid">
+    <a class="card wide" href="daum-dashboard-standalone.html">
+      <div class="t">다움 통합 웹앱 (26개 화면 · 등록/수정 가능)</div>
+      <div class="f">daum-dashboard-standalone.html — 스냅샷 2026-10-18, 이 브라우저에만 저장</div>
+    </a>
+  </div>
+  <h2>메인</h2><div class="grid"><a class="card" href="board-01.html"><div class="t">메인 — 다움진로진학컨설팅의 진학 및 학습 맞춤엔진</div><div class="f">board-01.html</div></a></div><h2>시작·기관</h2><div class="grid"><a class="card" href="board-02.html"><div class="t">기관 온보딩 가이드</div><div class="f">board-02.html</div></a><a class="card" href="board-03.html"><div class="t">기관·대상 관리</div><div class="f">board-03.html</div></a></div><h2>매일 확인</h2><div class="grid"><a class="card" href="board-04.html"><div class="t">운영 홈 대시보드</div><div class="f">board-04.html</div></a><a class="card" href="board-05.html"><div class="t">숙제 배부·제출 확인</div><div class="f">board-05.html</div></a><a class="card" href="board-06.html"><div class="t">수업 캘린더</div><div class="f">board-06.html</div></a><a class="card" href="board-07.html"><div class="t">운영 데이터 입력 센터</div><div class="f">board-07.html</div></a></div><h2>학습 분석</h2><div class="grid"><a class="card" href="board-08.html"><div class="t">AI 튜터 종합 대시보드</div><div class="f">board-08.html</div></a><a class="card" href="board-09.html"><div class="t">학생 진도·성취도 트래커</div><div class="f">board-09.html</div></a><a class="card" href="board-10.html"><div class="t">출결·AI세션 트래커</div><div class="f">board-10.html</div></a><a class="card" href="board-11.html"><div class="t">학습 콘텐츠·문제뱅크 트래커</div><div class="f">board-11.html</div></a><a class="card" href="board-12.html"><div class="t">학습 콘텐츠·교재 관리</div><div class="f">board-12.html</div></a><a class="card" href="board-13.html"><div class="t">문제뱅크 관리</div><div class="f">board-13.html</div></a><a class="card" href="board-14.html"><div class="t">학습 처방 대시보드</div><div class="f">board-14.html</div></a><a class="card" href="board-15.html"><div class="t">맞춤 학습경로 편집</div><div class="f">board-15.html</div></a><a class="card" href="board-16.html"><div class="t">취약 단원 진단·처방</div><div class="f">board-16.html</div></a><a class="card" href="board-17.html"><div class="t">시험지 자동 출제</div><div class="f">board-17.html</div></a></div><h2>진단·처방</h2><div class="grid"><a class="card" href="board-18.html"><div class="t">검사 진단·해석</div><div class="f">board-18.html</div></a><a class="card" href="board-19.html"><div class="t">내신등급 계산기</div><div class="f">board-19.html</div></a><a class="card" href="board-20.html"><div class="t">대입 로드맵</div><div class="f">board-20.html</div></a><a class="card" href="board-21.html"><div class="t">학습 처방 자료실</div><div class="f">board-21.html</div></a><a class="card" href="board-22.html"><div class="t">진학·학습 상담 기록</div><div class="f">board-22.html</div></a><a class="card" href="board-23.html"><div class="t">공부코치</div><div class="f">board-23.html</div></a><a class="card" href="board-24.html"><div class="t">통합 진단 리포트</div><div class="f">board-24.html</div></a></div><h2>리포트·등록</h2><div class="grid"><a class="card" href="board-25.html"><div class="t">학부모 리포트 생성기</div><div class="f">board-25.html</div></a><a class="card" href="board-26.html"><div class="t">CSV 일괄 등록</div><div class="f">board-26.html</div></a></div>
+  <div class="note">
+    <b>사용 안내</b><br />
+    · 압축을 푼 폴더 안에서 <b>index.html</b> 을 열면 이 목록이 나옵니다. 파일 하나만 따로 옮기면 열리지 않을 수 있습니다.<br />
+    · 화면에 보이는 값은 2026-10-18 기준 스냅샷입니다. 실시간 값은 온라인 대시보드에서 확인해 주세요.<br />
+    · 이 파일들에서는 데이터를 저장하거나 수정할 수 없습니다. 입력·수정이 필요하면 통합 웹앱(daum-dashboard-standalone.html) 또는 온라인 대시보드를 사용해 주세요.<br />
+    · 차트·표는 인터넷 연결 없이도 표시되며, 브라우저 인쇄(Ctrl+P)로 PDF 저장이 가능합니다.
+  </div>
+</div>
+</body>
+</html>

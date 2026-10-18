@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko" data-palette="sand">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>다움 학습관리 — 실사용 시작 가이드</title>
+<style>
+  :root{
+    --bg:#F7F4EC; --card:#FFFEFB; --line:#E4DCC9; --line2:#EFEADF;
+    --ink:#100E0B; --ink7:#3A3324; --ink5:#6E6450; --ink4:#8C8271;
+    --brand:#A0501F; --brand-bg:#F6EAE0; --ok:#0F8A5E; --ok-bg:#E7F4EF;
+    --warn:#B86E16; --warn-bg:#FBF1E0; --danger:#B42318; --danger-bg:#FBEAE8;
+    --shadow:0 1px 3px rgba(31,27,21,.07);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:15px/1.7 "Pretendard","Malgun Gothic","Apple SD Gothic Neo",system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:40px 22px 80px}
+  header.top{margin-bottom:26px}
+  .crumb{font-size:12.5px;color:var(--ink4);letter-spacing:.02em}
+  h1{font-size:30px;line-height:1.25;margin:10px 0 10px;letter-spacing:-.02em}
+  .lead{color:var(--ink5);font-size:15px;margin:0}
+  h2{font-size:19px;margin:38px 0 12px;letter-spacing:-.01em;display:flex;align-items:center;gap:9px}
+  h2 .n{display:inline-flex;width:26px;height:26px;border-radius:8px;background:var(--brand);color:#fff;
+        font-size:13px;font-weight:700;align-items:center;justify-content:center;flex:none}
+  h3{font-size:15.5px;margin:22px 0 8px}
+  p{margin:8px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:18px 20px;margin:14px 0}
+  .grid{display:grid;gap:12px}
+  @media(min-width:720px){ .g2{grid-template-columns:1fr 1fr} .g3{grid-template-columns:repeat(3,1fr)} }
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+  .kpi .k{font-size:12.5px;color:var(--ink5);font-weight:600}
+  .kpi .v{font-size:21px;font-weight:700;margin-top:4px;letter-spacing:-.01em}
+  .kpi .s{font-size:12px;color:var(--ink4);margin-top:2px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13.5px}
+  table caption{caption-side:top;text-align:left;font-size:12.5px;color:var(--ink5);padding:0 0 6px}
+  th,td{border-bottom:1px solid var(--line2);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:#FBF9F3;font-size:12.5px;color:var(--ink7);font-weight:700;white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  code{font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;background:#F3EFE4;border:1px solid var(--line2);border-radius:5px;padding:1px 5px}
+  pre{background:#FBF9F3;border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow:auto;
+      font:12.5px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;margin:10px 0}
+  .tag{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 9px;margin-right:6px}
+  .t-on{background:var(--ok-bg);color:var(--ok)}
+  .t-off{background:var(--danger-bg);color:var(--danger)}
+  .t-new{background:var(--brand-bg);color:var(--brand)}
+  .note{border-left:3px solid var(--brand);background:var(--brand-bg);border-radius:0 10px 10px 0;padding:12px 15px;margin:12px 0;font-size:13.5px}
+  .warn{border-left:3px solid var(--warn);background:var(--warn-bg);border-radius:0 10px 10px 0;padding:12px 15px;margin:12px 0;font-size:13.5px}
+  .danger{border-left:3px solid var(--danger);background:var(--danger-bg);border-radius:0 10px 10px 0;padding:12px 15px;margin:12px 0;font-size:13.5px}
+  ol.steps{margin:10px 0 0;padding-left:0;list-style:none;counter-reset:s}
+  ol.steps>li{position:relative;padding:0 0 0 34px;margin:0 0 16px;counter-increment:s}
+  ol.steps>li:before{content:counter(s);position:absolute;left:0;top:2px;width:23px;height:23px;border-radius:50%;
+      background:var(--brand-bg);color:var(--brand);font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  ol.steps b{display:block;font-size:15px;margin-bottom:2px}
+  ul.tight{margin:6px 0;padding-left:18px}
+  ul.tight li{margin:3px 0}
+  .ck{list-style:none;padding-left:0;margin:8px 0}
+  .ck li{padding-left:26px;position:relative;margin:6px 0}
+  .ck li:before{content:"";position:absolute;left:0;top:4px;width:14px;height:14px;border:1.5px solid var(--ink4);border-radius:4px}
+  .muted{color:var(--ink5)}
+  .small{font-size:12.5px}
+  hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+  .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+  @media print{
+    body{background:#fff} .wrap{max-width:none;padding:0}
+    .card,.kpi,table{box-shadow:none}
+    h2{break-after:avoid} table,.card{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="crumb">다움진로진학컨설팅의 진학 및 학습 맞춤엔진 · 워크스페이스 사용 안내</div>
+  <h1>다움 학습관리 — 실사용 시작 가이드</h1>
+  <p class="lead">학생을 등록하고 자료를 입력해 실제로 운영하기까지의 순서를 한 장으로 정리했습니다.<br/>
+  기준: 2026-10-18 · 화면 이름은 워크스페이스 왼쪽 목록의 이름과 같습니다.</p>
+  <div class="badge-row">
+    <span class="tag t-on">온라인 = 입력·수정 가능</span>
+    <span class="tag t-off">오프라인 파일 = 조회 전용</span>
+  </div>
+</header>
+
+<h2><span class="n">0</span>지금 바로 쓸 수 있나요?</h2>
+<div class="card">
+  <table>
+    <tr><th style="width:170px">사용 환경</th><th>할 수 있는 일</th><th style="width:150px">결론</th></tr>
+    <tr>
+      <td><b>워크스페이스 (온라인)</b></td>
+      <td>학생·기관·일정·평가·진도·교재·문제·상담·리포트 등록. 전체 27개 화면 중 <b>17개가 입력 기능</b>을 갖고 있고, 저장·수정·삭제 동작이 <b>75개</b> 준비되어 있습니다.</td>
+      <td><b>실사용 가능</b></td>
+    </tr>
+    <tr>
+      <td><b>받으신 ZIP 파일 (오프라인)</b></td>
+      <td>26개 보드를 인터넷 없이 열어 <b>보기</b>. 입력·저장은 되지 않습니다(수정 시 안내 메시지).</td>
+      <td>보고·공유용</td>
+    </tr>
+  </table>
+  <div class="note"><b>원칙</b> — 실제 운영 입력은 온라인 워크스페이스에서, 오프라인 파일은 결과를 보여주거나 인쇄·PDF로 넘길 때 사용하세요.</div>
+</div>
+
+<h2><span class="n">1</span>시작 전 정리 — 지금 들어 있는 예시 데이터</h2>
+<div class="card">
+  <p>지금 워크스페이스에는 화면을 확인할 수 있도록 <b>예시 행</b>이 들어 있습니다. 실사용 전에 정리하고 실제 데이터로 채우는 것을 권합니다.</p>
+  <div class="grid g3">
+    <div class="kpi"><div class="k">학생 (예시)</div><div class="v">5명</div><div class="s">S2026001 김민준 · S2026002 이서연 · S2026003 박지후 · S2026004 최수아 · S2026005 정현우</div></div>
+    <div class="kpi"><div class="k">기관 (예시)</div><div class="v">5곳</div><div class="s">강남구 진로진학센터 · 대한중학교 · 서울중학교 · 한국중학교 · 정현우 가정</div></div>
+    <div class="kpi"><div class="k">수업 일정 (예시)</div><div class="v">25건</div><div class="s">숙제 14 · 진도 10 · 평가결과 10 · 상담 5 · 리포트 6</div></div>
+  </div>
+  <div class="warn"><b>삭제는 되돌릴 수 없습니다.</b> 예시 행 정리는 어느 범위까지 지울지(학생+관련 기록 전체 / 일부만) 먼저 정한 뒤 실행하는 것이 안전합니다. 정리 목록을 만들어 확인받은 다음 진행합니다.<br/>
+  ※ <b>검사 척도 77개(MLST-2 · MCDT · NEO)</b>는 실제 검사 기준값입니다. 지우면 검사 해석이 되지 않으니 <b>그대로 두세요.</b></div>
+</div>
+
+<h2><span class="n">2</span>원스톱 등록 순서 (8단계)</h2>
+<p class="muted small">순서의 원칙: <b>기관 → 기준자료 → 학생 → 일정 → 자료 → 기록 → 진단 → 리포트.</b> 앞 단계가 비어 있으면 뒤 단계에서 학생을 고를 수 없습니다.</p>
+
+<ol class="steps">
+  <li>
+    <b>기관 등록 — 「기관·대상 관리」</b>
+    학교·센터·개인 컨설팅 대상을 등록합니다. 기관명, 유형(학교/지자체 센터/개인), 지역, 담당자 연락처, 프로그램명, 기수, 운영기간, 정원을 입력합니다.
+    <ul class="tight"><li>학생을 먼저 기관에 묶어두면 이후 리포트·자료실에서 기관 단위로 묶어 볼 수 있습니다.</li></ul>
+  </li>
+  <li>
+    <b>기준자료 확인 — 「운영 데이터 입력 센터」</b>
+    CSV 등록은 <b>이미 등록된 이름</b>과 정확히 일치해야 통과합니다. 지금 등록된 기준자료는 아래와 같습니다.
+    <table style="margin-top:8px">
+      <tr><th style="width:120px">구분</th><th>등록된 값</th></tr>
+      <tr><td>과목 (5)</td><td>국어 · 수학 · 영어 · 과학 · 사회</td></tr>
+      <tr><td>단원 (8)</td><td>수학: 이차함수 · 이차방정식 · 다항식의 곱셈과 인수분해 · 실수와 그 계산<br/>영어: 관계대명사 · 분사구문<br/>국어: 현대시 감상<br/>과학: 화학 반응과 에너지</td></tr>
+      <tr><td>평가 (5)</td><td>2026 1차 수학 모의고사 · 2026 2차 수학 모의고사 · 2026 3차 수학 모의고사 · 영어 중간 평가 · 영어 기말 평가</td></tr>
+      <tr><td>검사 척도 (77)</td><td>MLST-2(학습전략) · MCDT(진로흥미) · NEO(성격) — 그대로 유지</td></tr>
+    </table>
+    <div class="warn">새 과목·단원·평가를 <b>화면에서 추가하는 기능은 아직 없습니다.</b> 지금 값 안에서 시작하거나, 필요한 목록을 알려주시면 기준자료를 등록할 수 있게 준비해 드립니다.</div>
+  </li>
+  <li>
+    <b>학생 등록 — 「CSV 일괄 등록」 (권장)</b> 또는 「운영 데이터 입력 센터」
+    <ul class="tight">
+      <li><b>여러 명 한 번에</b>: 등록 대상에서 <b>학생 명단</b> 선택 → CSV 파일 업로드 또는 붙여넣기 → 미리보기에서 검증 결과 확인 → 등록. 최대 500행.</li>
+      <li>필수 열: <code>학생코드</code>, <code>이름</code> / 선택: 학년, 학교, 학부모명, 학부모연락처, 학부모이메일, 학습목표</li>
+      <li><b>한 명씩</b> 등록하거나 수정·삭제할 때는 「운영 데이터 입력 센터」의 학생 탭을 씁니다(입학일·학습스타일·메모까지 입력 가능).</li>
+      <li>이미 있는 <b>학생코드는 자동으로 건너뜁니다</b>(중복 등록 사고 없음).</li>
+    </ul>
+  </li>
+  <li>
+    <b>수업 일정 등록 — 「CSV 일괄 등록」(등록 대상: 수업 일정)</b>
+    <ul class="tight">
+      <li>필수 열: <code>날짜</code> / 선택: 시작시간, 종료시간, 학생코드, 과목, 주제, 담당교사, 강의실, 상태, 출결</li>
+      <li>학생코드나 과목명이 등록된 값과 다르면 <b>그 행만 건너뜁니다</b>(미리보기에서 표시).</li>
+      <li>등록 후 「수업 캘린더」에서 월간으로 확인하고, 개별 수업은 「운영 데이터 입력 센터」에서 수정합니다.</li>
+    </ul>
+  </li>
+  <li>
+    <b>학습자료 등록 — 「학습 콘텐츠·교재 관리」, 「문제뱅크 관리」</b>
+    <ul class="tight">
+      <li>교재·강의영상·문제집을 등록하고 학생에게 배정합니다(배정 이력 관리).</li>
+      <li>문제뱅크에 단원·난이도·문항을 등록해 두면 「시험지 자동 출제」로 바로 뽑을 수 있습니다.</li>
+    </ul>
+  </li>
+  <li>
+    <b>일상 기록 — 매일/매주 쓰는 화면</b>
+    <table style="margin-top:8px">
+      <tr><th style="width:210px">화면</th><th>무엇을 기록하나요</th></tr>
+      <tr><td>숙제 배부·제출 확인</td><td>숙제 배부, 제출 여부·점수·기한 처리</td></tr>
+      <tr><td>운영 데이터 입력 센터</td><td>AI 튜터 세션, 평가 결과, 학습 진도, 학부모 리포트 (각 항목 추가·수정·삭제)</td></tr>
+      <tr><td>공부코치</td><td>일일 학습 계획, 실제 학습시간, 집중도</td></tr>
+      <tr><td>출결·AI세션 트래커</td><td>기록된 출결·세션을 한눈에 확인(조회)</td></tr>
+    </table>
+  </li>
+  <li>
+    <b>진단·처방 — 「검사 진단·해석」부터</b>
+    <ul class="tight">
+      <li><b>검사 결과 일괄 업로드</b>: CSV 또는 엑셀(xlsx) 파일의 첫 시트. 필수 열 <code>학생코드</code> · <code>검사종류</code>(MLST2/MCDT/NEO) · <code>검사일</code>(2026-10-12) · <code>척도코드</code> · <code>점수</code> (선택: 검사명). 학생코드와 척도코드가 등록돼 있어야 통과합니다.</li>
+      <li>내신 성적은 「내신등급 계산기」에서 과목별 석차·이수자수를 넣으면 5등급제 기준 등급이 계산됩니다.</li>
+      <li>목표 대학·전형은 「대입 로드맵」에 등록하고, 로드맵 단계는 단계별로 추가·완료 처리합니다.</li>
+      <li>취약 단원이 잡히면 「취약 단원 진단·처방」에서 <b>학습경로를 자동 생성</b> → 「맞춤 학습경로 편집」에서 순서를 조정 → 「학습 처방 자료실」에서 자료를 붙입니다.</li>
+    </ul>
+  </li>
+  <li>
+    <b>리포트·상담 — 마무리 단계</b>
+    <ul class="tight">
+      <li>「학부모 리포트 생성기」에서 학생을 고르면 진도·출결·평가·세션 기록이 자동으로 모여 리포트 초안이 만들어집니다 → 검토 후 저장.</li>
+      <li>「통합 진단 리포트」는 검사·내신·목표·취약 단원을 한 장으로 묶어 상담 자료로 씁니다.</li>
+      <li>상담 내용은 「진학·학습 상담 기록」에 남깁니다.</li>
+    </ul>
+  </li>
+</ol>
+
+<h2><span class="n">3</span>업무 리듬 — 언제 무엇을 보나요</h2>
+<div class="card">
+  <table>
+    <tr><th style="width:90px">주기</th><th>확인할 화면</th><th>할 일</th></tr>
+    <tr><td><b>매일</b></td><td>운영 홈 대시보드</td><td>오늘 일정, 관리가 필요한 학생, 보내지 않은 리포트 확인 → 그날 수업·숙제·세션 기록 입력</td></tr>
+    <tr><td><b>매주</b></td><td>학생 진도·성취도 트래커, 숙제 배부·제출 확인</td><td>진도율·숙련도 하락 학생 점검, 미제출 숙제 정리</td></tr>
+    <tr><td><b>매월</b></td><td>학부모 리포트 생성기, AI 튜터 종합 대시보드</td><td>월간 리포트 작성·발송, 세션·평가 흐름 점검</td></tr>
+    <tr><td><b>학기/검사 후</b></td><td>검사 진단·해석, 취약 단원 진단·처방, 대입 로드맵</td><td>검사 일괄 업로드 → 취약 단원 처방 → 학습경로 갱신</td></tr>
+  </table>
+</div>
+
+<h2><span class="n">4</span>CSV 등록 규칙 (행이 건너뛰어질 때 확인하세요)</h2>
+<div class="card">
+  <table>
+    <tr><th style="width:130px">등록 대상</th><th>건너뛰는 조건</th></tr>
+    <tr><td>학생 명단</td><td>이미 등록된 학생코드</td></tr>
+    <tr><td>수업 일정</td><td>학생코드·과목명이 등록된 값과 불일치 / 같은 학생·같은 날짜·시간에 이미 수업이 있음</td></tr>
+    <tr><td>평가 결과</td><td>평가명이 등록된 평가와 불일치 / 같은 학생·같은 평가 결과가 이미 있음</td></tr>
+    <tr><td>학습 진도</td><td>과목+단원 조합이 등록된 단원과 불일치 / 같은 학생·단원 기록이 이미 있음</td></tr>
+  </table>
+  <p class="small" style="margin-top:10px"><b>형식</b> — 날짜는 <code>2026-10-12</code> · <code>2026.10.12</code> · <code>20261012</code> 모두 인식됩니다. 시간은 <code>18:00</code> 형식. 한 번에 최대 <b>500행</b>. 등록은 <b>추가만</b> 하며 기존 행을 덮어쓰지 않습니다(수정은 각 화면의 수정 버튼 사용).</p>
+</div>
+
+<h2><span class="n">5</span>검사 결과 업로드 예시 (「검사 진단·해석」)</h2>
+<div class="card">
+<pre>학생코드,검사종류,검사일,척도코드,점수,검사명
+S2026001,MLST2,2026-10-12,시험전략,78,MLST-2 학습전략검사
+S2026001,MCDT,2026-10-12,CLR,85,MCDT 진로흥미검사
+S2026001,NEO,2026-10-12,외향성,62,NEO 성격검사</pre>
+  <p class="small muted">척도코드는 검사별로 등록된 코드를 그대로 씁니다(예: MCDT — <code>A</code> 예술형, <code>CLR</code> 명확성, <code>RoeSCI</code> 과학 / MLST2·NEO 계열도 동일). 코드가 등록값과 다르면 그 행은 오류로 표시되고 등록되지 않습니다.</p>
+</div>
+
+<h2><span class="n">6</span>아직 없는 기능 (실사용 시 참고)</h2>
+<div class="card">
+  <ul class="tight">
+    <li><b>과목·단원·평가 추가 화면 없음</b> — 현재 등록된 값 안에서만 선택·매칭됩니다. 필요하면 기준자료 등록 수단을 만들어 드립니다.</li>
+    <li><b>검사 척도(MLST-2 · MCDT · NEO) 추가 화면 없음</b> — 표준 척도 77개가 미리 들어 있습니다.</li>
+    <li><b>계정·권한 구분 없음</b> — 워크스페이스에 접근할 수 있는 사람은 모두 입력·수정할 수 있습니다. 외부 공유는 하지 않는 것이 안전합니다.</li>
+    <li><b>학부모 리포트의 '발송'은 발송 상태 기록</b>입니다. 실제 메일 발송은 별도로 진행합니다.</li>
+    <li><b>오프라인 파일은 입력 불가</b> — 조회·인쇄(브라우저 인쇄로 PDF 저장) 전용입니다.</li>
+  </ul>
+</div>
+
+<h2><span class="n">7</span>등록 순서 체크리스트</h2>
+<div class="card">
+  <ul class="ck">
+    <li>예시 데이터 정리 범위 결정 (학생·기관·기록)</li>
+    <li>기관 등록 (기관·대상 관리)</li>
+    <li>과목·단원·평가 이름 확인 — 필요한 새 항목 목록 정리</li>
+    <li>학생 명단 CSV 준비 → CSV 일괄 등록 → 학생 5명 대신 실제 명단 확인</li>
+    <li>수업 일정 CSV 준비 → 등록 → 수업 캘린더에서 확인</li>
+    <li>교재·문제 등록 (학습 콘텐츠·교재 관리, 문제뱅크 관리)</li>
+    <li>숙제 배부 시작 (숙제 배부·제출 확인)</li>
+    <li>검사 결과 파일 준비 → 검사 진단·해석에서 업로드</li>
+    <li>내신 성적 입력 (내신등급 계산기)</li>
+    <li>목표 대학·전형 입력 (대입 로드맵)</li>
+    <li>학부모 리포트 1건 시험 생성 → 문구 확인</li>
+  </ul>
+</div>
+
+<hr/>
+<p class="small muted">다움진로진학컨설팅의 진학 및 학습 맞춤엔진 · 워크스페이스 사용 안내 · 2026-10-18 작성<br/>
+화면 이름은 워크스페이스 왼쪽 목록의 이름과 같습니다. 오프라인 패키지(26개 보드)는 같은 내용을 조회용으로 담고 있으며, 입력은 이 워크스페이스에서만 됩니다.</p>
+
+<h2>📎 CSV 양식 내려받기</h2>
+<p class="small muted">엑셀로 열어 작성한 뒤, 워크스페이스의 일괄 등록 화면에 업로드하세요. (과목·단원·평가 이름은 등록된 값과 정확히 같아야 합니다)</p>
+<div class="card tight" style="display:grid;gap:8px;font-size:13.5px">
+  <a href="templates/1_학생명단.csv" download>⬇ 1. 학생 명단</a>
+  <a href="templates/2_수업일정.csv" download>⬇ 2. 수업 일정</a>
+  <a href="templates/3_평가결과.csv" download>⬇ 3. 평가 결과</a>
+  <a href="templates/4_학습진도.csv" download>⬇ 4. 학습 진도</a>
+  <a href="templates/5_검사결과.csv" download>⬇ 5. 검사 결과</a>
+</div>
+
+</div>
+</body>
+</html>

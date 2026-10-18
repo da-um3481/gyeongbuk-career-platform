@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="ko" data-palette="sand" data-theme="light">
+<head>
+<style id="gs-kit-css">
+:root { --brand-50: #EEF2FF; --brand-100: #DCE3FB; --brand-200: #B9C7F7; --brand-300: #8FA4F0; --brand-400: #6580E6; --brand-500: #3B5BDB; --brand-600: #2F4BC7; --brand-700: #243BA8; --brand-800: #1B2D85; --brand-900: #14215F; --ink-0: #FFFFFF; --ink-25: #FAFAF8; --ink-50: #F5F4F0; --ink-100: #EFEDE7; --ink-200: #E8E6E1; --ink-300: #D6D3CC; --ink-400: #A8A29E; --ink-500: #78716C; --ink-600: #57534E; --ink-700: #3F3D3A; --ink-800: #292724; --ink-900: #1A1A17; --success-50: #ECFDF5; --success-500: #0F8A5E; --warn-50: #FEF7EC; --warn-500: #B86E16; --danger-50: #FEF2F2; --danger-500: #B42318; --accent-500: #C2410C; --viz-1: #3B5BDB; --viz-2: #5B8DEF; --viz-3: #7DA3C7; --viz-4: #B5A98A; --viz-5: #C2410C; --viz-6: #6B7280; --grid-line: color-mix(in srgb, var(--ink-900) 30%, var(--ink-0)); --r-xs: 2px; --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-pill: 999px; --shadow-flat: 0 0 0 1px rgba(26,26,23,0.06); --shadow-card: 0 1px 2px rgba(26,26,23,0.04), 0 0 0 1px rgba(26,26,23,0.06); --shadow-pop: 0 4px 12px rgba(26,26,23,0.06), 0 0 0 1px rgba(26,26,23,0.08); --shadow-focus: 0 0 0 3px rgba(59,91,219,0.18); --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif; --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace; --font-serif: 'Tiempos Text', 'Source Serif Pro', Georgia, serif; font-feature-settings: "cv11", "ss01", "ss03", "cv02"; }
+@supports (font-variation-settings: normal) {
+  :root { --font-sans: 'Inter var', 'Inter', ui-sans-serif, system-ui, sans-serif; }
+}
+[data-theme="dark"] { --ink-0: #1A1A17; --ink-25: #0E0E0C; --ink-50: #1A1A17; --ink-100: #232320; --ink-200: #2D2D29; --ink-300: #3D3D38; --ink-400: #6B6B65; --ink-500: #8A8A82; --ink-600: #B5B3AC; --ink-700: #D6D3CC; --ink-800: #EAE7E0; --ink-900: #F5F4F0; --brand-500: #6B85F0; --brand-600: #8AA0F4; --brand-50: #1B2240; --brand-100: #232C56; --viz-1: #6B85F0; --viz-2: #8AA0F4; --viz-3: #92ACC9; --viz-4: #BDB196; --viz-5: #E07A47; --viz-6: #A1A6AE; --grid-line: color-mix(in srgb, var(--ink-900) 22%, var(--ink-0)); --shadow-flat: 0 0 0 1px rgba(255,255,255,0.06); --shadow-card: 0 1px 2px rgba(0,0,0,0.30), 0 0 0 1px rgba(255,255,255,0.06); --shadow-pop: 0 4px 12px rgba(0,0,0,0.40), 0 0 0 1px rgba(255,255,255,0.08); }
+* { box-sizing: border-box; }
+html, body { margin: 0px; padding: 0px; font-family: var(--font-sans); color: var(--ink-800); background-color: var(--ink-25); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; font-feature-settings: "cv11", "ss01"; }
+.num, .num * { font-variant-numeric: tabular-nums; font-feature-settings: "tnum", "cv11"; }
+.t-display { font-size: 48px; line-height: 1.05; letter-spacing: -0.025em; font-weight: 500; color: var(--ink-900); }
+.t-h1 { font-size: 32px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 500; color: var(--ink-900); }
+.t-h2 { font-size: 22px; line-height: 1.25; letter-spacing: -0.015em; font-weight: 500; color: var(--ink-800); }
+.t-h3 { font-size: 16px; line-height: 1.35; letter-spacing: -0.01em; font-weight: 500; color: var(--ink-800); }
+.t-body { font-size: 14px; line-height: 1.55; font-weight: 400; color: var(--ink-600); }
+.t-small { font-size: 12.5px; line-height: 1.5; font-weight: 400; color: var(--ink-500); }
+.t-micro { font-size: 11px; line-height: 1.4; font-weight: 500; color: var(--ink-500); letter-spacing: 0.04em; text-transform: uppercase; }
+.t-mono { font-family: var(--font-mono); font-size: 12px; color: var(--ink-500); letter-spacing: 0px; }
+.surface { background-color: var(--ink-0); border-radius: var(--r-sm); box-shadow: var(--shadow-card); }
+.surface-flat { background-color: var(--ink-0); border-radius: var(--r-sm); box-shadow: var(--shadow-flat); }
+.surface-glass { background: color-mix(in srgb, var(--ink-0) 70%, transparent); backdrop-filter: blur(20px) saturate(140%); border-radius: var(--r-sm); box-shadow: var(--shadow-card); }
+.divider { height: 1px; background-color: var(--ink-200); border: 0px; }
+.vdivider { width: 1px; background-color: var(--ink-200); align-self: stretch; }
+.btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0px 12px; border-radius: var(--r-pill); font: 500 13px/1 var(--font-sans); letter-spacing: -0.005em; border: 1px solid transparent; cursor: pointer; transition: background 120ms, color 120ms, border-color 120ms; }
+.btn-primary { background-color: var(--brand-500); color: white; }
+.btn-primary:hover { background-color: var(--brand-600); }
+.btn-secondary { background-color: var(--ink-0); color: var(--ink-800); border-color: var(--ink-200); }
+.btn-secondary:hover { background-color: var(--ink-50); }
+.btn-ghost { background: transparent; color: var(--ink-700); }
+.btn-ghost:hover { background-color: var(--ink-100); }
+.btn-danger { background-color: var(--danger-500); color: white; }
+.btn-sm { height: 26px; padding: 0px 10px; font-size: 12px; }
+.btn-lg { height: 38px; padding: 0px 16px; font-size: 14px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0px 10px; border-radius: var(--r-pill); font: 500 12px/1 var(--font-sans); background-color: var(--ink-50); color: var(--ink-700); }
+.pill-active { background-color: var(--brand-50); color: var(--brand-700); }
+.pill-dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentcolor; opacity: 0.7; }
+.card { background-color: var(--ink-0); border-radius: var(--r-sm); box-shadow: var(--shadow-card); padding: var(--s-5); }
+.input { height: 32px; padding: 0px 10px; background-color: var(--ink-0); border: 1px solid var(--ink-200); border-radius: var(--r-sm); font: 400 13px/1 var(--font-sans); color: var(--ink-800); }
+.input:focus { outline: 0px; border-color: var(--brand-500); box-shadow: var(--shadow-focus); }
+.dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; }
+.dot-success { background-color: var(--success-500); }
+.dot-warn { background-color: var(--warn-500); }
+.dot-danger { background-color: var(--danger-500); }
+.dot-brand { background-color: var(--brand-500); }
+.dot-muted { background-color: var(--ink-400); }
+[data-palette="graphite"][data-theme="light"], [data-palette="graphite"][data-frame-theme="light"] { --brand-50: #EEF2FF; --brand-100: #DCE3FB; --brand-300: #8FA4F0; --brand-500: #3B5BDB; --brand-600: #2F4BC7; --brand-700: #243BA8; --ink-0: #FFFFFF; --ink-25: #FAFAF8; --ink-50: #F5F4F0; --ink-100: #EFEDE7; --ink-200: #E8E6E1; --ink-300: #D6D3CC; --ink-400: #A8A29E; --ink-500: #78716C; --ink-600: #57534E; --ink-700: #3F3D3A; --ink-800: #292724; --ink-900: #1A1A17; --accent-500: #C2410C; --viz-1: #3B5BDB; --viz-2: #5B8DEF; --viz-3: #7DA3C7; --viz-4: #B5A98A; --viz-5: #C2410C; --viz-6: #6B7280; }
+[data-palette="graphite"][data-theme="dark"], [data-palette="graphite"][data-frame-theme="dark"] { --brand-50: #1B2240; --brand-100: #232C56; --brand-300: #4A5FB8; --brand-500: #6B85F0; --brand-600: #8AA0F4; --brand-700: #A8B8F7; --ink-0: #1A1A17; --ink-25: #0E0E0C; --ink-50: #1A1A17; --ink-100: #232320; --ink-200: #2D2D29; --ink-300: #3D3D38; --ink-400: #6B6B65; --ink-500: #8A8A82; --ink-600: #B5B3AC; --ink-700: #D6D3CC; --ink-800: #EAE7E0; --ink-900: #F5F4F0; --accent-500: #E07A47; --viz-1: #6B85F0; --viz-2: #8AA0F4; --viz-3: #92ACC9; --viz-4: #BDB196; --viz-5: #E07A47; --viz-6: #A1A6AE; }
+[data-palette="forest"][data-theme="light"], [data-palette="forest"][data-frame-theme="light"] { --brand-50: #ECF2EE; --brand-100: #D4E2DA; --brand-300: #7FA68F; --brand-500: #2F6B4F; --brand-600: #265841; --brand-700: #1D4632; --ink-0: #FFFFFE; --ink-25: #FBFAF5; --ink-50: #F4F2EB; --ink-100: #EDEBE2; --ink-200: #E2DFD3; --ink-300: #CFCBBC; --ink-400: #A39E8E; --ink-500: #74715F; --ink-600: #4E4C40; --ink-700: #3A382F; --ink-800: #26251F; --ink-900: #161613; --accent-500: #B07D2E; --viz-1: #2F6B4F; --viz-2: #5B9476; --viz-3: #9CB8A6; --viz-4: #C9B584; --viz-5: #B07D2E; --viz-6: #6E6A57; }
+[data-palette="forest"][data-theme="dark"], [data-palette="forest"][data-frame-theme="dark"] { --brand-50: #14241C; --brand-100: #1A2F25; --brand-300: #4A8067; --brand-500: #6CB390; --brand-600: #88C5A7; --brand-700: #A4D6BD; --ink-0: #1B1B15; --ink-25: #0F0F0B; --ink-50: #1A1A15; --ink-100: #23231C; --ink-200: #2D2D26; --ink-300: #3F3E36; --ink-400: #6B6957; --ink-500: #8A876F; --ink-600: #B5B196; --ink-700: #D2CEB3; --ink-800: #E8E3C9; --ink-900: #F4F0D8; --accent-500: #D4A263; --viz-1: #6CB390; --viz-2: #88C5A7; --viz-3: #B5C9B0; --viz-4: #DCC78F; --viz-5: #D4A263; --viz-6: #A8A48B; }
+[data-palette="obsidian"][data-theme="light"], [data-palette="obsidian"][data-frame-theme="light"] { --brand-50: #F0F0F2; --brand-100: #DDDDE0; --brand-300: #6B6B72; --brand-500: #1A1A17; --brand-600: #0F0F0D; --brand-700: #050504; --ink-0: #FFFFFF; --ink-25: #F8F8F9; --ink-50: #F1F1F3; --ink-100: #E8E8EB; --ink-200: #DDDDE0; --ink-300: #C2C2C7; --ink-400: #8E8E94; --ink-500: #6B6B72; --ink-600: #48484E; --ink-700: #2D2D32; --ink-800: #18181C; --ink-900: #0A0A0C; --accent-500: #7C3AED; --viz-1: #18181C; --viz-2: #7C3AED; --viz-3: #A78BFA; --viz-4: #6B6B72; --viz-5: #C2C2C7; --viz-6: #4338CA; }
+[data-palette="obsidian"][data-theme="dark"], [data-palette="obsidian"][data-frame-theme="dark"] { --brand-50: #1A1A1F; --brand-100: #232328; --brand-300: #88888F; --brand-500: #F4F4F5; --brand-600: #FFFFFF; --brand-700: #FFFFFF; --ink-0: #18181C; --ink-25: #0A0A0C; --ink-50: #131316; --ink-100: #1D1D21; --ink-200: #28282E; --ink-300: #3A3A41; --ink-400: #6B6B72; --ink-500: #88888F; --ink-600: #B0B0B6; --ink-700: #D0D0D5; --ink-800: #E8E8EA; --ink-900: #F4F4F5; --accent-500: #A78BFA; --viz-1: #F4F4F5; --viz-2: #A78BFA; --viz-3: #7C3AED; --viz-4: #88888F; --viz-5: #3A3A41; --viz-6: #6366F1; }
+[data-palette="carbon"][data-theme="light"], [data-palette="carbon"][data-frame-theme="light"] { --brand-50: #EEF2F6; --brand-100: #D9E1EA; --brand-300: #8AA0B6; --brand-500: #475569; --brand-600: #3A4658; --brand-700: #2D3747; --ink-0: #FFFFFF; --ink-25: #F8F9FA; --ink-50: #F1F2F4; --ink-100: #E7E9EC; --ink-200: #DCDFE3; --ink-300: #C1C5CC; --ink-400: #8B919A; --ink-500: #656B75; --ink-600: #424852; --ink-700: #2A2F38; --ink-800: #181C23; --ink-900: #0C0F14; --accent-500: #EA580C; --viz-1: #475569; --viz-2: #7B8FA8; --viz-3: #A8B5C5; --viz-4: #EA580C; --viz-5: #F59E5B; --viz-6: #94A3B8; }
+[data-palette="eclipse"] { --r-sm: 6px; }
+[data-palette="eclipse"][data-frame-theme], [data-palette="eclipse"]:not([data-frame-theme]) { }
+[data-palette="eclipse"][data-theme="light"], [data-palette="eclipse"][data-frame-theme="light"] { --brand-50: #EEF0FA; --brand-100: #DCE0F4; --brand-300: #9CA4E0; --brand-500: #5E6AD2; --brand-600: #4A56C0; --brand-700: #3A45A0; --ink-0: #FFFFFF; --ink-25: #F7F8F8; --ink-50: #F1F1F2; --ink-100: #E8E8EA; --ink-200: #DDDDE0; --ink-300: #BDBDC2; --ink-400: #8A8F98; --ink-500: #6B6F78; --ink-600: #4A4D54; --ink-700: #2E3036; --ink-800: #1A1C20; --ink-900: #08090A; --accent-500: #5E6AD2; --viz-1: #5E6AD2; --viz-2: #7C86DE; --viz-3: #9CA4E0; --viz-4: #B8BCE5; --viz-5: #4A56C0; --viz-6: #6B6F78; }
+[data-palette="aurora"][data-theme="light"], [data-palette="aurora"][data-frame-theme="light"] { --brand-50: #ECFAFB; --brand-100: #CFF1F4; --brand-300: #6FC9D2; --brand-500: #0891B2; --brand-600: #0E7490; --brand-700: #155E75; --ink-0: #FFFFFF; --ink-25: #F6F9FA; --ink-50: #EEF3F5; --ink-100: #E2E9EC; --ink-200: #D5DCE0; --ink-300: #BAC2C8; --ink-400: #8A9298; --ink-500: #5E6770; --ink-600: #404952; --ink-700: #2A323A; --ink-800: #181D24; --ink-900: #0A0E13; --accent-500: #D97B2C; --viz-1: #0891B2; --viz-2: #3BAEC4; --viz-3: #6FC9D2; --viz-4: #D97B2C; --viz-5: #C39D6D; --viz-6: #8A9298; }
+[data-palette="aurora"][data-theme="dark"], [data-palette="aurora"][data-frame-theme="dark"] { --brand-50: #06283A; --brand-100: #0A3A4F; --brand-300: #2389A8; --brand-500: #38BDC7; --brand-600: #5BCFD7; --brand-700: #80DEE3; --ink-0: #131A20; --ink-25: #0A0F14; --ink-50: #131A20; --ink-100: #1D2530; --ink-200: #28313D; --ink-300: #3A4452; --ink-400: #6B7682; --ink-500: #8C97A1; --ink-600: #B0B9C2; --ink-700: #D0D6DC; --ink-800: #E5E9ED; --ink-900: #F1F4F7; --accent-500: #F4A05F; --viz-1: #38BDC7; --viz-2: #6CD2D8; --viz-3: #9DDEE2; --viz-4: #F4A05F; --viz-5: #E0BC8C; --viz-6: #8C97A1; }
+[data-palette="sand"][data-theme="light"], [data-palette="sand"][data-frame-theme="light"] { --brand-50: #FBEDE3; --brand-100: #F3D5BE; --brand-300: #D89C6E; --brand-500: #A0501F; --brand-600: #88421A; --brand-700: #6D3414; --ink-0: #FFFEFB; --ink-25: #FAF7F0; --ink-50: #F3EFE5; --ink-100: #ECE6D7; --ink-200: #DFD7C3; --ink-300: #C8BEA5; --ink-400: #9A8E72; --ink-500: #6E6450; --ink-600: #4A4234; --ink-700: #322C22; --ink-800: #1F1B15; --ink-900: #100E0B; --accent-500: #4A6BAA; --viz-1: #A0501F; --viz-2: #C8804A; --viz-3: #D89C6E; --viz-4: #4A6BAA; --viz-5: #7F8AAE; --viz-6: #9A8E72; }
+[data-palette="sand"][data-theme="dark"], [data-palette="sand"][data-frame-theme="dark"] { --brand-50: #2A1A0F; --brand-100: #3A2412; --brand-300: #A87245; --brand-500: #D88D5C; --brand-600: #E5A175; --brand-700: #EFB892; --ink-0: #1A1611; --ink-25: #100D08; --ink-50: #18140F; --ink-100: #221D16; --ink-200: #2D261D; --ink-300: #3F3729; --ink-400: #6E6450; --ink-500: #8E8470; --ink-600: #B5AB95; --ink-700: #D2C9B5; --ink-800: #E8E0CC; --ink-900: #F4EDD9; --accent-500: #7F95C8; --viz-1: #D88D5C; --viz-2: #E5A175; --viz-3: #EFB892; --viz-4: #7F95C8; --viz-5: #A8B0CB; --viz-6: #8E8470; }
+[data-palette="plum"][data-theme="light"], [data-palette="plum"][data-frame-theme="light"] { --brand-50: #FAF0FE; --brand-100: #EFDAFC; --brand-300: #C998EE; --brand-500: #9333EA; --brand-600: #7E22CE; --brand-700: #6B21A8; --ink-0: #FFFDFE; --ink-25: #FBF7FA; --ink-50: #F4EFF3; --ink-100: #ECE5EA; --ink-200: #DDD3DA; --ink-300: #C2B5BD; --ink-400: #9C8E97; --ink-500: #6F646C; --ink-600: #4D4448; --ink-700: #322B2E; --ink-800: #1E191B; --ink-900: #0E0A0C; --accent-500: #E11D74; --viz-1: #9333EA; --viz-2: #B968F0; --viz-3: #D8A6F5; --viz-4: #E11D74; --viz-5: #F26AA3; --viz-6: #9C8E97; }
+[data-palette="plum"][data-theme="dark"], [data-palette="plum"][data-frame-theme="dark"] { --brand-50: #2A0F3D; --brand-100: #3A1554; --brand-300: #A26FD8; --brand-500: #C58CF0; --brand-600: #D4A6F4; --brand-700: #E3C0F7; --ink-0: #1A1320; --ink-25: #0E0913; --ink-50: #15101C; --ink-100: #1F1828; --ink-200: #2A2233; --ink-300: #3D3445; --ink-400: #6E6478; --ink-500: #8E8398; --ink-600: #B4A9BC; --ink-700: #D1C7D6; --ink-800: #E7DEEB; --ink-900: #F2EBF5; --accent-500: #F084B6; --viz-1: #C58CF0; --viz-2: #D4A6F4; --viz-3: #E3C0F7; --viz-4: #F084B6; --viz-5: #F5A8CB; --viz-6: #8E8398; }
+[data-palette="mercury"][data-theme="light"], [data-palette="mercury"][data-frame-theme="light"] { --brand-50: #F2F3F5; --brand-100: #E1E3E8; --brand-300: #8E939D; --brand-500: #3F4651; --brand-600: #2C323B; --brand-700: #1E232A; --ink-0: #FFFFFF; --ink-25: #F9FAFB; --ink-50: #F2F3F5; --ink-100: #E8EAEE; --ink-200: #DCDFE4; --ink-300: #C2C6CD; --ink-400: #8E939D; --ink-500: #636872; --ink-600: #41464E; --ink-700: #2A2E34; --ink-800: #181B1F; --ink-900: #0A0C0E; --accent-500: #B89556; --viz-1: #3F4651; --viz-2: #6B727D; --viz-3: #9CA1A9; --viz-4: #B89556; --viz-5: #D4B783; --viz-6: #C2C6CD; }
+[data-palette="mercury"][data-theme="dark"], [data-palette="mercury"][data-frame-theme="dark"] { --brand-50: #1A1D22; --brand-100: #23272D; --brand-300: #8E939D; --brand-500: #D8DCE2; --brand-600: #E8EAEE; --brand-700: #F2F3F5; --ink-0: #16181C; --ink-25: #0B0D0F; --ink-50: #131519; --ink-100: #1C1F23; --ink-200: #262A2F; --ink-300: #383D43; --ink-400: #6B7079; --ink-500: #8E939D; --ink-600: #B5BAC2; --ink-700: #D2D6DC; --ink-800: #E7EAEE; --ink-900: #F2F4F6; --accent-500: #D4B783; --viz-1: #D8DCE2; --viz-2: #B5BAC2; --viz-3: #8E939D; --viz-4: #D4B783; --viz-5: #E8D4A6; --viz-6: #6B7079; }
+[data-palette="eclipse"][data-theme="dark"], [data-palette="eclipse"][data-frame-theme="dark"] { --brand-50: #161830; --brand-100: #1F2241; --brand-300: #4A56C0; --brand-500: #7C86DE; --brand-600: #9CA4E0; --brand-700: #B8BCE5; --ink-0: #101113; --ink-25: #08090A; --ink-50: #131418; --ink-100: #181A1E; --ink-200: #1F2023; --ink-300: #2A2C30; --ink-400: #5C616A; --ink-500: #8A8F98; --ink-600: #B4B8BE; --ink-700: #D0D2D6; --ink-800: #E6E7E9; --ink-900: #F7F8F8; --accent-500: #7C86DE; --viz-1: #7C86DE; --viz-2: #5E6AD2; --viz-3: #4A56C0; --viz-4: #9CA4E0; --viz-5: #B8BCE5; --viz-6: #5C616A; }
+[data-palette="carbon"][data-theme="dark"], [data-palette="carbon"][data-frame-theme="dark"] { --brand-50: #1A2230; --brand-100: #232C3E; --brand-300: #6E8499; --brand-500: #94A8BD; --brand-600: #B0C0D1; --brand-700: #C7D3E0; --ink-0: #14181F; --ink-25: #0A0D12; --ink-50: #13161C; --ink-100: #1C2028; --ink-200: #262B34; --ink-300: #383E48; --ink-400: #6B7280; --ink-500: #8B919A; --ink-600: #B0B5BD; --ink-700: #D0D4DA; --ink-800: #E5E8EC; --ink-900: #F1F3F6; --accent-500: #FB7F35; --viz-1: #94A8BD; --viz-2: #B0C0D1; --viz-3: #C7D3E0; --viz-4: #FB7F35; --viz-5: #FCAA72; --viz-6: #8B919A; }
+body { background: var(--ink-25); }
+.gs-wrap { max-width: 1240px; margin: 0px auto; padding: 32px; }
+.gs-card, .card { background: var(--ink-0); border-radius: 8px; box-shadow: var(--shadow-card); padding: var(--s-5); }
+.gs-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+.gs-pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: var(--r-pill); background: var(--ink-0); box-shadow: var(--shadow-flat); color: var(--ink-500); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gs-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success-500); }
+.gs-kpis { display: grid; gap: 16px; margin-bottom: 24px; grid-template-columns: repeat(var(--gs-kpi-cols,4), minmax(0,1fr)); }
+.gs-kpi { display: flex; flex-direction: column; gap: 12px; }
+.gs-kpi .num.good { color: var(--success-500); }
+.gs-kpi .num.alert { color: var(--danger-500); }
+.gs-kpi-sub { color: var(--ink-400); margin-top: 2px; }
+.gs-panels { display: grid; gap: 16px; grid-template-columns: var(--gs-panel-cols, 1fr 1fr); align-items: stretch; }
+.gs-phead { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.gs-donut-body { display: flex; align-items: center; gap: 22px; }
+.gs-chart { display: block; overflow: visible; max-width: 100%; height: auto; }
+.gs-legend { flex: 1 1 0%; display: flex; flex-direction: column; gap: 9px; min-width: 0px; }
+.gs-leg { display: grid; grid-template-columns: 12px 1fr auto auto; align-items: center; gap: 10px; }
+.gs-leg .sw { width: 8px; height: 8px; border-radius: 2px; }
+.gs-leg .nm { font-size: 13px; color: var(--ink-700); text-transform: capitalize; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gs-leg .vv { font-size: 13px; color: var(--ink-900); font-weight: 500; }
+.gs-leg .pp { width: 42px; text-align: right; }
+.gs-feed { display: flex; flex-direction: column; }
+.gs-feed .row { display: flex; align-items: center; gap: 10px; padding: 11px 0px; border-top: 1px solid var(--ink-100); }
+.gs-feed .row:first-child { border-top-width: medium; border-top-style: none; border-top-color: currentcolor; }
+.gs-feed .main { flex: 1 1 0%; min-width: 0px; }
+.gs-feed .ttl { font-size: 13.5px; color: var(--ink-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gs-feed .sub { font-size: 11px; color: var(--ink-400); }
+.gs-feed .meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; font-size: 12px; color: var(--ink-400); font-variant-numeric: tabular-nums; }
+.gs-avatar { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; box-shadow: rgba(26, 26, 23, 0.05) 0px 0px 0px 1px inset; }
+.gs-badge { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 500; text-transform: capitalize; white-space: nowrap; }
+.gs-badge .bd { width: 5px; height: 5px; border-radius: 50%; }
+.gs-b-success { background: var(--success-50); color: var(--success-500); }
+.gs-b-success .bd { background: var(--success-500); }
+.gs-b-warn { background: var(--warn-50); color: var(--warn-500); }
+.gs-b-warn .bd { background: var(--warn-500); }
+.gs-b-danger { background: var(--danger-50); color: var(--danger-500); }
+.gs-b-danger .bd { background: var(--danger-500); }
+.gs-b-brand { background: var(--brand-50); color: var(--brand-700); }
+.gs-b-brand .bd { background: var(--brand-500); }
+.gs-b-neutral { background: var(--ink-50); color: var(--ink-600); }
+.gs-b-neutral .bd { background: var(--ink-400); }
+.gs-empty { display: flex; align-items: center; justify-content: center; min-height: 150px; color: var(--ink-400); font-size: 13px; }
+.gs-vtable { display: flex; flex-direction: column; min-width: 0px; }
+.gs-vt-head { display: grid; gap: 12px; padding: 0px 12px 8px; border-bottom: 1px solid var(--ink-100); }
+.gs-vt-th { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-400); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gs-vt-notice { margin: 8px 0px 0px; padding: 6px 12px; border-radius: 6px; background: var(--warn-50); color: var(--warn-500); font-size: 11.5px; }
+.gs-vt-viewport { overflow-y: auto; position: relative; }
+.gs-vt-sizer { position: relative; }
+.gs-vt-slice { position: absolute; left: 0px; right: 0px; }
+.gs-vt-row { display: grid; gap: 12px; align-items: center; padding: 0px 12px; border-bottom: 1px solid var(--ink-100); font-size: 13px; color: var(--ink-800); box-sizing: border-box; }
+.gs-vt-cell { min-width: 0px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gs-vt-cell.ta-r { text-align: right; }
+.gs-vt-status { display: flex; align-items: center; gap: 10px; padding: 10px 12px; font-size: 12px; color: var(--ink-400); }
+.gs-vt-retry, .gs-sec-retry { padding: 4px 10px; border-radius: 6px; border: 1px solid var(--ink-200); background: var(--ink-0); color: var(--ink-700); font-size: 12px; cursor: pointer; }
+.gs-sec-loading { display: flex; align-items: center; justify-content: center; min-height: 90px; color: var(--ink-400); font-size: 12.5px; }
+.gs-sec-error { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 90px; color: var(--danger-500); font-size: 12.5px; }
+@media (max-width: 1000px) {
+  .gs-kpis { grid-template-columns: repeat(2, minmax(0px, 1fr)); }
+}
+@media (max-width: 960px) {
+  .gs-panels { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .gs-wrap { padding: 18px; }
+  .gs-donut-body { flex-direction: column; }
+}
+</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학습 콘텐츠·문제뱅크 트래커</title>
+  <style>
+    .wrap { padding: 16px; }
+    .tabs {
+      display: flex; gap: 4px; margin: 16px 0 12px;
+      border-bottom: 1px solid var(--ink-200);
+    }
+    .tab {
+      padding: 8px 16px; cursor: pointer;
+      font-size: 13px; font-weight: 500; color: var(--ink-600);
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      background: none; border-top: none; border-left: none; border-right: none;
+      white-space: nowrap;
+    }
+    .tab.active { color: var(--brand-500); border-bottom-color: var(--brand-500); }
+    .tab:hover:not(.active) { color: var(--ink-800); background: var(--ink-50); }
+
+    .controls {
+      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .controls input, .controls select {
+      height: 34px; padding: 4px 10px;
+      border: 1px solid var(--ink-200); border-radius: 6px;
+      background: var(--surface-0); color: var(--ink-900);
+      font-size: 13px;
+    }
+    .controls input:focus, .controls select:focus {
+      outline: none; border-color: var(--brand-500);
+    }
+
+    .scroll-x {
+      overflow-x: auto;
+      border: 1px solid var(--ink-100); border-radius: 8px;
+      background: var(--surface-0);
+    }
+    table.sheet {
+      width: 100%; border-collapse: separate; border-spacing: 0;
+      font-size: 12.5px;
+    }
+    table.sheet th, table.sheet td {
+      border-right: 1px solid var(--ink-100);
+      border-bottom: 1px solid var(--ink-100);
+      padding: 6px 10px; vertical-align: middle;
+    }
+    table.sheet thead th {
+      position: sticky; top: 0; z-index: 3;
+      background: var(--ink-50); color: var(--ink-700);
+      font-weight: 600; text-align: left;
+      border-bottom: 2px solid var(--ink-200);
+      white-space: nowrap;
+    }
+    table.sheet thead tr.group-row th {
+      background: var(--ink-100); text-align: center;
+      border-top: 1px solid var(--ink-200);
+    }
+    table.sheet tbody tr:nth-child(even) td { background: var(--ink-50); }
+    table.sheet tbody tr:hover td { background: color-mix(in oklch, var(--brand-500) 8%, var(--surface-0)); }
+
+    table.sheet td.subject-cell {
+      position: sticky; left: 0; z-index: 2;
+      background: var(--surface-0); font-weight: 600;
+      border-right: 2px solid var(--ink-200);
+      min-width: 80px;
+    }
+    table.sheet tbody tr:nth-child(even) td.subject-cell { background: var(--ink-50); }
+    table.sheet thead th.subject-head {
+      position: sticky; left: 0; z-index: 4;
+      background: var(--ink-50); border-right: 2px solid var(--ink-200);
+    }
+
+    .diff-pill {
+      display: inline-block; padding: 2px 8px; border-radius: 10px;
+      font-size: 11px; font-weight: 600;
+    }
+    .diff-easy { background: color-mix(in oklch, var(--success-500) 20%, var(--surface-0)); color: var(--success-700, var(--success-500)); }
+    .diff-med { background: color-mix(in oklch, var(--brand-500) 18%, var(--surface-0)); color: var(--brand-700, var(--brand-500)); }
+    .diff-hard { background: color-mix(in oklch, var(--danger-500) 20%, var(--surface-0)); color: var(--danger-700, var(--danger-500)); }
+
+    .type-pill {
+      display: inline-block; padding: 2px 8px; border-radius: 10px;
+      font-size: 11px; font-weight: 500;
+      background: var(--ink-100); color: var(--ink-700);
+    }
+
+    .rate-high { color: var(--success-500); font-weight: 600; }
+    .rate-mid { color: var(--warn-500); font-weight: 600; }
+    .rate-low { color: var(--danger-500); font-weight: 600; }
+
+    .mini-bar {
+      display: inline-block; width: 60px; height: 6px;
+      background: var(--ink-100); border-radius: 3px; overflow: hidden;
+      vertical-align: middle; margin-right: 6px;
+    }
+    .mini-bar > div { height: 100%; }
+    .bar-high > div { background: var(--success-500); }
+    .bar-mid > div { background: var(--warn-500); }
+    .bar-low > div { background: var(--danger-500); }
+
+    .num { font-variant-numeric: tabular-nums; }
+    .count-cell {
+      display: inline-block; min-width: 24px; text-align: center;
+      padding: 2px 6px; border-radius: 4px;
+      font-weight: 600; font-size: 12px;
+    }
+    .count-0 { color: var(--ink-300); background: transparent; }
+    .count-some { background: color-mix(in oklch, var(--brand-500) 10%, var(--surface-0)); color: var(--brand-500); }
+
+    .star {
+      color: var(--warn-500); letter-spacing: 1px;
+    }
+
+    .q-text {
+      max-width: 420px; white-space: normal; line-height: 1.4;
+      font-size: 12px; color: var(--ink-800);
+    }
+    .q-answer { color: var(--success-500); font-weight: 600; font-size: 11.5px; }
+    .q-tags { color: var(--ink-500); font-size: 11px; margin-top: 2px; }
+
+    .content-title {
+      font-weight: 600; color: var(--ink-900); font-size: 12.5px;
+    }
+    .content-meta { font-size: 11px; color: var(--ink-500); margin-top: 2px; }
+  </style>
+  <style>
+    /* == polish: mobile & print == */
+    :root { --surface-0: var(--ink-0); }
+    @media (max-width: 640px) {
+      .gs-wrap { padding-left: 12px !important; padding-right: 12px !important; }
+      .gs-hero .t-h1, .gs-hero h1 { font-size: 20px !important; line-height: 1.28; }
+      .controls input, .controls select, .tracker-controls input, .tracker-controls select { min-width: 0 !important; }
+      .cv-fg select, .cv-fg input[type="file"] { width: 100%; min-width: 0 !important; }
+      .panel-body, .wrap, .tracker-wrap { padding: 12px; }
+    }
+    @media print {
+      .gs-hero, .gs-sidebar, .gs-topbar, .gs-footer { display: none !important; }
+      body { background: #fff !important; }
+      .gs-wrap { padding: 0 !important; max-width: none !important; }
+      .btn, .row-btn, .cv-btn, .cal-btn, .rp-btn, .ord-btn, .tab, .tabs, .toast,
+      .controls, .toolbar, .toolbar-row, .cv-row, .cv-actions, .cal-toolbar,
+      .cal-nav, .cal-filters, .tracker-controls, .form-actions, .rp-setup, .rp-actions,
+      .modal-mask, .cal-modal-mask { display: none !important; }
+      .panel, .cv-card, .rp-card, .cal-wrap, .rx-card { box-shadow: none !important; border-color: #ccc !important; break-inside: avoid; }
+      .scroll-x, .tracker-scroll, .cv-scroll, .cal-wrap { overflow: visible !important; }
+      .split, .home-grid, .rp-layout, .rx-grid { grid-template-columns: 1fr !important; }
+      table.sheet thead th, table.tracker thead th, table.grid th { position: static !important; }
+      td.student-cell, td.subject-cell, th.student-head, th.subject-head { position: static !important; }
+      .cal-inner { min-width: 0 !important; }
+      table.sheet, table.tracker, table.cv-table, table.grid, table.rp { font-size: 11px; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+  <style>
+    /* == compact numbers: 카드 수치를 라벨 수준으로 차분하게 == */
+    .gs-kpi { padding: 14px 16px !important; gap: 6px !important; }
+    .gs-kpi .t-h1, .gs-kpi .t-h1.num { font-size: 16px !important; font-weight: 700; line-height: 1.35; }
+    .kpi .v { font-size: 16px !important; font-weight: 700; }
+  </style>
+</head>
+<body>
+<script id="gs-kit-js">
+
+/* ============================================================
+   B-Suite dashboard kit — JS runtime (window.gsDash).
+   Injected at serve time. Provides format helpers, pure-SVG chart
+   builders, and HTML component builders so dashboards can be written
+   as lean markup without inlining the design system. ES5-compatible.
+   Also sets <html data-theme> from the OS color-scheme preference.
+   ============================================================ */
+(function () {
+  if (window.gsDash) return;
+
+  // Every live gsDash.chart handle. A canvas bakes its colours in at draw
+  // time, so the ONE matchMedia listener below has to rebuild them; declared
+  // up here because applyTheme() runs before the chart section is reached.
+  var _liveCharts = [];
+  function rethemeAll() {
+    // Backwards: dropping a dead handle splices the array under us.
+    for (var i = _liveCharts.length - 1; i >= 0; i--) {
+      var h = _liveCharts[i];
+      try {
+        // A section that re-rendered (loadSections replaces el.innerHTML, and
+        // so does any hand-written refresh) leaves its canvas detached.
+        // Redrawing one nobody can see keeps it — and its whole dataset —
+        // alive for the life of the page, and the leak grows once per refresh.
+        if (h.isDetached()) { h.destroy(); continue; }
+        h.retheme();
+      } catch (e) {}
+    }
+  }
+
+  // Follow OS light/dark (palettes key on [data-theme]); data-palette is set
+  // separately (baked default / per-workspace serve-time injection).
+  function applyTheme() {
+    try {
+      var next = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      var changed = document.documentElement.dataset.theme !== next;
+      document.documentElement.dataset.theme = next;
+      // Only on a real flip: retheme() destroys and rebuilds every canvas, and
+      // doing that on a no-op call would drop hover/animation state for free.
+      if (changed) rethemeAll();
+    } catch (e) {}
+  }
+  applyTheme();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme); } catch (e) {}
+
+  var VIZ_FALLBACK = ['#3B5BDB', '#5B8DEF', '#7DA3C7', '#B5A98A', '#C2410C', '#6B7280'];
+  var AV = ['#3B5BDB', '#7DA3C7', '#B5A98A', '#C2410C', '#0F8A5E', '#78716C'];
+
+  function cvar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+  function vizColor(i) { return cvar('--viz-' + ((i % 6) + 1)) || VIZ_FALLBACK[i % 6]; }
+  // Paint reference for SVG attributes. vizColor() resolves the var to a hex
+  // at build time, which freezes the series colour into the markup: an OS
+  // light/dark flip then re-themes the CSS around a chart whose own strokes
+  // still carry the previous theme's palette. Emitting the var keeps the
+  // paint live, so a chart re-themes with the page instead of going stale.
+  function vizRef(i) { return 'var(--viz-' + ((i % 6) + 1) + ', ' + VIZ_FALLBACK[i % 6] + ')'; }
+  function esc(s) { var d = document.createElement('div'); d.textContent = (s == null ? '' : String(s)); return d.innerHTML; }
+  function fmtInt(n) { return Number(n || 0).toLocaleString('en-US'); }
+  function money(n) { return Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }); }
+  function humanize(s) { return String(s == null ? '' : s).replace(/_/g, ' '); }
+  function dateMD(s) { var d = new Date(s); if (isNaN(d.getTime())) return String(s || ''); return (d.getMonth() + 1) + '/' + d.getDate(); }
+  function relTime(s) {
+    if (!s) return ''; var d = new Date(s); if (isNaN(d.getTime())) return String(s);
+    var f = (Date.now() - d.getTime()) / 1000;
+    if (f < 60) return 'just now'; if (f < 3600) return Math.floor(f / 60) + 'm ago';
+    if (f < 86400) return Math.floor(f / 3600) + 'h ago'; if (f < 86400 * 7) return Math.floor(f / 86400) + 'd ago';
+    return (d.getMonth() + 1) + '/' + d.getDate();
+  }
+  var TONE = { active: 'success', open: 'success', completed: 'success', done: 'success', shipped: 'success', delivered: 'success', confirmed: 'success', won: 'success', hired: 'success', paid: 'success', resolved: 'success', published: 'success',
+    draft: 'warn', pending: 'warn', processing: 'warn', scheduled: 'warn', in_progress: 'warn', in_review: 'warn', upcoming: 'warn', review: 'warn', screening: 'warn',
+    expired: 'danger', cancelled: 'danger', canceled: 'danger', returned: 'danger', missed: 'danger', overdue: 'danger', rejected: 'danger', failed: 'danger', lost: 'danger', blocked: 'danger' };
+  function statusTone(s) { return TONE[String(s == null ? '' : s).toLowerCase().replace(/[\s-]+/g, '_')] || 'neutral'; }
+  function tag(text, tone) { return '<span class="gs-badge gs-b-' + (tone || 'neutral') + '"><span class="bd"></span>' + esc(text) + '</span>'; }
+
+  function scale(min, max, oMin, oMax) { var d = (max - min) || 1; return function (v) { return oMin + ((v - min) / d) * (oMax - oMin); }; }
+  function niceScale(min, max, c) {
+    c = c || 4; var rs = (max - min) / c || 1; var mag = Math.pow(10, Math.floor(Math.log10(Math.abs(rs)))); var nm = rs / mag, st;
+    if (nm < 1.5) st = 1 * mag; else if (nm < 3) st = 2 * mag; else if (nm < 7) st = 5 * mag; else st = 10 * mag;
+    var a = Math.floor(min / st) * st, b = Math.ceil(max / st) * st, t = [];
+    for (var i = 0; i <= Math.round((b - a) / st); i++) t.push(Math.round((a + i * st) / st) * st);
+    return { ticks: t, nMin: a, nMax: b };
+  }
+
+  function sparkline(data, color, w, h) {
+    w = w || 84; h = h || 26; var mn = Math.min.apply(null, data), mx = Math.max.apply(null, data);
+    var x = scale(0, data.length - 1, 1, w - 1), y = scale(mn, mx, h - 2, 2);
+    var p = data.map(function (v, i) { return (i ? 'L' : 'M') + x(i).toFixed(1) + ',' + y(v).toFixed(1); }).join(' ');
+    return '<svg width="' + w + '" height="' + h + '" style="display:block"><path d="' + p + '" stroke="' + (color || vizRef(0)) + '" stroke-width="1.25" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+  function lineChart(o) {
+    var ys = o.data || [], w = o.w || 460, h = o.h || 220, pad = { t: 16, r: 16, b: 28, l: 36 };
+    var mx = Math.max.apply(null, ys.concat([1])) * 1.1, ns = niceScale(0, mx, 4);
+    var x = scale(0, Math.max(ys.length - 1, 1), pad.l, w - pad.r), y = scale(ns.nMin, ns.nMax, h - pad.b, pad.t), color = o.color || vizRef(0), s = '';
+    ns.ticks.forEach(function (t) {
+      s += '<line x1="' + pad.l + '" x2="' + (w - pad.r) + '" y1="' + y(t).toFixed(1) + '" y2="' + y(t).toFixed(1) + '" stroke="var(--grid-line)" stroke-width="1"/>';
+      s += '<text x="' + (pad.l - 8) + '" y="' + y(t).toFixed(1) + '" fill="var(--ink-400)" font-size="10.5" text-anchor="end" dominant-baseline="middle" style="font-variant-numeric:tabular-nums">' + esc(t) + '</text>';
+    });
+    var pts = ys.map(function (v, i) { return [x(i), y(v)]; });
+    var path = pts.map(function (q, i) { return (i ? 'L' : 'M') + q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' ');
+    var gid = 'g' + Math.random().toString(36).slice(2, 7);
+    if (pts.length) {
+      var area = path + ' L' + pts[pts.length - 1][0].toFixed(1) + ',' + y(ns.nMin).toFixed(1) + ' L' + pts[0][0].toFixed(1) + ',' + y(ns.nMin).toFixed(1) + ' Z';
+      s += '<defs><linearGradient id="' + gid + '" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="' + color + '" stop-opacity="0.14"/><stop offset="100%" stop-color="' + color + '" stop-opacity="0"/></linearGradient></defs>';
+      s += '<path d="' + area + '" fill="url(#' + gid + ')"/><path d="' + path + '" stroke="' + color + '" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
+      // Same rule as gsDash.chart (whenSparse): white-filled markers on a dense
+      // series bead the line, so they are drawn only where they can be read.
+      if (pts.length < 2 || (w - pad.l - pad.r) / (pts.length - 1) >= MARKER_MIN_GAP) {
+        pts.forEach(function (q) { s += '<circle cx="' + q[0].toFixed(1) + '" cy="' + q[1].toFixed(1) + '" r="2.5" fill="var(--ink-0)" stroke="' + color + '" stroke-width="1.5"/>'; });
+      }
+    }
+    (o.xl || []).forEach(function (l, i) { if (i % Math.ceil((ys.length || 1) / 8) === 0) s += '<text x="' + x(i).toFixed(1) + '" y="' + (h - pad.b + 16) + '" fill="var(--ink-400)" font-size="10.5" text-anchor="middle">' + esc(l) + '</text>'; });
+    return '<svg class="gs-chart" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="xMidYMid meet">' + s + '</svg>';
+  }
+  function barH(o) {
+    var rows = o.rows || [], w = o.w || 460, h = o.h || (40 + rows.length * 34), pad = { t: 8, r: 16, b: 24, l: o.l || 110 };
+    var mx = Math.max.apply(null, rows.map(function (r) { return Number(r.value); }).concat([1])) * 1.1, ns = niceScale(0, mx, 4);
+    var x = scale(ns.nMin, ns.nMax, pad.l, w - pad.r), rowH = (h - pad.t - pad.b) / (rows.length || 1), bh = Math.min(16, rowH * 0.5), s = '', fmt = o.xFmt || fmtInt;
+    ns.ticks.forEach(function (t) {
+      s += '<line x1="' + x(t).toFixed(1) + '" x2="' + x(t).toFixed(1) + '" y1="' + pad.t + '" y2="' + (h - pad.b) + '" stroke="var(--grid-line)" stroke-width="1"/>';
+      s += '<text x="' + x(t).toFixed(1) + '" y="' + (h - pad.b + 14) + '" fill="var(--ink-400)" font-size="10.5" text-anchor="middle" style="font-variant-numeric:tabular-nums">' + esc(fmt(t)) + '</text>';
+    });
+    rows.forEach(function (r, i) {
+      var cy = pad.t + rowH * i + rowH / 2;
+      s += '<text x="' + (pad.l - 8) + '" y="' + cy.toFixed(1) + '" fill="var(--ink-600)" font-size="11.5" text-anchor="end" dominant-baseline="middle">' + esc(humanize(r.label)) + '</text>';
+      s += '<rect x="' + pad.l + '" y="' + (cy - bh / 2).toFixed(1) + '" width="' + Math.max(0, x(Number(r.value)) - pad.l).toFixed(1) + '" height="' + bh + '" fill="' + vizRef(i) + '" rx="2"/>';
+    });
+    return '<svg class="gs-chart" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="xMidYMid meet">' + s + '</svg>';
+  }
+  function donut(o) {
+    var rows = o.rows || [], size = 180, th = 22, total = rows.reduce(function (a, r) { return a + Number(r.value); }, 0) || 1, r = size / 2 - th / 2, cx = 90, cy = 90, acc = -Math.PI / 2, s = '';
+    s += '<circle cx="90" cy="90" r="' + r + '" fill="none" stroke="var(--ink-100)" stroke-width="' + th + '"/>';
+    rows.forEach(function (d, i) {
+      var fr = Number(d.value) / total, st = acc, en = acc + fr * Math.PI * 2; acc = en; var e = en - 0.012;
+      var x1 = cx + r * Math.cos(st), y1 = cy + r * Math.sin(st), x2 = cx + r * Math.cos(e), y2 = cy + r * Math.sin(e), lg = (e - st) > Math.PI ? 1 : 0;
+      s += '<path d="M' + x1.toFixed(2) + ',' + y1.toFixed(2) + ' A' + r + ',' + r + ' 0 ' + lg + ' 1 ' + x2.toFixed(2) + ',' + y2.toFixed(2) + '" stroke="' + vizRef(i) + '" stroke-width="' + th + '" fill="none"/>';
+    });
+    s += '<text x="90" y="86" text-anchor="middle" fill="var(--ink-900)" font-size="20" font-weight="500" style="font-variant-numeric:tabular-nums;letter-spacing:-0.02em">' + esc(o.centerVal) + '</text>';
+    s += '<text x="90" y="104" text-anchor="middle" fill="var(--ink-400)" font-size="10" style="letter-spacing:0.04em;text-transform:uppercase">' + esc(o.center || 'Total') + '</text>';
+    return '<svg width="180" height="180">' + s + '</svg>';
+  }
+
+  // Canvas libraries (Chart.js, ECharts) cannot consume a CSS var — they need
+  // resolved colours at draw time. Without a bridge, every generated app
+  // hardcodes its own hexes and drifts from the design system, which is how
+  // one dashboard ends up with three different greys for the same gridline.
+  // This is the one place a canvas chart should get its palette. Snapshot
+  // semantics: re-call it (and rebuild the chart) on a theme flip.
+  // getPropertyValue hands back the SPECIFIED value, so a token defined as
+  // color-mix(...) arrives as that literal string — which a canvas cannot
+  // parse, and 2D context silently ignores an unparseable strokeStyle rather
+  // than throwing. Round-trip through a computed `color` to get real rgb().
+  var _swatch = null;
+  function resolveColor(value, fallback) {
+    if (!value) return fallback;
+    if (/^(#|rgb|hsl)/i.test(value)) return value;
+    try {
+      if (!_swatch) {
+        _swatch = document.createElement('span');
+        _swatch.style.cssText = 'position:absolute;width:0;height:0;visibility:hidden';
+        document.documentElement.appendChild(_swatch);
+      }
+      _swatch.style.color = '';
+      _swatch.style.color = value;
+      var out = getComputedStyle(_swatch).color;
+      if (!out) return fallback;
+      // A color-mix() of two hexes computes to CSS Color 4 `color(srgb r g b)`
+      // in current engines. Chrome's canvas happens to accept that, but older
+      // engines and some chart libraries do not — normalise to legacy rgb()
+      // rather than depend on it.
+      var m = out.match(/^color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\s*\)$/i);
+      if (m) {
+        var ch = [1, 2, 3].map(function (i) {
+          return Math.max(0, Math.min(255, Math.round(parseFloat(m[i]) * 255)));
+        });
+        var a = m[4] === undefined ? 1 : parseFloat(m[4]);
+        return a >= 1 ? 'rgb(' + ch.join(', ') + ')' : 'rgba(' + ch.join(', ') + ', ' + a + ')';
+      }
+      return out;
+    } catch (e) { return fallback; }
+  }
+
+  function chartTheme() {
+    var series = [];
+    for (var i = 0; i < 6; i++) series.push(resolveColor(vizColor(i), VIZ_FALLBACK[i % 6]));
+    return {
+      grid: resolveColor(cvar('--grid-line'), 'rgba(120,113,108,0.35)'),
+      text: resolveColor(cvar('--ink-800'), '#292724'),
+      textMuted: resolveColor(cvar('--ink-400'), '#A8A29E'),
+      surface: resolveColor(cvar('--ink-0'), '#FFFFFF'),
+      accent: resolveColor(cvar('--brand-500'), '#3B5BDB'),
+      series: series,
+      isDark: document.documentElement.dataset.theme === 'dark',
+    };
+  }
+
+  // ── gsDash.chart(el, config): themed Chart.js ───────────────────────────
+  // The SVG builders above are single-series static markup: no second series,
+  // no hover, no click. Real dashboards need all three, so an app that hits
+  // that wall on its first chart hand-writes `new Chart(...)` — and then drops
+  // the design system for the whole page. (Measured 2026-09-17 over 600 apps:
+  // of the 51 that had the kit AND drew a chart, 2 called gsDash at all; 14
+  // hardcoded hex series colours and exactly 1 redrew on a theme flip.)
+  //
+  // So this is deliberately NOT another builder. It is a merge: the app writes
+  // whatever Chart.js config it wants — multi-series, stacked, dual-axis,
+  // onClick drilldown — and the theme is merged UNDERNEATH it. Every key the
+  // app sets wins. What the app leaves out (palette, grid, ticks, tooltip,
+  // responsive) arrives from the design tokens by default, instead of
+  // depending on the author remembering to call chartTheme().
+  //
+  //   gsDash.chart(elOrSelector, chartJsConfig)
+  //     -> { instance, update(config?), retheme(), destroy() }
+  //
+  // Extras the wrapper understands, on top of plain Chart.js:
+  //   dataset.gsTotal: true   — this series is a STATED TOTAL, not a part. It
+  //                             is excluded from the stack sum and checked
+  //                             against it (console.warn names the x values
+  //                             that disagree).
+  //   data.totals: number[]   — same check without a drawn series.
+  //
+  // Lifecycle: `instance` is the live Chart.js object and is REPLACED on a
+  // theme flip (a canvas bakes its colours in, so a re-theme is a rebuild).
+  // Mutate `h.instance.data` in place and call `h.instance.update()` as you
+  // would with plain Chart.js; the rebuild reads the live data, not the
+  // config you first passed. `h.update()` with no argument re-derives the
+  // signed-axis bounds after such a change; `h.update(cfg)` swaps the config.
+  //
+  // First paint: the chart is drawn SYNCHRONOUSLY, with no intro animation,
+  // unless the app sets `options.animation` itself. Chart.js defers an
+  // animated draw to requestAnimationFrame, and a frame the browser is not
+  // rendering never gets one: the agent's preview and the thumbnail capture
+  // are off-screen cross-origin iframes, and a background tab is the same.
+  // There the canvas stayed correctly sized and completely empty, and no
+  // update()/render() could paint it, because every redraw queues behind the
+  // animation that never starts (2026-10-01: ~100 agent turns on one
+  // dashboard). Later updates animate as usual once a frame has run.
+
+  var NO_CARTESIAN = { pie: 1, doughnut: 1, polarArea: 1, radar: 1 };
+  var SLICE_COLOURED = { pie: 1, doughnut: 1, polarArea: 1 };
+
+  function hasOwn(o, k) { return Object.prototype.hasOwnProperty.call(o, k); }
+  function isPlain(v) {
+    if (v == null || typeof v !== 'object') return false;
+    if (Object.prototype.toString.call(v) === '[object Array]') return false;
+    if (typeof Node !== 'undefined' && v instanceof Node) return false;
+    return true;
+  }
+  // Theme defaults go in `base`, the app's config in `over`, and `over` wins on
+  // every key it sets. Arrays, functions and class instances are taken whole
+  // from `over` — merging an app's `data: [1,2,3]` element-wise with anything
+  // would corrupt it, and half-merging an onClick is meaningless.
+  function deepMerge(base, over) {
+    if (over === undefined) return base;
+    if (!isPlain(base) || !isPlain(over)) return over;
+    var out = {}, k;
+    for (k in base) if (hasOwn(base, k)) out[k] = base[k];
+    for (k in over) if (hasOwn(over, k)) out[k] = hasOwn(base, k) ? deepMerge(base[k], over[k]) : over[k];
+    return out;
+  }
+
+  // A token resolves to either a hex or an rgb() (see resolveColor), so a fill
+  // cannot be built by concatenating '80' onto it.
+  function withAlpha(color, a) {
+    if (!color) return color;
+    var s = String(color).trim(), m;
+    if ((m = s.match(/^#([0-9a-f]{3})$/i))) {
+      s = '#' + m[1].charAt(0) + m[1].charAt(0) + m[1].charAt(1) + m[1].charAt(1) + m[1].charAt(2) + m[1].charAt(2);
+    }
+    if ((m = s.match(/^#([0-9a-f]{6})$/i))) {
+      var n = parseInt(m[1], 16);
+      return 'rgba(' + ((n >> 16) & 255) + ', ' + ((n >> 8) & 255) + ', ' + (n & 255) + ', ' + a + ')';
+    }
+    if ((m = s.match(/^rgba?\(([^)]+)\)$/i))) {
+      var p = m[1].split(/[\s,\/]+/).filter(function (x) { return x !== ''; });
+      if (p.length >= 3) return 'rgba(' + p[0] + ', ' + p[1] + ', ' + p[2] + ', ' + a + ')';
+    }
+    return s; // unparseable — hand it back untouched rather than emit garbage
+  }
+
+  function isTotalSet(ds) { return !!(ds && (ds.gsTotal === true || ds.gsRole === 'total')); }
+  // Chart.js accepts number[], {x,y}[] and {v}[]. `va` is the VALUE axis, so an
+  // indexAxis:'y' chart reads x from an object point, not y.
+  function numAt(ds, i, va) {
+    var d = ds && ds.data;
+    if (!d || i >= d.length) return null;
+    var v = d[i];
+    if (v == null) return null;
+    if (typeof v === 'object') {
+      v = v[va] != null ? v[va] : (v.y != null ? v.y : (v.x != null ? v.x : v.v));
+      if (v == null) return null;
+    }
+    v = Number(v);
+    return isNaN(v) ? null : v;
+  }
+
+  // Bounds for a value axis that carries negatives. The failure this exists to
+  // stop (2026-09-16): an app forced every expense category negative so the
+  // axis would look right, which silently flipped the sign of the three
+  // categories that were genuinely positive in some months. The data is never
+  // touched here — the BOUNDS are derived from the real signed totals instead.
+  // Positives and negatives accumulate into separate running totals per x (per
+  // Chart.js stack group), exactly as the renderer stacks them.
+  function signedExtent(sets, cfgType, stacked, va) {
+    var i, j, k, n = 0, any = false, hasNeg = false, lo = 0, hi = 0;
+    for (i = 0; i < sets.length; i++) if (sets[i] && sets[i].data && sets[i].data.length > n) n = sets[i].data.length;
+    for (j = 0; j < n; j++) {
+      var stacks = {};
+      for (i = 0; i < sets.length; i++) {
+        var v = numAt(sets[i], j, va);
+        if (v == null) continue;
+        any = true;
+        if (v < 0) hasNeg = true;
+        // A stated total is drawn (so it must fit inside the bounds) but is not
+        // a part, so it never joins a stack sum.
+        if (!stacked || isTotalSet(sets[i])) {
+          if (v > hi) hi = v;
+          if (v < lo) lo = v;
+          continue;
+        }
+        var key = sets[i].stack != null ? String(sets[i].stack) : String(sets[i].type || cfgType);
+        var s = stacks[key] || (stacks[key] = { pos: 0, neg: 0 });
+        if (v >= 0) s.pos += v; else s.neg += v;
+      }
+      for (k in stacks) if (hasOwn(stacks, k)) {
+        if (stacks[k].pos > hi) hi = stacks[k].pos;
+        if (stacks[k].neg < lo) lo = stacks[k].neg;
+      }
+    }
+    // lo/hi start at 0, so zero is always inside the range and the baseline
+    // below has somewhere to draw.
+    return any ? { hasNegative: hasNeg, dataMin: lo, dataMax: hi } : null;
+  }
+
+  // "Net" / "Total" labels that disagree with the bars under them survived
+  // weeks unnoticed on a real dashboard. Cheap to check, so check it.
+  function warnTotals(data, cfgType, va) {
+    var sets = (data && data.datasets) || [], labels = (data && data.labels) || [];
+    var totals = null, totalIdx = -1, i, j;
+    for (i = 0; i < sets.length; i++) if (isTotalSet(sets[i])) { totalIdx = i; break; }
+    if (totalIdx >= 0) totals = sets[totalIdx].data || [];
+    else if (data && Object.prototype.toString.call(data.totals) === '[object Array]') totals = data.totals;
+    if (!totals || !totals.length) return;
+
+    var bad = [];
+    for (j = 0; j < totals.length; j++) {
+      var t = totals[j];
+      if (t != null && typeof t === 'object') t = t[va] != null ? t[va] : (t.y != null ? t.y : t.x);
+      // Before coercion: Number(null) is 0, and a SQL NULL in a totals column
+      // must read as "no stated total here", not "stated total of zero".
+      if (t == null || t === '') continue;
+      t = Number(t);
+      if (isNaN(t)) continue;
+      var sum = 0, seen = false;
+      for (i = 0; i < sets.length; i++) {
+        if (i === totalIdx) continue;
+        var v = numAt(sets[i], j, va);
+        if (v == null) continue;
+        sum += v; seen = true;
+      }
+      if (!seen) continue;
+      // Relative tolerance: float addition of a dozen currency values does not
+      // land on the stated total to the bit.
+      if (Math.abs(sum - t) > Math.max(1e-9, Math.abs(t) * 1e-6)) {
+        bad.push((labels[j] != null ? labels[j] : j) + ' (parts ' + sum + ' vs stated ' + t + ')');
+      }
+    }
+    if (bad.length) {
+      try {
+        console.warn('[gsDash.chart] stated total does not match the sum of its parts at '
+          + bad.length + ' x value(s): ' + bad.join('; '));
+      } catch (e) {}
+    }
+  }
+
+  function sliceColours(ds, theme) {
+    var out = [], n = (ds && ds.data && ds.data.length) || 0;
+    for (var i = 0; i < n; i++) out.push(theme.series[i % theme.series.length]);
+    return out;
+  }
+  // A line marker's halo (pointBorderColor: surface) overlaps its neighbours'
+  // on a dense series and cuts the line into beads — a 30-day KPI trend read
+  // as dashed (2026-10-07). So markers draw only while points sit
+  // MARKER_MIN_GAP px apart (hover still shows them), re-decided per resize.
+  // An isolated point keeps its marker: no line passes through it.
+  var MARKER_MIN_GAP = 16;
+  function whenSparse(value) {
+    return function (ctx) {
+      var ch = ctx && ctx.chart, a = ch && ch.chartArea, ds = ctx && ctx.dataset;
+      if (!a || !ds) return value;
+      var va = ch.options && ch.options.indexAxis === 'y' ? 'x' : 'y';
+      var i = ctx.dataIndex;
+      if (i != null && numAt(ds, i - 1, va) == null && numAt(ds, i + 1, va) == null) return value;
+      var labels = (ch.data && ch.data.labels) || [];
+      var n = Math.max(labels.length, (ds.data && ds.data.length) || 0);
+      var span = va === 'x' ? a.bottom - a.top : a.right - a.left;
+      return n < 2 || span / (n - 1) >= MARKER_MIN_GAP ? value : 0;
+    };
+  }
+  function datasetDefaults(i, ds, cfgType, theme) {
+    var t = (ds && ds.type) || cfgType;
+    var c = theme.series[i % theme.series.length];
+    if (SLICE_COLOURED[t]) {
+      // One colour per SLICE, not per dataset — a pie has one dataset.
+      return { backgroundColor: sliceColours(ds, theme), borderColor: theme.surface, borderWidth: 2 };
+    }
+    if (t === 'line') {
+      return {
+        borderColor: c, backgroundColor: withAlpha(c, 0.14), borderWidth: 2,
+        pointBackgroundColor: c, pointBorderColor: theme.surface,
+        pointRadius: whenSparse(2.5), pointBorderWidth: whenSparse(2), pointHoverRadius: 4,
+      };
+    }
+    if (t === 'radar') {
+      return {
+        borderColor: c, backgroundColor: withAlpha(c, 0.14), borderWidth: 2,
+        pointBackgroundColor: c, pointBorderColor: theme.surface,
+        pointRadius: 2.5, pointHoverRadius: 4,
+      };
+    }
+    return { backgroundColor: c, borderColor: c, borderWidth: 0, borderRadius: 4 };
+  }
+
+  // Which scale a dataset's VALUES land on. Chart.js reads yAxisID for a
+  // vertical chart and xAxisID for indexAxis:'y'; unset means the default axis.
+  function valueAxisOf(ds, indexAxis) {
+    if (indexAxis === 'y') return (ds && ds.xAxisID) || 'x';
+    return (ds && ds.yAxisID) || 'y';
+  }
+
+  function scaleDefaults(theme) {
+    return { ticks: { color: theme.textMuted }, grid: { color: theme.grid }, border: { color: theme.grid } };
+  }
+
+  function themedConfig(cfg, theme) {
+    var uOpts = cfg.options || {}, uData = cfg.data || {}, uSets = uData.datasets || [];
+    var indexAxis = uOpts.indexAxis === 'y' ? 'y' : 'x';
+    var valueKey = indexAxis === 'y' ? 'x' : 'y';   // key read off an {x,y} point
+    var ca = indexAxis;                              // category axis id
+    var uScales = uOpts.scales || {};
+    var i, k;
+
+    var base = {
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        // Unified hover: one tooltip listing every series at that x, which is
+        // what a multi-series dashboard chart is read for.
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { labels: { color: theme.textMuted, usePointStyle: true, boxWidth: 10, boxHeight: 10 } },
+          tooltip: {
+            backgroundColor: theme.isDark ? 'rgba(16,15,14,0.94)' : 'rgba(41,39,36,0.94)',
+            titleColor: '#FFFFFF', bodyColor: '#FFFFFF',
+            borderColor: theme.grid, borderWidth: 1,
+            padding: 10, cornerRadius: 6, displayColors: true,
+          },
+        },
+      },
+    };
+
+    if (cfg.type === 'radar' || cfg.type === 'polarArea') {
+      base.options.scales = { r: {
+        ticks: { color: theme.textMuted, backdropColor: 'transparent' },
+        grid: { color: theme.grid }, angleLines: { color: theme.grid },
+        pointLabels: { color: theme.textMuted },
+      } };
+    } else if (!NO_CARTESIAN[cfg.type]) {
+      // Every scale the chart will have: the two defaults, plus anything the
+      // app declared (a right-hand y1, say). Theming only x and y left y1's
+      // ticks in Chart.js' default #666 on a dark card.
+      var byAxis = {};
+      var ids = {};
+      ids[ca] = 1; ids[valueKey] = 1;
+      for (k in uScales) if (hasOwn(uScales, k)) ids[k] = 1;
+      for (i = 0; i < uSets.length; i++) {
+        var ax = valueAxisOf(uSets[i], indexAxis);
+        ids[ax] = 1;
+        (byAxis[ax] || (byAxis[ax] = [])).push(uSets[i]);
+      }
+      base.options.scales = {};
+      for (k in ids) if (hasOwn(ids, k)) {
+        if (k === ca) {
+          base.options.scales[k] = { ticks: { color: theme.textMuted }, grid: { display: false, color: theme.grid }, border: { color: theme.grid } };
+          continue;
+        }
+        var value = scaleDefaults(theme);
+        // Bounds are derived PER AXIS from the datasets that land on it. A
+        // percentage line on y1 dipping to -20 must not drag y (revenue in
+        // the tens of thousands) down to -20000.
+        var stacked = !!((uScales[k] && uScales[k].stacked) || (uScales[ca] && uScales[ca].stacked));
+        var ext = signedExtent(byAxis[k] || [], cfg.type, stacked, valueKey);
+        if (ext && ext.hasNegative) {
+          var ns = niceScale(ext.dataMin, ext.dataMax, 4);
+          // SUGGESTED, not hard. Chart.js only ever widens a suggested bound,
+          // so an app that later mutates chart.data in place and calls
+          // update() is never clipped at bounds computed from stale data —
+          // and beginAtZero on signed data would pin one end at 0.
+          value.beginAtZero = false;
+          value.suggestedMin = ns.nMin;
+          value.suggestedMax = ns.nMax;
+          // Zero baseline. Scriptable so it stays one line of config rather
+          // than an annotation plugin the app would have to load.
+          value.grid.color = function (c) {
+            return c && c.tick && Number(c.tick.value) === 0 ? theme.textMuted : theme.grid;
+          };
+          value.grid.lineWidth = function (c) {
+            return c && c.tick && Number(c.tick.value) === 0 ? 1.5 : 1;
+          };
+        }
+        base.options.scales[k] = value;
+      }
+    }
+
+    var out = deepMerge(base, cfg);
+    // Rebuild `data` rather than merging it: the datasets array needs per-index
+    // theming, and the app's own config object must come back unmutated.
+    var data = {};
+    for (k in uData) if (hasOwn(uData, k)) data[k] = uData[k];
+    data.datasets = [];
+    for (i = 0; i < uSets.length; i++) {
+      var defaults = datasetDefaults(i, uSets[i], cfg.type, theme);
+      var merged = deepMerge(defaults, uSets[i] || {});
+      // Remember which keys the THEME supplied, so a rebuild from the live
+      // chart can strip them and re-theme, while keys the app set stay the
+      // app's. Non-enumerable: invisible to Chart.js and to deepMerge.
+      var injected = [];
+      for (k in defaults) if (hasOwn(defaults, k) && !(uSets[i] && hasOwn(uSets[i], k))) injected.push(k);
+      try { Object.defineProperty(merged, '__gsInjected', { value: injected, enumerable: false, configurable: true }); } catch (e) {}
+      data.datasets.push(merged);
+    }
+    out.data = data;
+    return out;
+  }
+
+  // The app-authored view of a LIVE dataset: everything the theme injected
+  // stripped back off. A dataset the app added after mount carries no marker
+  // and is taken whole.
+  function stripInjected(ds) {
+    if (!ds || typeof ds !== 'object') return ds;
+    var injected = ds.__gsInjected;
+    if (!injected) return ds;
+    var out = {}, k, i, skip = {};
+    for (i = 0; i < injected.length; i++) skip[injected[i]] = 1;
+    for (k in ds) if (hasOwn(ds, k) && !skip[k]) out[k] = ds[k];
+    return out;
+  }
+
+  // Sweep handles whose canvas left the document. A section that re-rendered
+  // (loadSections replaces el.innerHTML on every refresh, and so does any
+  // hand-written refresh) leaves its canvas detached; keeping the handle would
+  // keep the Chart.js instance — and its whole dataset — alive for the life of
+  // the page, growing once per refresh.
+  function sweepDetached() {
+    for (var i = _liveCharts.length - 1; i >= 0; i--) {
+      try { if (_liveCharts[i].isDetached()) _liveCharts[i].destroy(); } catch (e) {}
+    }
+  }
+
+  function chart(el, config) {
+    var target = typeof el === 'string' ? document.querySelector(el) : el;
+    if (!target) throw new Error('gsDash.chart: container not found');
+    var canvas = target;
+    if (String(target.tagName || '').toLowerCase() !== 'canvas') {
+      canvas = target.querySelector && target.querySelector('canvas');
+      if (!canvas) {
+        canvas = document.createElement('canvas');
+        target.innerHTML = '';
+        target.appendChild(canvas);
+      }
+    }
+    sweepDetached();
+    // Whatever already owns this canvas goes first: our own handle (reached
+    // through the container OR the canvas), or a chart the app drew by hand —
+    // Chart.js throws "Canvas is already in use" otherwise.
+    var prev = canvas.__gsChart || target.__gsChart;
+    if (prev) prev.destroy();
+    try {
+      if (window.Chart && typeof window.Chart.getChart === 'function') {
+        var stray = window.Chart.getChart(canvas);
+        if (stray && typeof stray.destroy === 'function') stray.destroy();
+      }
+    } catch (e0) {}
+
+    var userConfig = config || {};
+    var handle = {
+      instance: null, config: null,
+      update: update, retheme: retheme, destroy: destroy,
+      // `isConnected === false` rather than `!isConnected`: an environment
+      // that does not implement it must not have every chart swept away.
+      isDetached: function () { return canvas.isConnected === false; },
+    };
+    var destroyed = false;
+    var warnedNoChart = false; // once per chart, not once per rebuild
+    var warnedUnsized = false;
+
+    function clearNote() {
+      var parent = canvas.parentNode;
+      if (parent && parent.__gsChartNote) {
+        try { parent.removeChild(parent.__gsChartNote); } catch (e) {}
+        parent.__gsChartNote = null;
+      }
+    }
+
+    // Chart.js sizes the canvas to its container when the chart is created.
+    // A container that is hidden (or not in the document yet) measures 0, the
+    // canvas is locked at 0x0, and nothing is drawn. On a live page Chart.js
+    // recovers when the container appears; where frames do not run it never
+    // does. Say so, instead of leaving an empty card to be debugged.
+    function warnUnsized() {
+      var box = canvas.parentNode;
+      if (warnedUnsized || !box || box.clientWidth > 0) return;
+      warnedUnsized = true;
+      try {
+        console.warn('[gsDash.chart] ' + (canvas.id ? '#' + canvas.id : 'canvas')
+          + ' has no size: its container is hidden or not in the document. Show the container'
+          + ' (e.g. el.hidden = false) BEFORE calling gsDash.chart, or the chart stays 0x0.');
+      } catch (e) {}
+    }
+
+    function build(checkData) {
+      var merged = themedConfig(userConfig, chartTheme());
+      // Runs even without Chart.js: a total that disagrees with its parts is a
+      // data defect, and it should be reported whether or not the canvas drew.
+      if (checkData) warnTotals(merged.data, userConfig.type, (userConfig.options || {}).indexAxis === 'y' ? 'x' : 'y');
+      handle.config = merged;
+      if (typeof window.Chart !== 'function') {
+        if (!warnedNoChart) {
+          warnedNoChart = true;
+          try { console.warn('[gsDash.chart] window.Chart is not loaded — add the Chart.js <script> tag; rendering a placeholder.'); } catch (e) {}
+        }
+        try {
+          if (canvas.parentNode && !canvas.parentNode.__gsChartNote) {
+            var note = document.createElement('div');
+            note.className = 'gs-empty';
+            note.textContent = 'Chart unavailable — Chart.js did not load';
+            canvas.parentNode.appendChild(note);
+            canvas.parentNode.__gsChartNote = note;
+          }
+        } catch (e2) {}
+        return;
+      }
+      clearNote();
+      warnUnsized();
+      // Draw the first frame without animation (see "First paint" above),
+      // then hand animation back to Chart.js' defaults — but only from inside
+      // a frame callback. Where frames never run the key stays, so resizes
+      // and data updates keep drawing synchronously too.
+      var opts = merged.options || (merged.options = {});
+      var ownAnimation = hasOwn(userConfig.options || {}, 'animation');
+      if (!ownAnimation) opts.animation = false;
+      var inst = handle.instance = new window.Chart(canvas, merged);
+      if (!ownAnimation) {
+        try {
+          window.requestAnimationFrame(function () {
+            if (handle.instance === inst && opts.animation === false) delete opts.animation;
+          });
+        } catch (e3) {}
+      }
+    }
+
+    // The app's config as it stands NOW: the live chart's data (which the app
+    // may have mutated in place — the idiomatic Chart.js update path) with the
+    // theme's injected keys stripped, under the app's original options.
+    function liveConfig() {
+      var inst = handle.instance;
+      var live = inst && inst.data;
+      if (!live || typeof live !== 'object') return userConfig;
+      var next = {}, k;
+      for (k in userConfig) if (hasOwn(userConfig, k)) next[k] = userConfig[k];
+      var data = {};
+      for (k in live) if (hasOwn(live, k)) data[k] = live[k];
+      data.datasets = (live.datasets || []).map(stripInjected);
+      next.data = data;
+      return next;
+    }
+
+    function teardown() {
+      if (handle.instance && typeof handle.instance.destroy === 'function') {
+        try { handle.instance.destroy(); } catch (e) {}
+      }
+      handle.instance = null;
+    }
+
+    // update(config) re-renders from a new config; update() re-renders from
+    // whatever the live chart holds now (after in-place data changes).
+    function update(next) {
+      if (destroyed) return handle;
+      userConfig = next || liveConfig();
+      teardown();
+      build(true);
+      return handle;
+    }
+    // Called by the kit's single matchMedia listener — never by the app.
+    // Rebuilds from the LIVE data, so a flip never reverts the chart to the
+    // data it was created with.
+    function retheme() {
+      if (destroyed) return handle;
+      userConfig = liveConfig();
+      teardown();
+      build(false);
+      return handle;
+    }
+    function destroy() {
+      if (destroyed) return;
+      destroyed = true;
+      teardown();
+      clearNote();
+      for (var i = 0; i < _liveCharts.length; i++) {
+        if (_liveCharts[i] === handle) { _liveCharts.splice(i, 1); break; }
+      }
+      if (target.__gsChart === handle) target.__gsChart = null;
+      if (canvas.__gsChart === handle) canvas.__gsChart = null;
+    }
+
+    _liveCharts.push(handle);
+    target.__gsChart = handle;
+    canvas.__gsChart = handle;
+    build(true);
+    return handle;
+  }
+
+  function phead(title, sub, badge) {
+    return '<div class="gs-phead"><div><div class="t-h3">' + esc(title) + '</div>' + (sub ? '<div class="t-small">' + esc(sub) + '</div>' : '') + '</div>' + (badge ? '<span class="t-small" style="color:var(--ink-400)">' + esc(badge) + '</span>' : '') + '</div>';
+  }
+  function kpiCard(s) {
+    return '<div class="gs-card gs-kpi"><span class="t-small" style="color:var(--ink-500)">' + esc(s.label) + '</span>'
+      + '<div class="t-h1 num ' + (s.accent || '') + '">' + esc(s.value) + '</div>'
+      + (s.sub ? '<div class="t-small gs-kpi-sub">' + esc(s.sub) + '</div>' : '') + '</div>';
+  }
+  function kpiRow(specs) {
+    var n = Math.max(1, Math.min((specs || []).length, 5));
+    return '<div class="gs-kpis" style="--gs-kpi-cols:' + n + '">' + (specs || []).map(kpiCard).join('') + '</div>';
+  }
+  function donutCard(o) {
+    var rows = o.rows || [], fmt = o.fmt || fmtInt, total = rows.reduce(function (a, r) { return a + Number(r.value); }, 0) || 1;
+    if (!rows.length) return '<div class="gs-card">' + phead(o.title, o.sub, o.badge) + '<div class="gs-empty">No data yet</div></div>';
+    var leg = rows.map(function (r, i) { var pct = Math.round(100 * Number(r.value) / total); return '<div class="gs-leg"><span class="sw" style="background:' + vizRef(i) + '"></span><span class="nm">' + esc(humanize(r.label)) + '</span><span class="vv num">' + fmt(r.value) + '</span><span class="pp num t-small">' + pct + '%</span></div>'; }).join('');
+    return '<div class="gs-card">' + phead(o.title, o.sub, o.badge) + '<div class="gs-donut-body">' + donut({ rows: rows, center: o.center, centerVal: o.centerVal || fmt(total) }) + '<div class="gs-legend">' + leg + '</div></div></div>';
+  }
+  function barCard(o) {
+    if (!(o.rows || []).length) return '<div class="gs-card">' + phead(o.title, o.sub, o.badge) + '<div class="gs-empty">No data yet</div></div>';
+    return '<div class="gs-card">' + phead(o.title, o.sub, o.badge) + '<div>' + barH({ rows: o.rows, xFmt: o.xFmt, l: o.l }) + '</div></div>';
+  }
+  function feedCard(o) {
+    var rows = o.rows || [];
+    if (!rows.length) return '<div class="gs-card">' + phead(o.title) + '<div class="gs-empty">' + esc(o.empty || 'No entries') + '</div></div>';
+    var body = rows.map(function (r, i) {
+      var col = r.color || AV[i % AV.length];
+      return '<div class="row"><span class="gs-avatar" style="background:color-mix(in srgb,' + col + ' 14%,transparent);color:' + col + '">' + esc(r.initial || '\u2022') + '</span><div class="main"><div class="ttl">' + esc(r.main) + '</div>' + (r.sub ? '<div class="sub">' + esc(r.sub) + '</div>' : '') + '</div><span class="meta">' + (r.meta || '') + '</span></div>';
+    }).join('');
+    return '<div class="gs-card">' + phead(o.title) + '<div class="gs-feed">' + body + '</div></div>';
+  }
+  function panels(arr, cols) {
+    return '<div class="gs-panels" style="--gs-panel-cols:' + (arr.length >= 2 ? (cols || '1.1fr .9fr') : '1fr') + '">' + arr.join('') + '</div>';
+  }
+
+  // Virtualized data table for large result sets. Renders only the rows in
+  // (and near) the viewport and recycles them on scroll, so DOM residency is
+  // bounded no matter how many rows stream in. Pages are pulled lazily via
+  // opts.fetchPage(cursor) — an opaque keyset cursor passed back verbatim,
+  // never an OFFSET the component computes — and in-memory rows are capped at
+  // opts.maxResident: the earliest rows are dropped behind a visible
+  // "earlier rows omitted" notice (silent truncation would misstate the data).
+  //
+  //   gsDash.virtualTable(container, {
+  //     columns: [{ key, label?, width?, align?, render? }],
+  //     fetchPage: function (cursor) ->
+  //       Promise<{ rows: object[], nextCursor: any|null }>,
+  //     pageSize?: 200, maxResident?: 1000, rowHeight?: 36, height?: '420px',
+  //     empty?: 'No data yet',
+  //   }) -> { refresh(), destroy() }
+  //
+  // render(row) returns an HTML string (escape data yourself or build it from
+  // esc()/tag()); without render the cell shows esc(row[key]). fetchPage ends
+  // the stream by returning nextCursor: null (or an empty rows page).
+  function virtualTable(container, opts) {
+    if (typeof container === 'string') container = document.querySelector(container);
+    opts = opts || {};
+    if (!container) throw new Error('gsDash.virtualTable: container not found');
+    if (typeof opts.fetchPage !== 'function') throw new Error('gsDash.virtualTable: fetchPage(cursor) is required');
+    var cols = opts.columns || [];
+    if (!cols.length) throw new Error('gsDash.virtualTable: columns is required');
+    var rowH = opts.rowHeight || 36;
+    var pageSize = opts.pageSize || 200;
+    var maxResident = Math.max(opts.maxResident || 1000, pageSize * 2);
+    var overscan = 6;
+    if (container.__gsVt) container.__gsVt.destroy();
+
+    var rows = [], trimmed = 0, cursor = null;
+    var done = false, loading = false, failed = false, destroyed = false, gen = 0;
+    var grid = cols.map(function (c) { return c.width || 'minmax(80px,1fr)'; }).join(' ');
+
+    var root = document.createElement('div'); root.className = 'gs-vtable';
+    var head = document.createElement('div'); head.className = 'gs-vt-head'; head.style.gridTemplateColumns = grid;
+    head.innerHTML = cols.map(function (c) {
+      return '<div class="gs-vt-th"' + (c.align === 'right' ? ' style="text-align:right"' : '') + '>'
+        + esc(c.label != null ? c.label : humanize(c.key)) + '</div>';
+    }).join('');
+    var notice = document.createElement('div'); notice.className = 'gs-vt-notice'; notice.style.display = 'none';
+    var viewport = document.createElement('div'); viewport.className = 'gs-vt-viewport';
+    viewport.style.height = typeof opts.height === 'number' ? opts.height + 'px' : (opts.height || '420px');
+    var sizer = document.createElement('div'); sizer.className = 'gs-vt-sizer';
+    var slice = document.createElement('div'); slice.className = 'gs-vt-slice';
+    var status = document.createElement('div'); status.className = 'gs-vt-status'; status.style.display = 'none';
+    sizer.appendChild(slice);
+    viewport.appendChild(sizer);
+    viewport.appendChild(status);
+    root.appendChild(head);
+    root.appendChild(notice);
+    root.appendChild(viewport);
+    container.innerHTML = '';
+    container.appendChild(root);
+
+    function cellHtml(r, c) {
+      if (c.render) return String(c.render(r));
+      var v = r == null ? null : r[c.key];
+      return esc(v == null ? '' : v);
+    }
+
+    function render() {
+      sizer.style.height = (rows.length * rowH) + 'px';
+      var vh = viewport.clientHeight || 0;
+      var start = Math.max(0, Math.floor(viewport.scrollTop / rowH) - overscan);
+      var end = Math.min(rows.length, Math.ceil((viewport.scrollTop + vh) / rowH) + overscan);
+      slice.style.top = (start * rowH) + 'px';
+      var html = '';
+      for (var i = start; i < end; i++) {
+        html += '<div class="gs-vt-row" style="grid-template-columns:' + grid + ';height:' + rowH + 'px">';
+        for (var j = 0; j < cols.length; j++) {
+          html += '<div class="gs-vt-cell' + (cols[j].align === 'right' ? ' num ta-r' : '') + '">' + cellHtml(rows[i], cols[j]) + '</div>';
+        }
+        html += '</div>';
+      }
+      slice.innerHTML = html;
+      if (trimmed > 0) {
+        notice.textContent = fmtInt(trimmed) + ' earlier rows omitted to keep this view responsive — refine the query to browse them';
+        notice.style.display = '';
+      }
+      if (!loading && !failed) {
+        if (!rows.length && done) { status.textContent = opts.empty || 'No data yet'; status.style.display = ''; }
+        else { status.style.display = 'none'; }
+      }
+      maybeFetch();
+    }
+
+    function maybeFetch() {
+      if (done || loading || failed || destroyed) return;
+      var vh = viewport.clientHeight || 0;
+      var belowPx = rows.length * rowH - (viewport.scrollTop + vh);
+      if (belowPx < rowH * Math.max(20, pageSize / 2)) fetchNext();
+    }
+
+    function fetchNext() {
+      loading = true;
+      var g = gen;
+      status.textContent = 'Loading…';
+      status.style.display = '';
+      var p;
+      try { p = Promise.resolve(opts.fetchPage(cursor)); } catch (e) { p = Promise.reject(e); }
+      p.then(function (page) {
+        if (destroyed || g !== gen) return;
+        var isArr = Object.prototype.toString.call(page) === '[object Array]';
+        var newRows = isArr ? page : ((page && page.rows) || []);
+        var next = isArr || page == null ? null : page.nextCursor;
+        rows = rows.concat(newRows);
+        cursor = next;
+        if (next == null || !newRows.length) done = true;
+        if (rows.length > maxResident) {
+          // Drop the earliest rows; shift scrollTop so the visible rows stay
+          // put (indices moved up by `cut`).
+          var cut = rows.length - maxResident;
+          rows.splice(0, cut);
+          trimmed += cut;
+          viewport.scrollTop = Math.max(0, viewport.scrollTop - cut * rowH);
+        }
+        loading = false;
+        render();
+      }, function (err) {
+        if (destroyed || g !== gen) return;
+        loading = false;
+        failed = true;
+        status.innerHTML = '';
+        var t = document.createElement('span');
+        t.textContent = 'Error: ' + (err && err.message ? err.message : err);
+        var b = document.createElement('button');
+        b.className = 'gs-vt-retry';
+        b.textContent = 'Retry';
+        b.onclick = function () { failed = false; status.style.display = 'none'; fetchNext(); };
+        status.appendChild(t);
+        status.appendChild(b);
+        status.style.display = '';
+      });
+    }
+
+    function onScroll() { render(); }
+    viewport.addEventListener('scroll', onScroll);
+    var ro = typeof ResizeObserver === 'function' ? new ResizeObserver(function () { render(); }) : null;
+    if (ro) ro.observe(viewport);
+
+    function refresh() {
+      gen++;
+      rows = []; trimmed = 0; cursor = null;
+      done = false; loading = false; failed = false;
+      notice.style.display = 'none';
+      viewport.scrollTop = 0;
+      render();
+    }
+    function destroy() {
+      destroyed = true;
+      gen++;
+      viewport.removeEventListener('scroll', onScroll);
+      if (ro) ro.disconnect();
+      if (container.__gsVt === handle) container.__gsVt = null;
+    }
+    var handle = { refresh: refresh, destroy: destroy };
+    container.__gsVt = handle;
+    render();
+    return handle;
+  }
+
+  // Staged loader for multi-section dashboards. Collecting every query
+  // result first and rendering the whole page in one pass freezes the
+  // renderer — serial fetches don't help, because the single giant render
+  // still blocks the main thread for the entire page. loadSections renders
+  // the sections strictly in order — render one section, yield the main
+  // thread (setTimeout 0, so the browser can paint it), then render the
+  // next — with per-section retry + exponential backoff, and a failed
+  // section renders an inline error + Retry without blocking the sections
+  // after it. Queries are PREFETCHED a small window ahead of the section
+  // being rendered (opts.prefetch, default 2), so staging costs little
+  // wall-clock versus a parallel fetch while rendering stays one section
+  // at a time.
+  //
+  //   gsDash.loadSections({
+  //     sections: [{
+  //       el,                  // element (or selector) the section renders into
+  //       queryName?, params?, // window.agentdb.executeQuery(queryName, params);
+  //                            // params may be a function (re-read every run).
+  //                            // Omit queryName for mount-only sections — e.g.
+  //                            // a virtualTable, which pages its own data.
+  //       render,              // render(result, el) — must replace el's content;
+  //                            // result is null for mount-only sections.
+  //                            // el is un-hidden (el.hidden = false) just
+  //                            // before the call, so a section the page
+  //                            // ships as `hidden` has a real size for
+  //                            // whatever render measures (a chart canvas)
+  //     }],
+  //     retries?: 2,           // per-section retries after the first failure
+  //     backoffMs?: 500,       // first retry delay; doubles per retry
+  //     prefetch?: 2,          // how many sections ahead queries may be
+  //                            // started (0 = strictly one query in flight)
+  //     onSectionError?: function (err, section, index) {},
+  //   }) -> { refresh(), cancel() }
+  //
+  // refresh() restarts from the first section; sections that rendered before
+  // keep their content on screen while their query re-runs (failed ones show
+  // the loading placeholder again). cancel() drops all in-flight work; a
+  // later refresh() starts the sequence again, and a failed section's Retry
+  // button keeps working even while cancelled.
+  function loadSections(opts) {
+    opts = opts || {};
+    var sections = opts.sections || [];
+    if (!sections.length) throw new Error('gsDash.loadSections: sections is required');
+    for (var si = 0; si < sections.length; si++) {
+      if (typeof sections[si].render !== 'function') {
+        throw new Error('gsDash.loadSections: sections[' + si + '].render is required');
+      }
+    }
+    var retries = opts.retries == null ? 2 : opts.retries;
+    var backoffMs = opts.backoffMs == null ? 500 : opts.backoffMs;
+    var prefetch = opts.prefetch == null ? 2 : Math.max(0, opts.prefetch);
+    var gen = 0;
+    var rendered = [];
+
+    function elOf(s) { return typeof s.el === 'string' ? document.querySelector(s.el) : s.el; }
+    function showLoading(el) { el.innerHTML = '<div class="gs-sec-loading">Loading…</div>'; }
+    // A page may ship its sections `hidden` until they have content. Left to
+    // render() to undo, the reveal lands after the chart call (the canvas has
+    // already measured 0x0) or is forgotten and the section never shows.
+    function reveal(el) { if (el && el.hidden) el.hidden = false; }
+    function paramsOf(s) { return typeof s.params === 'function' ? s.params() : (s.params || {}); }
+    function firstFetch(s) {
+      try {
+        if (!s.queryName) return Promise.resolve(null);
+        return Promise.resolve(window.agentdb.executeQuery(s.queryName, paramsOf(s)));
+      } catch (e) { return Promise.reject(e); }
+    }
+
+    function fail(err, s, i, el, g) {
+      rendered[i] = false;
+      if (el) {
+        reveal(el);
+        el.innerHTML = '';
+        var box = document.createElement('div');
+        box.className = 'gs-sec-error';
+        var t = document.createElement('span');
+        t.textContent = 'Error: ' + (err && err.message ? err.message : err);
+        var b = document.createElement('button');
+        b.className = 'gs-sec-retry';
+        b.textContent = 'Retry';
+        b.onclick = function () {
+          // Run under the CURRENT generation, not the one the failure
+          // happened in: cancel() bumps the generation without touching the
+          // DOM, and a still-visible Retry that silently no-ops is worse
+          // than the rare duplicate fetch when a refresh walk is in flight.
+          showLoading(el);
+          runSection(s, i, gen, 0, null, function () {});
+        };
+        box.appendChild(t);
+        box.appendChild(b);
+        el.appendChild(box);
+      }
+      try { console.error('[error] gsDash.loadSections section ' + i + ':', err); } catch (e1) {}
+      if (opts.onSectionError) {
+        try { opts.onSectionError(err, s, i); } catch (e2) {}
+      }
+    }
+
+    function runSection(s, i, g, attempt, prefetched, done) {
+      var el = elOf(s);
+      if (!el) {
+        fail(new Error('loadSections: section ' + i + ' container not found'), s, i, null, g);
+        done();
+        return;
+      }
+      // First attempts may consume a prefetched query; retries (and manual
+      // Retry clicks) always issue a fresh one.
+      var p = attempt === 0 && prefetched ? prefetched : firstFetch(s);
+      p.then(function (result) {
+        if (g !== gen) return;
+        try {
+          reveal(el);
+          s.render(result, el);
+          rendered[i] = true;
+        } catch (renderErr) {
+          // A render() throw is a code defect, not a transient failure —
+          // retrying would re-issue the query just to crash the same way.
+          fail(renderErr, s, i, el, g);
+        }
+        done();
+      }, function (err) {
+        if (g !== gen) return;
+        if (attempt < retries) {
+          setTimeout(function () {
+            if (g !== gen) return;
+            runSection(s, i, g, attempt + 1, null, done);
+          }, backoffMs * Math.pow(2, attempt));
+        } else {
+          fail(err, s, i, el, g);
+          done();
+        }
+      });
+    }
+
+    function run() {
+      var g = ++gen;
+      var queued = [];
+      for (var i = 0; i < sections.length; i++) {
+        var el = elOf(sections[i]);
+        if (el && !rendered[i]) showLoading(el);
+      }
+      function ensure(j) {
+        if (j >= sections.length || queued[j]) return;
+        var p = firstFetch(sections[j]);
+        // A prefetched failure is handled when its section is consumed; this
+        // no-op handler just keeps it from surfacing as unhandled meanwhile.
+        p.then(null, function () {});
+        queued[j] = p;
+      }
+      (function next(i) {
+        if (g !== gen || i >= sections.length) return;
+        // Keep up to `prefetch` queries in flight beyond the section being
+        // rendered, so staging does not serialize query latency.
+        for (var j = i; j <= i + prefetch; j++) ensure(j);
+        var p = queued[i] || null;
+        queued[i] = null;
+        runSection(sections[i], i, g, 0, p, function () {
+          if (g !== gen) return;
+          // Yield the main thread between sections so the browser paints the
+          // section that just rendered before the next one starts.
+          setTimeout(function () { next(i + 1); }, 0);
+        });
+      })(0);
+    }
+
+    run();
+    return {
+      refresh: function () { run(); },
+      cancel: function () { gen++; },
+    };
+  }
+
+  // gsDash.print / gsDash.downloadPdf are agentdb.print / agentdb.downloadPdf
+  // (the bridge's printing) for dashboards that hold `var g = window.gsDash`.
+  // They work detached, and reject with PRINT_UNAVAILABLE on a page whose
+  // bridge cannot print.
+  function printAlias(name) {
+    return function (target, options) {
+      var bridge = window.agentdb;
+      if (bridge && typeof bridge[name] === 'function') return bridge[name](target, options);
+      var err = new Error('agentdb.' + name + ' is not available on this page');
+      err.code = 'PRINT_UNAVAILABLE';
+      return Promise.reject(err);
+    };
+  }
+
+  window.gsDash = {
+    cvar: cvar, vizColor: vizColor, vizRef: vizRef, chartTheme: chartTheme, esc: esc, fmtInt: fmtInt, money: money, humanize: humanize,
+    dateMD: dateMD, relTime: relTime, statusTone: statusTone, tag: tag,
+    sparkline: sparkline, lineChart: lineChart, barH: barH, donut: donut, chart: chart,
+    kpiCard: kpiCard, kpiRow: kpiRow, donutCard: donutCard, barCard: barCard, feedCard: feedCard, panels: panels,
+    virtualTable: virtualTable,
+    loadSections: loadSections,
+    print: printAlias('print'), downloadPdf: printAlias('downloadPdf'),
+  };
+})();
+
+
+</script>
+<script>window.__SNAPSHOT__={"generated_at":"2026-10-18","app_id":"dceb4c03-f91e-4aad-a0e1-6142e61426d1","title":"학습 콘텐츠·문제뱅크 트래커"};
+window.__DATA__={"contents_list":{"rows":[{"id":13,"content_code":"C-SCI-001","title":"화학 반응식 실험 영상","subject_name":"과학","unit_name":"화학 반응과 에너지","content_type":"강의영상","format":"영상","difficulty":"상","estimated_minutes":30,"author":"최선생","source":"자체제작","tags":"화학반응,실험","usage_count":12,"avg_rating":4.6,"status":"활성"},{"id":14,"content_code":"C-SCI-002","title":"반응열 계산 연습","subject_name":"과학","unit_name":"화학 반응과 에너지","content_type":"문제집","format":"PDF","difficulty":"상","estimated_minutes":50,"author":"최선생","source":"자체제작","tags":"반응열,계산","usage_count":10,"avg_rating":4.2,"status":"활성"},{"id":12,"content_code":"C-KOR-001","title":"현대시 감상 가이드","subject_name":"국어","unit_name":"현대시 감상","content_type":"개념교재","format":"PDF","difficulty":"중","estimated_minutes":40,"author":"정선생","source":"자체제작","tags":"현대시,문학","usage_count":15,"avg_rating":4.3,"status":"활성"},{"id":1,"content_code":"C-MATH-001","title":"실수와 제곱근 핵심정리","subject_name":"수학","unit_name":"실수와 그 계산","content_type":"개념교재","format":"PDF","difficulty":"중","estimated_minutes":30,"author":"김선생","source":"자체제작","tags":"제곱근,실수,기초","usage_count":28,"avg_rating":4.5,"status":"활성"},{"id":2,"content_code":"C-MATH-002","title":"제곱근 계산 연습 영상","subject_name":"수학","unit_name":"실수와 그 계산","content_type":"강의영상","format":"영상","difficulty":"중","estimated_minutes":20,"author":"김선생","source":"유튜브","tags":"제곱근,연산,영상","usage_count":45,"avg_rating":4.7,"status":"활성"},{"id":3,"content_code":"C-MATH-003","title":"곱셈공식 완전정복","subject_name":"수학","unit_name":"다항식의 곱셈과 인수분해","content_type":"개념교재","format":"PDF","difficulty":"중","estimated_minutes":45,"author":"김선생","source":"자체제작","tags":"곱셈공식,인수분해","usage_count":32,"avg_rating":4.6,"status":"활성"},{"id":4,"content_code":"C-MATH-004","title":"인수분해 실전 100제","subject_name":"수학","unit_name":"다항식의 곱셈과 인수분해","content_type":"문제집","format":"PDF","difficulty":"상","estimated_minutes":90,"author":"김선생","source":"자체제작","tags":"인수분해,심화","usage_count":20,"avg_rating":4.8,"status":"활성"},{"id":5,"content_code":"C-MATH-005","title":"이차방정식 유형별 풀이","subject_name":"수학","unit_name":"이차방정식","content_type":"개념교재","format":"PDF","difficulty":"상","estimated_minutes":60,"author":"김선생","source":"자체제작","tags":"이차방정식,유형","usage_count":25,"avg_rating":4.4,"status":"활성"},{"id":6,"content_code":"C-MATH-006","title":"이차방정식 실전 모의고사","subject_name":"수학","unit_name":"이차방정식","content_type":"모의고사","format":"PDF","difficulty":"상","estimated_minutes":60,"author":"김선생","source":"자체제작","tags":"이차방정식,실전","usage_count":18,"avg_rating":4.3,"status":"활성"},{"id":7,"content_code":"C-MATH-007","title":"이차함수 그래프 인터랙티브","subject_name":"수학","unit_name":"이차함수","content_type":"실습자료","format":"Web","difficulty":"중","estimated_minutes":30,"author":"박선생","source":"Desmos","tags":"이차함수,그래프,시각화","usage_count":15,"avg_rating":4.9,"status":"활성"},{"id":15,"content_code":"C-MATH-008","title":"전체 복습 요약노트","subject_name":"수학","unit_name":null,"content_type":"개념교재","format":"PDF","difficulty":"중","estimated_minutes":60,"author":"김선생","source":"자체제작","tags":"전체,복습","usage_count":50,"avg_rating":4.9,"status":"활성"},{"id":8,"content_code":"C-ENG-001","title":"분사구문 핵심 강의","subject_name":"영어","unit_name":"분사구문","content_type":"강의영상","format":"영상","difficulty":"중","estimated_minutes":25,"author":"이선생","source":"자체제작","tags":"분사구문,문법","usage_count":38,"avg_rating":4.6,"status":"활성"},{"id":9,"content_code":"C-ENG-002","title":"분사구문 실전 문제 50","subject_name":"영어","unit_name":"분사구문","content_type":"문제집","format":"PDF","difficulty":"중","estimated_minutes":40,"author":"이선생","source":"자체제작","tags":"분사구문,연습","usage_count":22,"avg_rating":4.4,"status":"활성"},{"id":10,"content_code":"C-ENG-003","title":"관계대명사 종합 정리","subject_name":"영어","unit_name":"관계대명사","content_type":"개념교재","format":"PDF","difficulty":"중","estimated_minutes":35,"author":"이선생","source":"자체제작","tags":"관계대명사,문법","usage_count":30,"avg_rating":4.7,"status":"활성"},{"id":11,"content_code":"C-ENG-004","title":"관계대명사 회화 연습","subject_name":"영어","unit_name":"관계대명사","content_type":"실습자료","format":"오디오","difficulty":"중","estimated_minutes":20,"author":"이선생","source":"자체제작","tags":"관계대명사,회화,청취","usage_count":18,"avg_rating":4.5,"status":"활성"}]},"kpis":{"rows":[{"total_contents":15,"total_questions":20,"subject_count":4,"unit_count":8,"avg_content_rating":4.6,"avg_correct_rate":73.8}]},"questions_list":{"rows":[{"id":19,"question_code":"Q-SCI-001","subject_name":"과학","unit_name":"화학 반응과 에너지","question_type":"서술형","difficulty":"상","question_text":"발열 반응의 ΔH 부호는?","correct_answer":"음(-)","tags":"화학반응,열화학","usage_count":18,"correct_rate":60.0},{"id":20,"question_code":"Q-SCI-002","subject_name":"과학","unit_name":"화학 반응과 에너지","question_type":"객관식","difficulty":"상","question_text":"2H₂ + O₂ → 2H₂O의 반응은?","correct_answer":"발열반응","tags":"화학반응,발열","usage_count":15,"correct_rate":73.0},{"id":18,"question_code":"Q-KOR-001","subject_name":"국어","unit_name":"현대시 감상","question_type":"객관식","difficulty":"중","question_text":"시의 운율 중 외형률의 예가 아닌 것은?","correct_answer":"내재율","tags":"현대시,운율","usage_count":20,"correct_rate":70.0},{"id":5,"question_code":"Q-MATH-004","subject_name":"수학","unit_name":"실수와 그 계산","question_type":"객관식","difficulty":"하","question_text":"√9 + √16의 값은?","correct_answer":"7","tags":"제곱근,계산","usage_count":63,"correct_rate":92.0},{"id":6,"question_code":"Q-MATH-005","subject_name":"수학","unit_name":"실수와 그 계산","question_type":"객관식","difficulty":"하","question_text":"√25 - √9의 값은?","correct_answer":"2","tags":"제곱근,계산","usage_count":58,"correct_rate":95.0},{"id":7,"question_code":"Q-MATH-006","subject_name":"수학","unit_name":"실수와 그 계산","question_type":"서술형","difficulty":"중","question_text":"√50을 가장 간단한 꼴로 나타내시오.","correct_answer":"5√2","tags":"제곱근,간단화","usage_count":40,"correct_rate":72.5},{"id":8,"question_code":"Q-MATH-007","subject_name":"수학","unit_name":"다항식의 곱셈과 인수분해","question_type":"객관식","difficulty":"중","question_text":"x² - 9를 인수분해하면?","correct_answer":"(x+3)(x-3)","tags":"인수분해,공식","usage_count":49,"correct_rate":82.0},{"id":9,"question_code":"Q-MATH-008","subject_name":"수학","unit_name":"다항식의 곱셈과 인수분해","question_type":"서술형","difficulty":"상","question_text":"x² + 7x + 12를 인수분해하시오.","correct_answer":"(x+3)(x+4)","tags":"인수분해,심화","usage_count":41,"correct_rate":68.0},{"id":1,"question_code":"Q-MATH-001","subject_name":"수학","unit_name":"이차방정식","question_type":"객관식","difficulty":"중","question_text":"x^2 - 5x + 6 = 0의 해는?","correct_answer":"x=2 또는 x=3","tags":"이차방정식,인수분해","usage_count":53,"correct_rate":78.5},{"id":2,"question_code":"Q-MATH-002","subject_name":"수학","unit_name":"이차방정식","question_type":"서술형","difficulty":"상","question_text":"x^2 + 4x + k = 0이 중근을 가질 때 k의 값은?","correct_answer":"k=4","tags":"이차방정식,판별식","usage_count":35,"correct_rate":65.2},{"id":10,"question_code":"Q-MATH-009","subject_name":"수학","unit_name":"이차방정식","question_type":"서술형","difficulty":"중","question_text":"2x² - 8 = 0의 해를 구하시오.","correct_answer":"x=±2","tags":"이차방정식,기본","usage_count":52,"correct_rate":78.0},{"id":11,"question_code":"Q-MATH-010","subject_name":"수학","unit_name":"이차방정식","question_type":"서술형","difficulty":"상","question_text":"x² - 6x + 10 = 0의 해를 근의공식으로 구하시오.","correct_answer":"x = 3±i","tags":"이차방정식,복소수","usage_count":28,"correct_rate":52.0},{"id":3,"question_code":"Q-MATH-003","subject_name":"수학","unit_name":"이차함수","question_type":"객관식","difficulty":"상","question_text":"y = x^2 - 4x + 5의 최솟값은?","correct_answer":"1","tags":"이차함수,최솟값","usage_count":34,"correct_rate":58.9},{"id":12,"question_code":"Q-MATH-011","subject_name":"수학","unit_name":"이차함수","question_type":"객관식","difficulty":"중","question_text":"y = 2(x-1)² + 3의 꼭짓점은?","correct_answer":"(1, 3)","tags":"이차함수,꼭짓점","usage_count":42,"correct_rate":85.0},{"id":13,"question_code":"Q-MATH-012","subject_name":"수학","unit_name":"이차함수","question_type":"서술형","difficulty":"상","question_text":"y = -x² + 4x + 1의 최댓값을 구하시오.","correct_answer":"5","tags":"이차함수,최댓값","usage_count":28,"correct_rate":55.0},{"id":14,"question_code":"Q-ENG-002","subject_name":"영어","unit_name":"분사구문","question_type":"객관식","difficulty":"중","question_text":"___ sunny weather, we went hiking. (Being/Having)","correct_answer":"Being","tags":"분사구문,문법","usage_count":45,"correct_rate":78.0},{"id":15,"question_code":"Q-ENG-003","subject_name":"영어","unit_name":"분사구문","question_type":"서술형","difficulty":"상","question_text":"When he saw me, he smiled. 분사구문으로 바꾸시오.","correct_answer":"Seeing me, he smiled.","tags":"분사구문,변환","usage_count":30,"correct_rate":65.0},{"id":4,"question_code":"Q-ENG-001","subject_name":"영어","unit_name":"관계대명사","question_type":"객관식","difficulty":"중","question_text":"The book ___ I bought is interesting. (which/who)","correct_answer":"which","tags":"관계대명사,문법","usage_count":50,"correct_rate":85.0},{"id":16,"question_code":"Q-ENG-004","subject_name":"영어","unit_name":"관계대명사","question_type":"객관식","difficulty":"중","question_text":"The man ___ is sitting there is my uncle. (who/which)","correct_answer":"who","tags":"관계대명사,사람","usage_count":50,"correct_rate":90.0},{"id":17,"question_code":"Q-ENG-005","subject_name":"영어","unit_name":"관계대명사","question_type":"서술형","difficulty":"상","question_text":"This is the house ___ Jack built. 빈칸을 넣으시오.","correct_answer":"that/which","tags":"관계대명사,목적격","usage_count":32,"correct_rate":72.0}]},"unit_matrix":{"rows":[{"subject_id":1,"subject_name":"수학","curriculum_id":1,"unit_order":1,"unit_name":"실수와 그 계산","chapter":"1단원","unit_difficulty":"중","estimated_hours":8.0,"content_count":2,"textbook_count":1,"video_count":1,"problemset_count":0,"practice_count":0,"question_count":3,"q_easy":2,"q_medium":1,"q_hard":0,"avg_correct_rate":87,"avg_rating":4.6},{"subject_id":1,"subject_name":"수학","curriculum_id":2,"unit_order":2,"unit_name":"다항식의 곱셈과 인수분해","chapter":"2단원","unit_difficulty":"중","estimated_hours":10.0,"content_count":2,"textbook_count":1,"video_count":0,"problemset_count":1,"practice_count":0,"question_count":2,"q_easy":0,"q_medium":1,"q_hard":1,"avg_correct_rate":75,"avg_rating":4.7},{"subject_id":1,"subject_name":"수학","curriculum_id":3,"unit_order":3,"unit_name":"이차방정식","chapter":"3단원","unit_difficulty":"상","estimated_hours":12.0,"content_count":2,"textbook_count":1,"video_count":0,"problemset_count":0,"practice_count":0,"question_count":4,"q_easy":0,"q_medium":2,"q_hard":2,"avg_correct_rate":68,"avg_rating":4.4},{"subject_id":1,"subject_name":"수학","curriculum_id":4,"unit_order":4,"unit_name":"이차함수","chapter":"4단원","unit_difficulty":"상","estimated_hours":12.0,"content_count":1,"textbook_count":0,"video_count":0,"problemset_count":0,"practice_count":1,"question_count":3,"q_easy":0,"q_medium":1,"q_hard":2,"avg_correct_rate":66,"avg_rating":4.9},{"subject_id":2,"subject_name":"영어","curriculum_id":5,"unit_order":1,"unit_name":"분사구문","chapter":"Grammar 1","unit_difficulty":"중","estimated_hours":6.0,"content_count":2,"textbook_count":0,"video_count":1,"problemset_count":1,"practice_count":0,"question_count":2,"q_easy":0,"q_medium":1,"q_hard":1,"avg_correct_rate":72,"avg_rating":4.5},{"subject_id":2,"subject_name":"영어","curriculum_id":6,"unit_order":2,"unit_name":"관계대명사","chapter":"Grammar 2","unit_difficulty":"중","estimated_hours":8.0,"content_count":2,"textbook_count":1,"video_count":0,"problemset_count":0,"practice_count":1,"question_count":3,"q_easy":0,"q_medium":2,"q_hard":1,"avg_correct_rate":82,"avg_rating":4.6},{"subject_id":3,"subject_name":"국어","curriculum_id":7,"unit_order":1,"unit_name":"현대시 감상","chapter":"문학 1","unit_difficulty":"중","estimated_hours":6.0,"content_count":1,"textbook_count":1,"video_count":0,"problemset_count":0,"practice_count":0,"question_count":1,"q_easy":0,"q_medium":1,"q_hard":0,"avg_correct_rate":70,"avg_rating":4.3},{"subject_id":4,"subject_name":"과학","curriculum_id":8,"unit_order":1,"unit_name":"화학 반응과 에너지","chapter":"화학 1","unit_difficulty":"상","estimated_hours":10.0,"content_count":2,"textbook_count":0,"video_count":1,"problemset_count":1,"practice_count":0,"question_count":2,"q_easy":0,"q_medium":0,"q_hard":2,"avg_correct_rate":67,"avg_rating":4.4}]}};
+window.__MUT__={};
+window.__APP__={"id":"dceb4c03-f91e-4aad-a0e1-6142e61426d1","title":"학습 콘텐츠·문제뱅크 트래커"};</script>
+<script>
+/* =====================================================================
+   오프라인 보드 어댑터 (Offline Board Adapter) — 읽기 전용
+   - window.__DATA__ 에 내장된 스냅샷으로 등록 쿼리 결과를 대신 돌려줍니다.
+   - 저장·수정(등록/삭제) 쿼리는 반영되지 않고 안내 메시지를 돌려줍니다.
+   ===================================================================== */
+(function () {
+  'use strict';
+  var DATA = window.__DATA__ || {};
+  var MUT = window.__MUT__ || {};
+  var APP = window.__APP__ || {};
+  var SNAP = (window.__SNAPSHOT__ || {}).generated_at || '';
+  var READS = window.__READS__ || {};
+
+  function keyOf(name, params) {
+    if (!params) return name;
+    var ks = Object.keys(params).filter(function (k) { return params[k] !== undefined; });
+    if (!ks.length) return name;
+    ks.sort();
+    return name + '#' + ks.map(function (k) { return k + '=' + params[k]; }).join('&');
+  }
+
+  /* 같은 쿼리를 파라미터만 바꿔 여러 번 받아둔 경우, 없는 조합은 합집합으로 대신합니다. */
+  var byName = {};
+  Object.keys(DATA).forEach(function (k) {
+    var n = k.split('#')[0];
+    (byName[n] = byName[n] || []).push(DATA[k].rows || []);
+  });
+
+  window.agentdb = {
+    executeQuery: async function (name, params) {
+      params = params || {};
+      var k = keyOf(name, params);
+      if (DATA[k]) return { rows: DATA[k].rows || [] };
+      if (MUT[name]) {
+        throw new Error('이 파일은 오프라인 스냅샷(읽기 전용)입니다. 저장·수정은 온라인 대시보드에서 해 주세요.');
+      }
+      var groups = byName[name];
+      if (groups) {
+        var seen = {}, out = [];
+        groups.forEach(function (rows) {
+          rows.forEach(function (r) {
+            var s = JSON.stringify(r);
+            if (!seen[s]) { seen[s] = 1; out.push(r); }
+          });
+        });
+        return { rows: out };
+      }
+      throw new Error('오프라인 스냅샷에 "' + name + '" 데이터가 없습니다.');
+    },
+    getSchema: async function () { return { tables: [] }; },
+    getAppInfo: async function () {
+      return { id: APP.id || 'offline', name: APP.title || '오프라인 보드', scope: 'workspace' };
+    },
+    print: function () { window.print(); },
+    downloadPdf: function () { window.print(); }
+  };
+
+  window.__offlineInfo = { snapshot_at: SNAP, app: APP.title || '', queries: Object.keys(DATA).length };
+
+  /* ---------- 하단 배지 ---------- */
+  function badge() {
+    if (document.getElementById('od-badge')) return;
+    var css = document.createElement('style');
+    css.textContent = [
+      '#od-badge{position:fixed;right:14px;bottom:14px;z-index:2147483000;display:flex;align-items:center;gap:8px;',
+      'padding:7px 11px;border-radius:999px;background:#FFFEFB;border:1px solid #DFD7C3;color:#4A4234;',
+      'font:600 11.5px/1.35 "Pretendard","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;',
+      'box-shadow:0 2px 10px rgba(31,27,21,.14)}',
+      '#od-badge i{width:7px;height:7px;border-radius:50%;background:#A0501F;display:inline-block}',
+      '#od-badge b{color:#A0501F;font-weight:700}',
+      '#od-badge a{color:#A0501F;text-decoration:none;border-bottom:1px solid #E4C7B4}',
+      '#od-badge a:hover{border-bottom-color:#A0501F}',
+      '@media print{#od-badge{display:none}}'
+    ].join('');
+    document.head.appendChild(css);
+    var el = document.createElement('div');
+    el.id = 'od-badge';
+    el.innerHTML = '<i></i><span>오프라인 스냅샷 <b>' + (SNAP || '') + '</b> · 읽기 전용</span><a href="index.html">전체 보드</a>';
+    document.body.appendChild(el);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', badge);
+  else badge();
+})();
+
+</script>
+
+  <div class="gs-wrap wrap" id="root">
+    <div class="gs-hero">
+      <div>
+        <div class="t-micro" style="margin-bottom:6px">다움진로진학컨설팅의 진학 및 학습 맞춤엔진</div>
+        <h1 class="t-h1" style="margin:0">학습 콘텐츠·문제뱅크 트래커</h1>
+        <p class="t-body" style="margin:8px 0 0">과목·단원별로 교재, 영상, 문제집, 문제은행을 통합 관리합니다.</p>
+      </div>
+      <span class="gs-pill"><span class="dot"></span><span id="ts">—</span></span>
+    </div>
+
+    <div id="kpis" style="margin-top:16px"></div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="matrix">단원별 리소스 매트릭스</button>
+      <button class="tab" data-tab="contents">학습 콘텐츠</button>
+      <button class="tab" data-tab="questions">문제 뱅크</button>
+    </div>
+
+    <div id="tab-matrix"></div>
+    <div id="tab-contents" style="display:none"></div>
+    <div id="tab-questions" style="display:none"></div>
+  </div>
+  <script>
+// 학습 콘텐츠·문제뱅크 트래커
+var g = window.gsDash;
+
+var state = {
+  matrix: [],
+  contents: [],
+  questions: [],
+  // filters per tab
+  matrixSubject: '',
+  contentSearch: '',
+  contentSubject: '',
+  contentType: '',
+  contentDiff: '',
+  qSearch: '',
+  qSubject: '',
+  qType: '',
+  qDiff: '',
+};
+
+// --- helpers ---
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function diffPill(d) {
+  if (d === '하') return '<span class="diff-pill diff-easy">하</span>';
+  if (d === '중') return '<span class="diff-pill diff-med">중</span>';
+  if (d === '상') return '<span class="diff-pill diff-hard">상</span>';
+  return '<span class="diff-pill" style="background:var(--ink-100);color:var(--ink-600)">—</span>';
+}
+
+function rateClass(r) {
+  if (r == null) return '';
+  if (r >= 80) return 'rate-high';
+  if (r >= 60) return 'rate-mid';
+  return 'rate-low';
+}
+
+function barClass(r) {
+  if (r >= 80) return 'bar-high';
+  if (r >= 60) return 'bar-mid';
+  return 'bar-low';
+}
+
+function countBadge(n) {
+  if (!n || Number(n) === 0) return '<span class="count-cell count-0">0</span>';
+  return '<span class="count-cell count-some">' + n + '</span>';
+}
+
+function stars(r) {
+  if (r == null) return '<span style="color:var(--ink-300)">—</span>';
+  var full = Math.round(Number(r));
+  var s = '';
+  for (var i = 0; i < 5; i++) s += (i < full) ? '★' : '☆';
+  return '<span class="star" title="' + r + '점">' + s + '</span><span class="num" style="color:var(--ink-500);margin-left:4px;font-size:11px">' + r + '</span>';
+}
+
+function unique(arr, key) {
+  var seen = {}, out = [];
+  arr.forEach(function (r) {
+    var v = r[key];
+    if (v && !seen[v]) { seen[v] = true; out.push(v); }
+  });
+  return out.sort();
+}
+
+function selectOptions(values, selected, placeholder) {
+  var opts = ['<option value="">' + placeholder + '</option>'];
+  values.forEach(function (v) {
+    opts.push('<option value="' + g.esc(v) + '"' + (selected === v ? ' selected' : '') + '>' + g.esc(v) + '</option>');
+  });
+  return opts.join('');
+}
+
+// --- Tab 1: 단원별 리소스 매트릭스 ---
+function renderMatrix() {
+  var container = document.getElementById('tab-matrix');
+  var rows = state.matrix.filter(function (r) {
+    return !state.matrixSubject || r.subject_name === state.matrixSubject;
+  });
+
+  var tableRows = rows.map(function (r) {
+    var rate = r.avg_correct_rate != null ? Number(r.avg_correct_rate) : null;
+    var rateHtml = rate != null
+      ? '<span class="mini-bar ' + barClass(rate) + '"><div style="width:' + rate + '%"></div></span><span class="num ' + rateClass(rate) + '">' + rate + '%</span>'
+      : '<span style="color:var(--ink-300)">—</span>';
+    return '<tr>' +
+      '<td class="subject-cell">' + g.esc(r.subject_name) + '</td>' +
+      '<td class="num" style="text-align:center;color:var(--ink-500)">' + (r.unit_order || '') + '</td>' +
+      '<td style="font-weight:600">' + g.esc(r.unit_name) + '<div class="content-meta">' + g.esc(r.chapter || '') + ' · ' + (r.estimated_hours || 0) + 'h</div></td>' +
+      '<td style="text-align:center">' + diffPill(r.unit_difficulty) + '</td>' +
+      '<td style="text-align:center">' + countBadge(r.content_count) + '</td>' +
+      '<td style="text-align:center">' + countBadge(r.textbook_count) + '</td>' +
+      '<td style="text-align:center">' + countBadge(r.video_count) + '</td>' +
+      '<td style="text-align:center">' + countBadge(r.problemset_count) + '</td>' +
+      '<td style="text-align:center">' + countBadge(r.practice_count) + '</td>' +
+      '<td style="text-align:center;border-left:2px solid var(--ink-200)">' + countBadge(r.question_count) + '</td>' +
+      '<td class="num" style="text-align:center;color:var(--success-500)">' + (r.q_easy || 0) + '</td>' +
+      '<td class="num" style="text-align:center;color:var(--brand-500)">' + (r.q_medium || 0) + '</td>' +
+      '<td class="num" style="text-align:center;color:var(--danger-500)">' + (r.q_hard || 0) + '</td>' +
+      '<td style="min-width:160px;border-left:2px solid var(--ink-200)">' + rateHtml + '</td>' +
+      '<td style="text-align:center">' + stars(r.avg_rating) + '</td>' +
+      '</tr>';
+  }).join('');
+
+  if (!tableRows) {
+    tableRows = '<tr><td colspan="15" style="padding:30px;text-align:center;color:var(--ink-500)">조건에 맞는 단원이 없습니다</td></tr>';
+  }
+
+  var subjects = unique(state.matrix, 'subject_name');
+  var controlsHtml =
+    '<div class="controls">' +
+      '<select id="mtx-subject">' + selectOptions(subjects, state.matrixSubject, '전체 과목') + '</select>' +
+      '<div style="margin-left:auto;font-size:12px;color:var(--ink-500)">' +
+        '<span class="count-cell count-some">N</span> 리소스 있음  ' +
+        '<span class="count-cell count-0">0</span> 없음 (보강 필요)' +
+      '</div>' +
+    '</div>';
+
+  container.innerHTML = controlsHtml +
+    '<div class="scroll-x">' +
+      '<table class="sheet">' +
+        '<thead>' +
+          '<tr class="group-row">' +
+            '<th class="subject-head" rowspan="2">과목</th>' +
+            '<th rowspan="2">#</th>' +
+            '<th rowspan="2">단원</th>' +
+            '<th rowspan="2">난이도</th>' +
+            '<th colspan="5">학습 콘텐츠</th>' +
+            '<th colspan="4" style="border-left:2px solid var(--ink-200)">문제 뱅크</th>' +
+            '<th colspan="2" style="border-left:2px solid var(--ink-200)">품질 지표</th>' +
+          '</tr>' +
+          '<tr>' +
+            '<th style="text-align:center">총</th>' +
+            '<th style="text-align:center">교재</th>' +
+            '<th style="text-align:center">영상</th>' +
+            '<th style="text-align:center">문제집</th>' +
+            '<th style="text-align:center">실습</th>' +
+            '<th style="text-align:center;border-left:2px solid var(--ink-200)">총 문항</th>' +
+            '<th style="text-align:center">하</th>' +
+            '<th style="text-align:center">중</th>' +
+            '<th style="text-align:center">상</th>' +
+            '<th style="border-left:2px solid var(--ink-200)">평균 정답률</th>' +
+            '<th style="text-align:center">콘텐츠 평점</th>' +
+          '</tr>' +
+        '</thead>' +
+        '<tbody>' + tableRows + '</tbody>' +
+      '</table>' +
+    '</div>' +
+    '<div class="t-micro" style="color:var(--ink-500);margin-top:8px;text-align:right">총 ' + rows.length + '단원 표시</div>';
+
+  var sel = document.getElementById('mtx-subject');
+  if (sel) sel.addEventListener('change', function (e) { state.matrixSubject = e.target.value; renderMatrix(); });
+}
+
+// --- Tab 2: 학습 콘텐츠 리스트 ---
+function renderContents() {
+  var container = document.getElementById('tab-contents');
+  var rows = state.contents.filter(function (r) {
+    if (state.contentSearch && (r.title || '').indexOf(state.contentSearch) < 0 && (r.content_code || '').indexOf(state.contentSearch) < 0) return false;
+    if (state.contentSubject && r.subject_name !== state.contentSubject) return false;
+    if (state.contentType && r.content_type !== state.contentType) return false;
+    if (state.contentDiff && r.difficulty !== state.contentDiff) return false;
+    return true;
+  });
+
+  var tableRows = rows.map(function (r) {
+    return '<tr>' +
+      '<td class="num" style="color:var(--ink-500);font-size:11px">' + g.esc(r.content_code || '') + '</td>' +
+      '<td><div class="content-title">' + g.esc(r.title) + '</div><div class="content-meta">' + g.esc(r.tags || '') + '</div></td>' +
+      '<td>' + g.esc(r.subject_name || '—') + '</td>' +
+      '<td style="color:var(--ink-600);font-size:12px">' + g.esc(r.unit_name || '—') + '</td>' +
+      '<td><span class="type-pill">' + g.esc(r.content_type || '—') + '</span></td>' +
+      '<td style="color:var(--ink-600);font-size:12px">' + g.esc(r.format || '—') + '</td>' +
+      '<td style="text-align:center">' + diffPill(r.difficulty) + '</td>' +
+      '<td class="num" style="text-align:center">' + (r.estimated_minutes || 0) + '분</td>' +
+      '<td style="color:var(--ink-600);font-size:12px">' + g.esc(r.author || '—') + '</td>' +
+      '<td class="num" style="text-align:center">' + (r.usage_count || 0) + '</td>' +
+      '<td style="text-align:center">' + stars(r.avg_rating) + '</td>' +
+      '<td style="text-align:center">' + g.tag(r.status || '—', r.status === '활성' ? 'success' : 'neutral') + '</td>' +
+      '</tr>';
+  }).join('');
+
+  if (!tableRows) {
+    tableRows = '<tr><td colspan="12" style="padding:30px;text-align:center;color:var(--ink-500)">조건에 맞는 콘텐츠가 없습니다</td></tr>';
+  }
+
+  var subjects = unique(state.contents, 'subject_name');
+  var types = unique(state.contents, 'content_type');
+  var diffs = ['하', '중', '상'];
+
+  var controlsHtml =
+    '<div class="controls">' +
+      '<input id="c-search" type="text" placeholder="제목·코드 검색…" value="' + g.esc(state.contentSearch) + '" style="width:200px">' +
+      '<select id="c-subject">' + selectOptions(subjects, state.contentSubject, '전체 과목') + '</select>' +
+      '<select id="c-type">' + selectOptions(types, state.contentType, '전체 유형') + '</select>' +
+      '<select id="c-diff">' + selectOptions(diffs, state.contentDiff, '전체 난이도') + '</select>' +
+    '</div>';
+
+  container.innerHTML = controlsHtml +
+    '<div class="scroll-x">' +
+      '<table class="sheet">' +
+        '<thead><tr>' +
+          '<th>코드</th>' +
+          '<th>제목 / 태그</th>' +
+          '<th>과목</th>' +
+          '<th>단원</th>' +
+          '<th>유형</th>' +
+          '<th>형식</th>' +
+          '<th style="text-align:center">난이도</th>' +
+          '<th style="text-align:center">소요</th>' +
+          '<th>작성자</th>' +
+          '<th style="text-align:center">사용</th>' +
+          '<th style="text-align:center">평점</th>' +
+          '<th style="text-align:center">상태</th>' +
+        '</tr></thead>' +
+        '<tbody>' + tableRows + '</tbody>' +
+      '</table>' +
+    '</div>' +
+    '<div class="t-micro" style="color:var(--ink-500);margin-top:8px;text-align:right">총 ' + rows.length + '건 표시</div>';
+
+  var cs = document.getElementById('c-search'); if (cs) cs.addEventListener('input', function (e) { state.contentSearch = e.target.value.trim(); renderContents(); });
+  var csub = document.getElementById('c-subject'); if (csub) csub.addEventListener('change', function (e) { state.contentSubject = e.target.value; renderContents(); });
+  var ct = document.getElementById('c-type'); if (ct) ct.addEventListener('change', function (e) { state.contentType = e.target.value; renderContents(); });
+  var cd = document.getElementById('c-diff'); if (cd) cd.addEventListener('change', function (e) { state.contentDiff = e.target.value; renderContents(); });
+}
+
+// --- Tab 3: 문제 뱅크 ---
+function renderQuestions() {
+  var container = document.getElementById('tab-questions');
+  var rows = state.questions.filter(function (r) {
+    if (state.qSearch) {
+      var hay = (r.question_text || '') + ' ' + (r.question_code || '') + ' ' + (r.tags || '');
+      if (hay.indexOf(state.qSearch) < 0) return false;
+    }
+    if (state.qSubject && r.subject_name !== state.qSubject) return false;
+    if (state.qType && r.question_type !== state.qType) return false;
+    if (state.qDiff && r.difficulty !== state.qDiff) return false;
+    return true;
+  });
+
+  var tableRows = rows.map(function (r) {
+    var rate = r.correct_rate != null ? Number(r.correct_rate) : null;
+    var rateHtml = rate != null
+      ? '<span class="mini-bar ' + barClass(rate) + '"><div style="width:' + rate + '%"></div></span><span class="num ' + rateClass(rate) + '">' + rate + '%</span>'
+      : '<span style="color:var(--ink-300)">—</span>';
+    return '<tr>' +
+      '<td class="num" style="color:var(--ink-500);font-size:11px;white-space:nowrap">' + g.esc(r.question_code || '') + '</td>' +
+      '<td>' + g.esc(r.subject_name || '—') + '</td>' +
+      '<td style="color:var(--ink-600);font-size:12px">' + g.esc(r.unit_name || '—') + '</td>' +
+      '<td><span class="type-pill">' + g.esc(r.question_type || '—') + '</span></td>' +
+      '<td style="text-align:center">' + diffPill(r.difficulty) + '</td>' +
+      '<td class="q-text">' + g.esc(r.question_text || '') +
+        '<div class="q-answer">정답: ' + g.esc(r.correct_answer || '—') + '</div>' +
+        (r.tags ? '<div class="q-tags">#' + g.esc(r.tags).split(',').join(' #') + '</div>' : '') +
+      '</td>' +
+      '<td class="num" style="text-align:center">' + (r.usage_count || 0) + '</td>' +
+      '<td style="min-width:160px">' + rateHtml + '</td>' +
+      '</tr>';
+  }).join('');
+
+  if (!tableRows) {
+    tableRows = '<tr><td colspan="8" style="padding:30px;text-align:center;color:var(--ink-500)">조건에 맞는 문제가 없습니다</td></tr>';
+  }
+
+  var subjects = unique(state.questions, 'subject_name');
+  var types = unique(state.questions, 'question_type');
+  var diffs = ['하', '중', '상'];
+
+  var controlsHtml =
+    '<div class="controls">' +
+      '<input id="q-search" type="text" placeholder="문제·태그·코드 검색…" value="' + g.esc(state.qSearch) + '" style="width:220px">' +
+      '<select id="q-subject">' + selectOptions(subjects, state.qSubject, '전체 과목') + '</select>' +
+      '<select id="q-type">' + selectOptions(types, state.qType, '전체 유형') + '</select>' +
+      '<select id="q-diff">' + selectOptions(diffs, state.qDiff, '전체 난이도') + '</select>' +
+    '</div>';
+
+  container.innerHTML = controlsHtml +
+    '<div class="scroll-x">' +
+      '<table class="sheet">' +
+        '<thead><tr>' +
+          '<th>코드</th>' +
+          '<th>과목</th>' +
+          '<th>단원</th>' +
+          '<th>유형</th>' +
+          '<th style="text-align:center">난이도</th>' +
+          '<th>문제 / 정답</th>' +
+          '<th style="text-align:center">사용</th>' +
+          '<th>정답률</th>' +
+        '</tr></thead>' +
+        '<tbody>' + tableRows + '</tbody>' +
+      '</table>' +
+    '</div>' +
+    '<div class="t-micro" style="color:var(--ink-500);margin-top:8px;text-align:right">총 ' + rows.length + '문항 표시</div>';
+
+  var qs = document.getElementById('q-search'); if (qs) qs.addEventListener('input', function (e) { state.qSearch = e.target.value.trim(); renderQuestions(); });
+  var qsub = document.getElementById('q-subject'); if (qsub) qsub.addEventListener('change', function (e) { state.qSubject = e.target.value; renderQuestions(); });
+  var qt = document.getElementById('q-type'); if (qt) qt.addEventListener('change', function (e) { state.qType = e.target.value; renderQuestions(); });
+  var qd = document.getElementById('q-diff'); if (qd) qd.addEventListener('change', function (e) { state.qDiff = e.target.value; renderQuestions(); });
+}
+
+// --- Tabs ---
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(function (t) {
+    t.classList.toggle('active', t.dataset.tab === name);
+  });
+  document.getElementById('tab-matrix').style.display = name === 'matrix' ? 'block' : 'none';
+  document.getElementById('tab-contents').style.display = name === 'contents' ? 'block' : 'none';
+  document.getElementById('tab-questions').style.display = name === 'questions' ? 'block' : 'none';
+  if (name === 'matrix') renderMatrix();
+  else if (name === 'contents') renderContents();
+  else if (name === 'questions') renderQuestions();
+}
+
+function updateTs() {
+  var el = document.getElementById('ts');
+  if (el) {
+    var now = new Date();
+    el.textContent = '업데이트: ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+  }
+}
+
+function showErr(msg) {
+  document.getElementById('root').insertAdjacentHTML('beforeend',
+    '<div style="padding:16px;color:var(--danger-500)">오류: ' + g.esc(msg) + ' <button onclick="location.reload()">다시 시도</button></div>');
+}
+
+async function init() {
+  console.log('[init] contents/questions tracker starting');
+  try {
+    var kpiRes = await window.agentdb.executeQuery('kpis', {});
+    var k = kpiRes.rows[0] || {};
+    document.getElementById('kpis').innerHTML = g.kpiRow([
+      { label: '학습 콘텐츠', value: g.fmtInt(k.total_contents) + '건' },
+      { label: '문제 뱅크', value: g.fmtInt(k.total_questions) + '문항' },
+      { label: '관리 과목', value: g.fmtInt(k.subject_count) + '개' },
+      { label: '등록 단원', value: g.fmtInt(k.unit_count) + '개' },
+      { label: '콘텐츠 평균 평점', value: (k.avg_content_rating ?? '—'), accent: 'good', sub: '5점 만점' },
+      { label: '문제 평균 정답률', value: (k.avg_correct_rate ?? '—') + '%' },
+    ]);
+
+    var mRes = await window.agentdb.executeQuery('unit_matrix', {});
+    state.matrix = mRes.rows;
+
+    var cRes = await window.agentdb.executeQuery('contents_list', {});
+    state.contents = cRes.rows;
+
+    var qRes = await window.agentdb.executeQuery('questions_list', {});
+    state.questions = qRes.rows;
+
+    console.log('[data] matrix=', state.matrix.length, 'contents=', state.contents.length, 'questions=', state.questions.length);
+
+    document.querySelectorAll('.tab').forEach(function (t) {
+      t.addEventListener('click', function () { switchTab(t.dataset.tab); });
+    });
+
+    renderMatrix();
+    updateTs();
+    console.log('[render] done');
+  } catch (e) {
+    console.error('[error]', e.message);
+    showErr(e.message);
+  }
+}
+
+init();
+
+</script>
+</body>
+</html>

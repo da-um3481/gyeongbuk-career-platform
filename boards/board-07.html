@@ -1,0 +1,2181 @@
+<!DOCTYPE html>
+<html lang="ko" data-palette="sand" data-theme="light">
+<head>
+<style id="gs-kit-css">
+:root { --brand-50: #EEF2FF; --brand-100: #DCE3FB; --brand-200: #B9C7F7; --brand-300: #8FA4F0; --brand-400: #6580E6; --brand-500: #3B5BDB; --brand-600: #2F4BC7; --brand-700: #243BA8; --brand-800: #1B2D85; --brand-900: #14215F; --ink-0: #FFFFFF; --ink-25: #FAFAF8; --ink-50: #F5F4F0; --ink-100: #EFEDE7; --ink-200: #E8E6E1; --ink-300: #D6D3CC; --ink-400: #A8A29E; --ink-500: #78716C; --ink-600: #57534E; --ink-700: #3F3D3A; --ink-800: #292724; --ink-900: #1A1A17; --success-50: #ECFDF5; --success-500: #0F8A5E; --warn-50: #FEF7EC; --warn-500: #B86E16; --danger-50: #FEF2F2; --danger-500: #B42318; --accent-500: #C2410C; --viz-1: #3B5BDB; --viz-2: #5B8DEF; --viz-3: #7DA3C7; --viz-4: #B5A98A; --viz-5: #C2410C; --viz-6: #6B7280; --grid-line: color-mix(in srgb, var(--ink-900) 30%, var(--ink-0)); --r-xs: 2px; --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-pill: 999px; --shadow-flat: 0 0 0 1px rgba(26,26,23,0.06); --shadow-card: 0 1px 2px rgba(26,26,23,0.04), 0 0 0 1px rgba(26,26,23,0.06); --shadow-pop: 0 4px 12px rgba(26,26,23,0.06), 0 0 0 1px rgba(26,26,23,0.08); --shadow-focus: 0 0 0 3px rgba(59,91,219,0.18); --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif; --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace; --font-serif: 'Tiempos Text', 'Source Serif Pro', Georgia, serif; font-feature-settings: "cv11", "ss01", "ss03", "cv02"; }
+@supports (font-variation-settings: normal) {
+  :root { --font-sans: 'Inter var', 'Inter', ui-sans-serif, system-ui, sans-serif; }
+}
+[data-theme="dark"] { --ink-0: #1A1A17; --ink-25: #0E0E0C; --ink-50: #1A1A17; --ink-100: #232320; --ink-200: #2D2D29; --ink-300: #3D3D38; --ink-400: #6B6B65; --ink-500: #8A8A82; --ink-600: #B5B3AC; --ink-700: #D6D3CC; --ink-800: #EAE7E0; --ink-900: #F5F4F0; --brand-500: #6B85F0; --brand-600: #8AA0F4; --brand-50: #1B2240; --brand-100: #232C56; --viz-1: #6B85F0; --viz-2: #8AA0F4; --viz-3: #92ACC9; --viz-4: #BDB196; --viz-5: #E07A47; --viz-6: #A1A6AE; --grid-line: color-mix(in srgb, var(--ink-900) 22%, var(--ink-0)); --shadow-flat: 0 0 0 1px rgba(255,255,255,0.06); --shadow-card: 0 1px 2px rgba(0,0,0,0.30), 0 0 0 1px rgba(255,255,255,0.06); --shadow-pop: 0 4px 12px rgba(0,0,0,0.40), 0 0 0 1px rgba(255,255,255,0.08); }
+* { box-sizing: border-box; }
+html, body { margin: 0px; padding: 0px; font-family: var(--font-sans); color: var(--ink-800); background-color: var(--ink-25); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; font-feature-settings: "cv11", "ss01"; }
+.num, .num * { font-variant-numeric: tabular-nums; font-feature-settings: "tnum", "cv11"; }
+.t-display { font-size: 48px; line-height: 1.05; letter-spacing: -0.025em; font-weight: 500; color: var(--ink-900); }
+.t-h1 { font-size: 32px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 500; color: var(--ink-900); }
+.t-h2 { font-size: 22px; line-height: 1.25; letter-spacing: -0.015em; font-weight: 500; color: var(--ink-800); }
+.t-h3 { font-size: 16px; line-height: 1.35; letter-spacing: -0.01em; font-weight: 500; color: var(--ink-800); }
+.t-body { font-size: 14px; line-height: 1.55; font-weight: 400; color: var(--ink-600); }
+.t-small { font-size: 12.5px; line-height: 1.5; font-weight: 400; color: var(--ink-500); }
+.t-micro { font-size: 11px; line-height: 1.4; font-weight: 500; color: var(--ink-500); letter-spacing: 0.04em; text-transform: uppercase; }
+.t-mono { font-family: var(--font-mono); font-size: 12px; color: var(--ink-500); letter-spacing: 0px; }
+.surface { background-color: var(--ink-0); border-radius: var(--r-sm); box-shadow: var(--shadow-card); }
+.surface-flat { background-color: var(--ink-0); border-radius: var(--r-sm); box-shadow: var(--shadow-flat); }
+.surface-glass { background: color-mix(in srgb, var(--ink-0) 70%, transparent); backdrop-filter: blur(20px) saturate(140%); border-radius: var(--r-sm); box-shadow: var(--shadow-card); }
+.divider { height: 1px; background-color: var(--ink-200); border: 0px; }
+.vdivider { width: 1px; background-color: var(--ink-200); align-self: stretch; }
+.btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0px 12px; border-radius: var(--r-pill); font: 500 13px/1 var(--font-sans); letter-spacing: -0.005em; border: 1px solid transparent; cursor: pointer; transition: background 120ms, color 120ms, border-color 120ms; }
+.btn-primary { background-color: var(--brand-500); color: white; }
+.btn-primary:hover { background-color: var(--brand-600); }
+.btn-secondary { background-color: var(--ink-0); color: var(--ink-800); border-color: var(--ink-200); }
+.btn-secondary:hover { background-color: var(--ink-50); }
+.btn-ghost { background: transparent; color: var(--ink-700); }
+.btn-ghost:hover { background-color: var(--ink-100); }
+.btn-danger { background-color: var(--danger-500); color: white; }
+.btn-sm { height: 26px; padding: 0px 10px; font-size: 12px; }
+.btn-lg { height: 38px; padding: 0px 16px; font-size: 14px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0px 10px; border-radius: var(--r-pill); font: 500 12px/1 var(--font-sans); background-color: var(--ink-50); color: var(--ink-700); }
+.pill-active { background-color: var(--brand-50); color: var(--brand-700); }
+.pill-dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentcolor; opacity: 0.7; }
+.card { background-color: var(--ink-0); border-radius: var(--r-sm); box-shadow: var(--shadow-card); padding: var(--s-5); }
+.input { height: 32px; padding: 0px 10px; background-color: var(--ink-0); border: 1px solid var(--ink-200); border-radius: var(--r-sm); font: 400 13px/1 var(--font-sans); color: var(--ink-800); }
+.input:focus { outline: 0px; border-color: var(--brand-500); box-shadow: var(--shadow-focus); }
+.dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; }
+.dot-success { background-color: var(--success-500); }
+.dot-warn { background-color: var(--warn-500); }
+.dot-danger { background-color: var(--danger-500); }
+.dot-brand { background-color: var(--brand-500); }
+.dot-muted { background-color: var(--ink-400); }
+[data-palette="graphite"][data-theme="light"], [data-palette="graphite"][data-frame-theme="light"] { --brand-50: #EEF2FF; --brand-100: #DCE3FB; --brand-300: #8FA4F0; --brand-500: #3B5BDB; --brand-600: #2F4BC7; --brand-700: #243BA8; --ink-0: #FFFFFF; --ink-25: #FAFAF8; --ink-50: #F5F4F0; --ink-100: #EFEDE7; --ink-200: #E8E6E1; --ink-300: #D6D3CC; --ink-400: #A8A29E; --ink-500: #78716C; --ink-600: #57534E; --ink-700: #3F3D3A; --ink-800: #292724; --ink-900: #1A1A17; --accent-500: #C2410C; --viz-1: #3B5BDB; --viz-2: #5B8DEF; --viz-3: #7DA3C7; --viz-4: #B5A98A; --viz-5: #C2410C; --viz-6: #6B7280; }
+[data-palette="graphite"][data-theme="dark"], [data-palette="graphite"][data-frame-theme="dark"] { --brand-50: #1B2240; --brand-100: #232C56; --brand-300: #4A5FB8; --brand-500: #6B85F0; --brand-600: #8AA0F4; --brand-700: #A8B8F7; --ink-0: #1A1A17; --ink-25: #0E0E0C; --ink-50: #1A1A17; --ink-100: #232320; --ink-200: #2D2D29; --ink-300: #3D3D38; --ink-400: #6B6B65; --ink-500: #8A8A82; --ink-600: #B5B3AC; --ink-700: #D6D3CC; --ink-800: #EAE7E0; --ink-900: #F5F4F0; --accent-500: #E07A47; --viz-1: #6B85F0; --viz-2: #8AA0F4; --viz-3: #92ACC9; --viz-4: #BDB196; --viz-5: #E07A47; --viz-6: #A1A6AE; }
+[data-palette="forest"][data-theme="light"], [data-palette="forest"][data-frame-theme="light"] { --brand-50: #ECF2EE; --brand-100: #D4E2DA; --brand-300: #7FA68F; --brand-500: #2F6B4F; --brand-600: #265841; --brand-700: #1D4632; --ink-0: #FFFFFE; --ink-25: #FBFAF5; --ink-50: #F4F2EB; --ink-100: #EDEBE2; --ink-200: #E2DFD3; --ink-300: #CFCBBC; --ink-400: #A39E8E; --ink-500: #74715F; --ink-600: #4E4C40; --ink-700: #3A382F; --ink-800: #26251F; --ink-900: #161613; --accent-500: #B07D2E; --viz-1: #2F6B4F; --viz-2: #5B9476; --viz-3: #9CB8A6; --viz-4: #C9B584; --viz-5: #B07D2E; --viz-6: #6E6A57; }
+[data-palette="forest"][data-theme="dark"], [data-palette="forest"][data-frame-theme="dark"] { --brand-50: #14241C; --brand-100: #1A2F25; --brand-300: #4A8067; --brand-500: #6CB390; --brand-600: #88C5A7; --brand-700: #A4D6BD; --ink-0: #1B1B15; --ink-25: #0F0F0B; --ink-50: #1A1A15; --ink-100: #23231C; --ink-200: #2D2D26; --ink-300: #3F3E36; --ink-400: #6B6957; --ink-500: #8A876F; --ink-600: #B5B196; --ink-700: #D2CEB3; --ink-800: #E8E3C9; --ink-900: #F4F0D8; --accent-500: #D4A263; --viz-1: #6CB390; --viz-2: #88C5A7; --viz-3: #B5C9B0; --viz-4: #DCC78F; --viz-5: #D4A263; --viz-6: #A8A48B; }
+[data-palette="obsidian"][data-theme="light"], [data-palette="obsidian"][data-frame-theme="light"] { --brand-50: #F0F0F2; --brand-100: #DDDDE0; --brand-300: #6B6B72; --brand-500: #1A1A17; --brand-600: #0F0F0D; --brand-700: #050504; --ink-0: #FFFFFF; --ink-25: #F8F8F9; --ink-50: #F1F1F3; --ink-100: #E8E8EB; --ink-200: #DDDDE0; --ink-300: #C2C2C7; --ink-400: #8E8E94; --ink-500: #6B6B72; --ink-600: #48484E; --ink-700: #2D2D32; --ink-800: #18181C; --ink-900: #0A0A0C; --accent-500: #7C3AED; --viz-1: #18181C; --viz-2: #7C3AED; --viz-3: #A78BFA; --viz-4: #6B6B72; --viz-5: #C2C2C7; --viz-6: #4338CA; }
+[data-palette="obsidian"][data-theme="dark"], [data-palette="obsidian"][data-frame-theme="dark"] { --brand-50: #1A1A1F; --brand-100: #232328; --brand-300: #88888F; --brand-500: #F4F4F5; --brand-600: #FFFFFF; --brand-700: #FFFFFF; --ink-0: #18181C; --ink-25: #0A0A0C; --ink-50: #131316; --ink-100: #1D1D21; --ink-200: #28282E; --ink-300: #3A3A41; --ink-400: #6B6B72; --ink-500: #88888F; --ink-600: #B0B0B6; --ink-700: #D0D0D5; --ink-800: #E8E8EA; --ink-900: #F4F4F5; --accent-500: #A78BFA; --viz-1: #F4F4F5; --viz-2: #A78BFA; --viz-3: #7C3AED; --viz-4: #88888F; --viz-5: #3A3A41; --viz-6: #6366F1; }
+[data-palette="carbon"][data-theme="light"], [data-palette="carbon"][data-frame-theme="light"] { --brand-50: #EEF2F6; --brand-100: #D9E1EA; --brand-300: #8AA0B6; --brand-500: #475569; --brand-600: #3A4658; --brand-700: #2D3747; --ink-0: #FFFFFF; --ink-25: #F8F9FA; --ink-50: #F1F2F4; --ink-100: #E7E9EC; --ink-200: #DCDFE3; --ink-300: #C1C5CC; --ink-400: #8B919A; --ink-500: #656B75; --ink-600: #424852; --ink-700: #2A2F38; --ink-800: #181C23; --ink-900: #0C0F14; --accent-500: #EA580C; --viz-1: #475569; --viz-2: #7B8FA8; --viz-3: #A8B5C5; --viz-4: #EA580C; --viz-5: #F59E5B; --viz-6: #94A3B8; }
+[data-palette="eclipse"] { --r-sm: 6px; }
+[data-palette="eclipse"][data-frame-theme], [data-palette="eclipse"]:not([data-frame-theme]) { }
+[data-palette="eclipse"][data-theme="light"], [data-palette="eclipse"][data-frame-theme="light"] { --brand-50: #EEF0FA; --brand-100: #DCE0F4; --brand-300: #9CA4E0; --brand-500: #5E6AD2; --brand-600: #4A56C0; --brand-700: #3A45A0; --ink-0: #FFFFFF; --ink-25: #F7F8F8; --ink-50: #F1F1F2; --ink-100: #E8E8EA; --ink-200: #DDDDE0; --ink-300: #BDBDC2; --ink-400: #8A8F98; --ink-500: #6B6F78; --ink-600: #4A4D54; --ink-700: #2E3036; --ink-800: #1A1C20; --ink-900: #08090A; --accent-500: #5E6AD2; --viz-1: #5E6AD2; --viz-2: #7C86DE; --viz-3: #9CA4E0; --viz-4: #B8BCE5; --viz-5: #4A56C0; --viz-6: #6B6F78; }
+[data-palette="aurora"][data-theme="light"], [data-palette="aurora"][data-frame-theme="light"] { --brand-50: #ECFAFB; --brand-100: #CFF1F4; --brand-300: #6FC9D2; --brand-500: #0891B2; --brand-600: #0E7490; --brand-700: #155E75; --ink-0: #FFFFFF; --ink-25: #F6F9FA; --ink-50: #EEF3F5; --ink-100: #E2E9EC; --ink-200: #D5DCE0; --ink-300: #BAC2C8; --ink-400: #8A9298; --ink-500: #5E6770; --ink-600: #404952; --ink-700: #2A323A; --ink-800: #181D24; --ink-900: #0A0E13; --accent-500: #D97B2C; --viz-1: #0891B2; --viz-2: #3BAEC4; --viz-3: #6FC9D2; --viz-4: #D97B2C; --viz-5: #C39D6D; --viz-6: #8A9298; }
+[data-palette="aurora"][data-theme="dark"], [data-palette="aurora"][data-frame-theme="dark"] { --brand-50: #06283A; --brand-100: #0A3A4F; --brand-300: #2389A8; --brand-500: #38BDC7; --brand-600: #5BCFD7; --brand-700: #80DEE3; --ink-0: #131A20; --ink-25: #0A0F14; --ink-50: #131A20; --ink-100: #1D2530; --ink-200: #28313D; --ink-300: #3A4452; --ink-400: #6B7682; --ink-500: #8C97A1; --ink-600: #B0B9C2; --ink-700: #D0D6DC; --ink-800: #E5E9ED; --ink-900: #F1F4F7; --accent-500: #F4A05F; --viz-1: #38BDC7; --viz-2: #6CD2D8; --viz-3: #9DDEE2; --viz-4: #F4A05F; --viz-5: #E0BC8C; --viz-6: #8C97A1; }
+[data-palette="sand"][data-theme="light"], [data-palette="sand"][data-frame-theme="light"] { --brand-50: #FBEDE3; --brand-100: #F3D5BE; --brand-300: #D89C6E; --brand-500: #A0501F; --brand-600: #88421A; --brand-700: #6D3414; --ink-0: #FFFEFB; --ink-25: #FAF7F0; --ink-50: #F3EFE5; --ink-100: #ECE6D7; --ink-200: #DFD7C3; --ink-300: #C8BEA5; --ink-400: #9A8E72; --ink-500: #6E6450; --ink-600: #4A4234; --ink-700: #322C22; --ink-800: #1F1B15; --ink-900: #100E0B; --accent-500: #4A6BAA; --viz-1: #A0501F; --viz-2: #C8804A; --viz-3: #D89C6E; --viz-4: #4A6BAA; --viz-5: #7F8AAE; --viz-6: #9A8E72; }
+[data-palette="sand"][data-theme="dark"], [data-palette="sand"][data-frame-theme="dark"] { --brand-50: #2A1A0F; --brand-100: #3A2412; --brand-300: #A87245; --brand-500: #D88D5C; --brand-600: #E5A175; --brand-700: #EFB892; --ink-0: #1A1611; --ink-25: #100D08; --ink-50: #18140F; --ink-100: #221D16; --ink-200: #2D261D; --ink-300: #3F3729; --ink-400: #6E6450; --ink-500: #8E8470; --ink-600: #B5AB95; --ink-700: #D2C9B5; --ink-800: #E8E0CC; --ink-900: #F4EDD9; --accent-500: #7F95C8; --viz-1: #D88D5C; --viz-2: #E5A175; --viz-3: #EFB892; --viz-4: #7F95C8; --viz-5: #A8B0CB; --viz-6: #8E8470; }
+[data-palette="plum"][data-theme="light"], [data-palette="plum"][data-frame-theme="light"] { --brand-50: #FAF0FE; --brand-100: #EFDAFC; --brand-300: #C998EE; --brand-500: #9333EA; --brand-600: #7E22CE; --brand-700: #6B21A8; --ink-0: #FFFDFE; --ink-25: #FBF7FA; --ink-50: #F4EFF3; --ink-100: #ECE5EA; --ink-200: #DDD3DA; --ink-300: #C2B5BD; --ink-400: #9C8E97; --ink-500: #6F646C; --ink-600: #4D4448; --ink-700: #322B2E; --ink-800: #1E191B; --ink-900: #0E0A0C; --accent-500: #E11D74; --viz-1: #9333EA; --viz-2: #B968F0; --viz-3: #D8A6F5; --viz-4: #E11D74; --viz-5: #F26AA3; --viz-6: #9C8E97; }
+[data-palette="plum"][data-theme="dark"], [data-palette="plum"][data-frame-theme="dark"] { --brand-50: #2A0F3D; --brand-100: #3A1554; --brand-300: #A26FD8; --brand-500: #C58CF0; --brand-600: #D4A6F4; --brand-700: #E3C0F7; --ink-0: #1A1320; --ink-25: #0E0913; --ink-50: #15101C; --ink-100: #1F1828; --ink-200: #2A2233; --ink-300: #3D3445; --ink-400: #6E6478; --ink-500: #8E8398; --ink-600: #B4A9BC; --ink-700: #D1C7D6; --ink-800: #E7DEEB; --ink-900: #F2EBF5; --accent-500: #F084B6; --viz-1: #C58CF0; --viz-2: #D4A6F4; --viz-3: #E3C0F7; --viz-4: #F084B6; --viz-5: #F5A8CB; --viz-6: #8E8398; }
+[data-palette="mercury"][data-theme="light"], [data-palette="mercury"][data-frame-theme="light"] { --brand-50: #F2F3F5; --brand-100: #E1E3E8; --brand-300: #8E939D; --brand-500: #3F4651; --brand-600: #2C323B; --brand-700: #1E232A; --ink-0: #FFFFFF; --ink-25: #F9FAFB; --ink-50: #F2F3F5; --ink-100: #E8EAEE; --ink-200: #DCDFE4; --ink-300: #C2C6CD; --ink-400: #8E939D; --ink-500: #636872; --ink-600: #41464E; --ink-700: #2A2E34; --ink-800: #181B1F; --ink-900: #0A0C0E; --accent-500: #B89556; --viz-1: #3F4651; --viz-2: #6B727D; --viz-3: #9CA1A9; --viz-4: #B89556; --viz-5: #D4B783; --viz-6: #C2C6CD; }
+[data-palette="mercury"][data-theme="dark"], [data-palette="mercury"][data-frame-theme="dark"] { --brand-50: #1A1D22; --brand-100: #23272D; --brand-300: #8E939D; --brand-500: #D8DCE2; --brand-600: #E8EAEE; --brand-700: #F2F3F5; --ink-0: #16181C; --ink-25: #0B0D0F; --ink-50: #131519; --ink-100: #1C1F23; --ink-200: #262A2F; --ink-300: #383D43; --ink-400: #6B7079; --ink-500: #8E939D; --ink-600: #B5BAC2; --ink-700: #D2D6DC; --ink-800: #E7EAEE; --ink-900: #F2F4F6; --accent-500: #D4B783; --viz-1: #D8DCE2; --viz-2: #B5BAC2; --viz-3: #8E939D; --viz-4: #D4B783; --viz-5: #E8D4A6; --viz-6: #6B7079; }
+[data-palette="eclipse"][data-theme="dark"], [data-palette="eclipse"][data-frame-theme="dark"] { --brand-50: #161830; --brand-100: #1F2241; --brand-300: #4A56C0; --brand-500: #7C86DE; --brand-600: #9CA4E0; --brand-700: #B8BCE5; --ink-0: #101113; --ink-25: #08090A; --ink-50: #131418; --ink-100: #181A1E; --ink-200: #1F2023; --ink-300: #2A2C30; --ink-400: #5C616A; --ink-500: #8A8F98; --ink-600: #B4B8BE; --ink-700: #D0D2D6; --ink-800: #E6E7E9; --ink-900: #F7F8F8; --accent-500: #7C86DE; --viz-1: #7C86DE; --viz-2: #5E6AD2; --viz-3: #4A56C0; --viz-4: #9CA4E0; --viz-5: #B8BCE5; --viz-6: #5C616A; }
+[data-palette="carbon"][data-theme="dark"], [data-palette="carbon"][data-frame-theme="dark"] { --brand-50: #1A2230; --brand-100: #232C3E; --brand-300: #6E8499; --brand-500: #94A8BD; --brand-600: #B0C0D1; --brand-700: #C7D3E0; --ink-0: #14181F; --ink-25: #0A0D12; --ink-50: #13161C; --ink-100: #1C2028; --ink-200: #262B34; --ink-300: #383E48; --ink-400: #6B7280; --ink-500: #8B919A; --ink-600: #B0B5BD; --ink-700: #D0D4DA; --ink-800: #E5E8EC; --ink-900: #F1F3F6; --accent-500: #FB7F35; --viz-1: #94A8BD; --viz-2: #B0C0D1; --viz-3: #C7D3E0; --viz-4: #FB7F35; --viz-5: #FCAA72; --viz-6: #8B919A; }
+body { background: var(--ink-25); }
+.gs-wrap { max-width: 1240px; margin: 0px auto; padding: 32px; }
+.gs-card, .card { background: var(--ink-0); border-radius: 8px; box-shadow: var(--shadow-card); padding: var(--s-5); }
+.gs-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+.gs-pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: var(--r-pill); background: var(--ink-0); box-shadow: var(--shadow-flat); color: var(--ink-500); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gs-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success-500); }
+.gs-kpis { display: grid; gap: 16px; margin-bottom: 24px; grid-template-columns: repeat(var(--gs-kpi-cols,4), minmax(0,1fr)); }
+.gs-kpi { display: flex; flex-direction: column; gap: 12px; }
+.gs-kpi .num.good { color: var(--success-500); }
+.gs-kpi .num.alert { color: var(--danger-500); }
+.gs-kpi-sub { color: var(--ink-400); margin-top: 2px; }
+.gs-panels { display: grid; gap: 16px; grid-template-columns: var(--gs-panel-cols, 1fr 1fr); align-items: stretch; }
+.gs-phead { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.gs-donut-body { display: flex; align-items: center; gap: 22px; }
+.gs-chart { display: block; overflow: visible; max-width: 100%; height: auto; }
+.gs-legend { flex: 1 1 0%; display: flex; flex-direction: column; gap: 9px; min-width: 0px; }
+.gs-leg { display: grid; grid-template-columns: 12px 1fr auto auto; align-items: center; gap: 10px; }
+.gs-leg .sw { width: 8px; height: 8px; border-radius: 2px; }
+.gs-leg .nm { font-size: 13px; color: var(--ink-700); text-transform: capitalize; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gs-leg .vv { font-size: 13px; color: var(--ink-900); font-weight: 500; }
+.gs-leg .pp { width: 42px; text-align: right; }
+.gs-feed { display: flex; flex-direction: column; }
+.gs-feed .row { display: flex; align-items: center; gap: 10px; padding: 11px 0px; border-top: 1px solid var(--ink-100); }
+.gs-feed .row:first-child { border-top-width: medium; border-top-style: none; border-top-color: currentcolor; }
+.gs-feed .main { flex: 1 1 0%; min-width: 0px; }
+.gs-feed .ttl { font-size: 13.5px; color: var(--ink-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gs-feed .sub { font-size: 11px; color: var(--ink-400); }
+.gs-feed .meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; font-size: 12px; color: var(--ink-400); font-variant-numeric: tabular-nums; }
+.gs-avatar { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; box-shadow: rgba(26, 26, 23, 0.05) 0px 0px 0px 1px inset; }
+.gs-badge { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 500; text-transform: capitalize; white-space: nowrap; }
+.gs-badge .bd { width: 5px; height: 5px; border-radius: 50%; }
+.gs-b-success { background: var(--success-50); color: var(--success-500); }
+.gs-b-success .bd { background: var(--success-500); }
+.gs-b-warn { background: var(--warn-50); color: var(--warn-500); }
+.gs-b-warn .bd { background: var(--warn-500); }
+.gs-b-danger { background: var(--danger-50); color: var(--danger-500); }
+.gs-b-danger .bd { background: var(--danger-500); }
+.gs-b-brand { background: var(--brand-50); color: var(--brand-700); }
+.gs-b-brand .bd { background: var(--brand-500); }
+.gs-b-neutral { background: var(--ink-50); color: var(--ink-600); }
+.gs-b-neutral .bd { background: var(--ink-400); }
+.gs-empty { display: flex; align-items: center; justify-content: center; min-height: 150px; color: var(--ink-400); font-size: 13px; }
+.gs-vtable { display: flex; flex-direction: column; min-width: 0px; }
+.gs-vt-head { display: grid; gap: 12px; padding: 0px 12px 8px; border-bottom: 1px solid var(--ink-100); }
+.gs-vt-th { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-400); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gs-vt-notice { margin: 8px 0px 0px; padding: 6px 12px; border-radius: 6px; background: var(--warn-50); color: var(--warn-500); font-size: 11.5px; }
+.gs-vt-viewport { overflow-y: auto; position: relative; }
+.gs-vt-sizer { position: relative; }
+.gs-vt-slice { position: absolute; left: 0px; right: 0px; }
+.gs-vt-row { display: grid; gap: 12px; align-items: center; padding: 0px 12px; border-bottom: 1px solid var(--ink-100); font-size: 13px; color: var(--ink-800); box-sizing: border-box; }
+.gs-vt-cell { min-width: 0px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gs-vt-cell.ta-r { text-align: right; }
+.gs-vt-status { display: flex; align-items: center; gap: 10px; padding: 10px 12px; font-size: 12px; color: var(--ink-400); }
+.gs-vt-retry, .gs-sec-retry { padding: 4px 10px; border-radius: 6px; border: 1px solid var(--ink-200); background: var(--ink-0); color: var(--ink-700); font-size: 12px; cursor: pointer; }
+.gs-sec-loading { display: flex; align-items: center; justify-content: center; min-height: 90px; color: var(--ink-400); font-size: 12.5px; }
+.gs-sec-error { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 90px; color: var(--danger-500); font-size: 12.5px; }
+@media (max-width: 1000px) {
+  .gs-kpis { grid-template-columns: repeat(2, minmax(0px, 1fr)); }
+}
+@media (max-width: 960px) {
+  .gs-panels { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .gs-wrap { padding: 18px; }
+  .gs-donut-body { flex-direction: column; }
+}
+</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>운영 데이터 입력 센터</title>
+  <style>
+    .wrap { padding: 16px; }
+
+    .tabbar {
+      display: flex; gap: 4px; margin: 16px 0 16px; flex-wrap: wrap;
+      border-bottom: 1px solid var(--ink-200);
+    }
+    .tabbtn {
+      padding: 8px 15px; cursor: pointer; font-size: 13px; font-weight: 500;
+      color: var(--ink-600); background: none; white-space: nowrap;
+      border: none; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .tabbtn.active { color: var(--brand-500); border-bottom-color: var(--brand-500); }
+    .tabbtn:hover:not(.active) { color: var(--ink-900); background: var(--ink-50); }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(320px, 430px) 1fr;
+      gap: 16px; align-items: start;
+    }
+    @media (max-width: 940px) { .split { grid-template-columns: 1fr; } }
+
+    .panel {
+      background: var(--surface-0); border: 1px solid var(--ink-100);
+      border-radius: 10px; box-shadow: var(--shadow-card, 0 1px 3px rgba(0,0,0,0.05));
+      overflow: hidden;
+    }
+    .panel-head {
+      padding: 13px 16px; border-bottom: 1px solid var(--ink-100);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .panel-head .t { font-size: 14px; font-weight: 700; color: var(--ink-900); }
+    .panel-body { padding: 16px; }
+
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 11px; }
+    .fg { display: flex; flex-direction: column; gap: 4px; }
+    .fg.span2 { grid-column: span 2; }
+    .fg label { font-size: 11.5px; font-weight: 600; color: var(--ink-600); }
+    .fg label .req { color: var(--danger-500); }
+    .fg input, .fg select, .fg textarea {
+      width: 100%; box-sizing: border-box;
+      padding: 7px 10px; font-size: 13px;
+      border: 1px solid var(--ink-200); border-radius: 7px;
+      background: var(--surface-0); color: var(--ink-900); outline: none;
+      font-family: inherit;
+    }
+    .fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--brand-500); }
+    .fg textarea { resize: vertical; min-height: 60px; }
+    .fg .err { font-size: 11px; color: var(--danger-500); display: none; }
+
+    .form-actions { display: flex; gap: 8px; margin-top: 16px; }
+    .btn {
+      padding: 8px 18px; font-size: 13px; font-weight: 600; border-radius: 8px;
+      cursor: pointer; border: 1px solid transparent; transition: background .12s, opacity .12s;
+    }
+    .btn-primary { background: var(--brand-500); color: #fff; }
+    .btn-primary:hover { opacity: .9; }
+    .btn-ghost { background: var(--surface-0); color: var(--ink-700); border-color: var(--ink-200); }
+    .btn-ghost:hover { background: var(--ink-50); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    .edit-banner {
+      background: color-mix(in oklch, var(--brand-500) 10%, var(--surface-0));
+      border: 1px solid color-mix(in oklch, var(--brand-500) 25%, var(--surface-0));
+      color: var(--brand-500); font-size: 12px; font-weight: 600;
+      padding: 7px 10px; border-radius: 7px; margin-bottom: 12px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .list-tools { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+    .list-tools input {
+      flex: 1; padding: 7px 10px; font-size: 13px;
+      border: 1px solid var(--ink-200); border-radius: 7px;
+      background: var(--surface-0); color: var(--ink-900); outline: none;
+    }
+    .list-tools input:focus { border-color: var(--brand-500); }
+
+    .scroll-x { overflow-x: auto; border: 1px solid var(--ink-100); border-radius: 8px; }
+    table.grid { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12.5px; }
+    table.grid th, table.grid td {
+      border-bottom: 1px solid var(--ink-100); border-right: 1px solid var(--ink-100);
+      padding: 7px 10px; text-align: left; white-space: nowrap;
+    }
+    table.grid th {
+      position: sticky; top: 0; background: var(--ink-50); color: var(--ink-700);
+      font-weight: 600; z-index: 2;
+    }
+    table.grid tbody tr:nth-child(even) td { background: var(--ink-50); }
+    table.grid tbody tr:hover td { background: color-mix(in oklch, var(--brand-500) 7%, var(--surface-0)); }
+    table.grid td.actions { white-space: nowrap; }
+    .row-btn {
+      padding: 3px 9px; font-size: 11.5px; font-weight: 600; border-radius: 6px;
+      cursor: pointer; border: 1px solid var(--ink-200); background: var(--surface-0);
+      color: var(--ink-700); margin-right: 4px;
+    }
+    .row-btn:hover { background: var(--ink-50); }
+    .row-btn.danger { color: var(--danger-500); border-color: color-mix(in oklch, var(--danger-500) 40%, var(--surface-0)); }
+    .row-btn.danger:hover { background: color-mix(in oklch, var(--danger-500) 12%, var(--surface-0)); }
+
+    .pill {
+      display: inline-block; padding: 2px 8px; border-radius: 10px;
+      font-size: 11px; font-weight: 600;
+    }
+    .pill-ok { background: color-mix(in oklch, var(--success-500) 20%, var(--surface-0)); color: var(--success-700, var(--success-500)); }
+    .pill-warn { background: color-mix(in oklch, var(--warn-500) 24%, var(--surface-0)); color: var(--warn-700, var(--warn-500)); }
+    .pill-danger { background: color-mix(in oklch, var(--danger-500) 20%, var(--surface-0)); color: var(--danger-700, var(--danger-500)); }
+    .pill-neutral { background: var(--ink-100); color: var(--ink-700); }
+
+    .empty-note { padding: 30px; text-align: center; color: var(--ink-500); font-size: 13px; }
+
+    /* modal */
+    .modal-mask {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+      display: none; align-items: center; justify-content: center; z-index: 900;
+    }
+    .modal-mask.show { display: flex; }
+    .modal {
+      background: var(--surface-0); border-radius: 12px; padding: 20px;
+      max-width: 400px; width: calc(100% - 40px); box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    }
+    .modal h3 { margin: 0 0 8px; font-size: 15px; color: var(--ink-900); }
+    .modal p { margin: 0 0 16px; font-size: 13px; color: var(--ink-600); line-height: 1.5; }
+    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+    .toast {
+      position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+      padding: 11px 18px; border-radius: 9px; font-size: 13px; font-weight: 600;
+      color: #fff; opacity: 0; transform: translateY(8px); transition: all .25s;
+      pointer-events: none; max-width: 340px;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.ok { background: var(--success-500, #10b981); }
+    .toast.err { background: var(--danger-500, #ef4444); }
+  </style>
+  <style>
+    /* == polish: mobile & print == */
+    :root { --surface-0: var(--ink-0); }
+    @media (max-width: 640px) {
+      .gs-wrap { padding-left: 12px !important; padding-right: 12px !important; }
+      .gs-hero .t-h1, .gs-hero h1 { font-size: 20px !important; line-height: 1.28; }
+      .controls input, .controls select, .tracker-controls input, .tracker-controls select { min-width: 0 !important; }
+      .cv-fg select, .cv-fg input[type="file"] { width: 100%; min-width: 0 !important; }
+      .panel-body, .wrap, .tracker-wrap { padding: 12px; }
+    }
+    @media print {
+      .gs-hero, .gs-sidebar, .gs-topbar, .gs-footer { display: none !important; }
+      body { background: #fff !important; }
+      .gs-wrap { padding: 0 !important; max-width: none !important; }
+      .btn, .row-btn, .cv-btn, .cal-btn, .rp-btn, .ord-btn, .tab, .tabs, .toast,
+      .controls, .toolbar, .toolbar-row, .cv-row, .cv-actions, .cal-toolbar,
+      .cal-nav, .cal-filters, .tracker-controls, .form-actions, .rp-setup, .rp-actions,
+      .modal-mask, .cal-modal-mask { display: none !important; }
+      .panel, .cv-card, .rp-card, .cal-wrap, .rx-card { box-shadow: none !important; border-color: #ccc !important; break-inside: avoid; }
+      .scroll-x, .tracker-scroll, .cv-scroll, .cal-wrap { overflow: visible !important; }
+      .split, .home-grid, .rp-layout, .rx-grid { grid-template-columns: 1fr !important; }
+      table.sheet thead th, table.tracker thead th, table.grid th { position: static !important; }
+      td.student-cell, td.subject-cell, th.student-head, th.subject-head { position: static !important; }
+      .cal-inner { min-width: 0 !important; }
+      table.sheet, table.tracker, table.cv-table, table.grid, table.rp { font-size: 11px; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+  <style>
+    /* == compact numbers: 카드 수치를 라벨 수준으로 차분하게 == */
+    .gs-kpi { padding: 14px 16px !important; gap: 6px !important; }
+    .gs-kpi .t-h1, .gs-kpi .t-h1.num { font-size: 16px !important; font-weight: 700; line-height: 1.35; }
+    .kpi .v { font-size: 16px !important; font-weight: 700; }
+  </style>
+</head>
+<body>
+<script id="gs-kit-js">
+
+/* ============================================================
+   B-Suite dashboard kit — JS runtime (window.gsDash).
+   Injected at serve time. Provides format helpers, pure-SVG chart
+   builders, and HTML component builders so dashboards can be written
+   as lean markup without inlining the design system. ES5-compatible.
+   Also sets <html data-theme> from the OS color-scheme preference.
+   ============================================================ */
+(function () {
+  if (window.gsDash) return;
+
+  // Every live gsDash.chart handle. A canvas bakes its colours in at draw
+  // time, so the ONE matchMedia listener below has to rebuild them; declared
+  // up here because applyTheme() runs before the chart section is reached.
+  var _liveCharts = [];
+  function rethemeAll() {
+    // Backwards: dropping a dead handle splices the array under us.
+    for (var i = _liveCharts.length - 1; i >= 0; i--) {
+      var h = _liveCharts[i];
+      try {
+        // A section that re-rendered (loadSections replaces el.innerHTML, and
+        // so does any hand-written refresh) leaves its canvas detached.
+        // Redrawing one nobody can see keeps it — and its whole dataset —
+        // alive for the life of the page, and the leak grows once per refresh.
+        if (h.isDetached()) { h.destroy(); continue; }
+        h.retheme();
+      } catch (e) {}
+    }
+  }
+
+  // Follow OS light/dark (palettes key on [data-theme]); data-palette is set
+  // separately (baked default / per-workspace serve-time injection).
+  function applyTheme() {
+    try {
+      var next = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      var changed = document.documentElement.dataset.theme !== next;
+      document.documentElement.dataset.theme = next;
+      // Only on a real flip: retheme() destroys and rebuilds every canvas, and
+      // doing that on a no-op call would drop hover/animation state for free.
+      if (changed) rethemeAll();
+    } catch (e) {}
+  }
+  applyTheme();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme); } catch (e) {}
+
+  var VIZ_FALLBACK = ['#3B5BDB', '#5B8DEF', '#7DA3C7', '#B5A98A', '#C2410C', '#6B7280'];
+  var AV = ['#3B5BDB', '#7DA3C7', '#B5A98A', '#C2410C', '#0F8A5E', '#78716C'];
+
+  function cvar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+  function vizColor(i) { return cvar('--viz-' + ((i % 6) + 1)) || VIZ_FALLBACK[i % 6]; }
+  // Paint reference for SVG attributes. vizColor() resolves the var to a hex
+  // at build time, which freezes the series colour into the markup: an OS
+  // light/dark flip then re-themes the CSS around a chart whose own strokes
+  // still carry the previous theme's palette. Emitting the var keeps the
+  // paint live, so a chart re-themes with the page instead of going stale.
+  function vizRef(i) { return 'var(--viz-' + ((i % 6) + 1) + ', ' + VIZ_FALLBACK[i % 6] + ')'; }
+  function esc(s) { var d = document.createElement('div'); d.textContent = (s == null ? '' : String(s)); return d.innerHTML; }
+  function fmtInt(n) { return Number(n || 0).toLocaleString('en-US'); }
+  function money(n) { return Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }); }
+  function humanize(s) { return String(s == null ? '' : s).replace(/_/g, ' '); }
+  function dateMD(s) { var d = new Date(s); if (isNaN(d.getTime())) return String(s || ''); return (d.getMonth() + 1) + '/' + d.getDate(); }
+  function relTime(s) {
+    if (!s) return ''; var d = new Date(s); if (isNaN(d.getTime())) return String(s);
+    var f = (Date.now() - d.getTime()) / 1000;
+    if (f < 60) return 'just now'; if (f < 3600) return Math.floor(f / 60) + 'm ago';
+    if (f < 86400) return Math.floor(f / 3600) + 'h ago'; if (f < 86400 * 7) return Math.floor(f / 86400) + 'd ago';
+    return (d.getMonth() + 1) + '/' + d.getDate();
+  }
+  var TONE = { active: 'success', open: 'success', completed: 'success', done: 'success', shipped: 'success', delivered: 'success', confirmed: 'success', won: 'success', hired: 'success', paid: 'success', resolved: 'success', published: 'success',
+    draft: 'warn', pending: 'warn', processing: 'warn', scheduled: 'warn', in_progress: 'warn', in_review: 'warn', upcoming: 'warn', review: 'warn', screening: 'warn',
+    expired: 'danger', cancelled: 'danger', canceled: 'danger', returned: 'danger', missed: 'danger', overdue: 'danger', rejected: 'danger', failed: 'danger', lost: 'danger', blocked: 'danger' };
+  function statusTone(s) { return TONE[String(s == null ? '' : s).toLowerCase().replace(/[\s-]+/g, '_')] || 'neutral'; }
+  function tag(text, tone) { return '<span class="gs-badge gs-b-' + (tone || 'neutral') + '"><span class="bd"></span>' + esc(text) + '</span>'; }
+
+  function scale(min, max, oMin, oMax) { var d = (max - min) || 1; return function (v) { return oMin + ((v - min) / d) * (oMax - oMin); }; }
+  function niceScale(min, max, c) {
+    c = c || 4; var rs = (max - min) / c || 1; var mag = Math.pow(10, Math.floor(Math.log10(Math.abs(rs)))); var nm = rs / mag, st;
+    if (nm < 1.5) st = 1 * mag; else if (nm < 3) st = 2 * mag; else if (nm < 7) st = 5 * mag; else st = 10 * mag;
+    var a = Math.floor(min / st) * st, b = Math.ceil(max / st) * st, t = [];
+    for (var i = 0; i <= Math.round((b - a) / st); i++) t.push(Math.round((a + i * st) / st) * st);
+    return { ticks: t, nMin: a, nMax: b };
+  }
+
+  function sparkline(data, color, w, h) {
+    w = w || 84; h = h || 26; var mn = Math.min.apply(null, data), mx = Math.max.apply(null, data);
+    var x = scale(0, data.length - 1, 1, w - 1), y = scale(mn, mx, h - 2, 2);
+    var p = data.map(function (v, i) { return (i ? 'L' : 'M') + x(i).toFixed(1) + ',' + y(v).toFixed(1); }).join(' ');
+    return '<svg width="' + w + '" height="' + h + '" style="display:block"><path d="' + p + '" stroke="' + (color || vizRef(0)) + '" stroke-width="1.25" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+  function lineChart(o) {
+    var ys = o.data || [], w = o.w || 460, h = o.h || 220, pad = { t: 16, r: 16, b: 28, l: 36 };
+    var mx = Math.max.apply(null, ys.concat([1])) * 1.1, ns = niceScale(0, mx, 4);
+    var x = scale(0, Math.max(ys.length - 1, 1), pad.l, w - pad.r), y = scale(ns.nMin, ns.nMax, h - pad.b, pad.t), color = o.color || vizRef(0), s = '';
+    ns.ticks.forEach(function (t) {
+      s += '<line x1="' + pad.l + '" x2="' + (w - pad.r) + '" y1="' + y(t).toFixed(1) + '" y2="' + y(t).toFixed(1) + '" stroke="var(--grid-line)" stroke-width="1"/>';
+      s += '<text x="' + (pad.l - 8) + '" y="' + y(t).toFixed(1) + '" fill="var(--ink-400)" font-size="10.5" text-anchor="end" dominant-baseline="middle" style="font-variant-numeric:tabular-nums">' + esc(t) + '</text>';
+    });
+    var pts = ys.map(function (v, i) { return [x(i), y(v)]; });
+    var path = pts.map(function (q, i) { return (i ? 'L' : 'M') + q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' ');
+    var gid = 'g' + Math.random().toString(36).slice(2, 7);
+    if (pts.length) {
+      var area = path + ' L' + pts[pts.length - 1][0].toFixed(1) + ',' + y(ns.nMin).toFixed(1) + ' L' + pts[0][0].toFixed(1) + ',' + y(ns.nMin).toFixed(1) + ' Z';
+      s += '<defs><linearGradient id="' + gid + '" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="' + color + '" stop-opacity="0.14"/><stop offset="100%" stop-color="' + color + '" stop-opacity="0"/></linearGradient></defs>';
+      s += '<path d="' + area + '" fill="url(#' + gid + ')"/><path d="' + path + '" stroke="' + color + '" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
+      // Same rule as gsDash.chart (whenSparse): white-filled markers on a dense
+      // series bead the line, so they are drawn only where they can be read.
+      if (pts.length < 2 || (w - pad.l - pad.r) / (pts.length - 1) >= MARKER_MIN_GAP) {
+        pts.forEach(function (q) { s += '<circle cx="' + q[0].toFixed(1) + '" cy="' + q[1].toFixed(1) + '" r="2.5" fill="var(--ink-0)" stroke="' + color + '" stroke-width="1.5"/>'; });
+      }
+    }
+    (o.xl || []).forEach(function (l, i) { if (i % Math.ceil((ys.length || 1) / 8) === 0) s += '<text x="' + x(i).toFixed(1) + '" y="' + (h - pad.b + 16) + '" fill="var(--ink-400)" font-size="10.5" text-anchor="middle">' + esc(l) + '</text>'; });
+    return '<svg class="gs-chart" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="xMidYMid meet">' + s + '</svg>';
+  }
+  function barH(o) {
+    var rows = o.rows || [], w = o.w || 460, h = o.h || (40 + rows.length * 34), pad = { t: 8, r: 16, b: 24, l: o.l || 110 };
+    var mx = Math.max.apply(null, rows.map(function (r) { return Number(r.value); }).concat([1])) * 1.1, ns = niceScale(0, mx, 4);
+    var x = scale(ns.nMin, ns.nMax, pad.l, w - pad.r), rowH = (h - pad.t - pad.b) / (rows.length || 1), bh = Math.min(16, rowH * 0.5), s = '', fmt = o.xFmt || fmtInt;
+    ns.ticks.forEach(function (t) {
+      s += '<line x1="' + x(t).toFixed(1) + '" x2="' + x(t).toFixed(1) + '" y1="' + pad.t + '" y2="' + (h - pad.b) + '" stroke="var(--grid-line)" stroke-width="1"/>';
+      s += '<text x="' + x(t).toFixed(1) + '" y="' + (h - pad.b + 14) + '" fill="var(--ink-400)" font-size="10.5" text-anchor="middle" style="font-variant-numeric:tabular-nums">' + esc(fmt(t)) + '</text>';
+    });
+    rows.forEach(function (r, i) {
+      var cy = pad.t + rowH * i + rowH / 2;
+      s += '<text x="' + (pad.l - 8) + '" y="' + cy.toFixed(1) + '" fill="var(--ink-600)" font-size="11.5" text-anchor="end" dominant-baseline="middle">' + esc(humanize(r.label)) + '</text>';
+      s += '<rect x="' + pad.l + '" y="' + (cy - bh / 2).toFixed(1) + '" width="' + Math.max(0, x(Number(r.value)) - pad.l).toFixed(1) + '" height="' + bh + '" fill="' + vizRef(i) + '" rx="2"/>';
+    });
+    return '<svg class="gs-chart" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="xMidYMid meet">' + s + '</svg>';
+  }
+  function donut(o) {
+    var rows = o.rows || [], size = 180, th = 22, total = rows.reduce(function (a, r) { return a + Number(r.value); }, 0) || 1, r = size / 2 - th / 2, cx = 90, cy = 90, acc = -Math.PI / 2, s = '';
+    s += '<circle cx="90" cy="90" r="' + r + '" fill="none" stroke="var(--ink-100)" stroke-width="' + th + '"/>';
+    rows.forEach(function (d, i) {
+      var fr = Number(d.value) / total, st = acc, en = acc + fr * Math.PI * 2; acc = en; var e = en - 0.012;
+      var x1 = cx + r * Math.cos(st), y1 = cy + r * Math.sin(st), x2 = cx + r * Math.cos(e), y2 = cy + r * Math.sin(e), lg = (e - st) > Math.PI ? 1 : 0;
+      s += '<path d="M' + x1.toFixed(2) + ',' + y1.toFixed(2) + ' A' + r + ',' + r + ' 0 ' + lg + ' 1 ' + x2.toFixed(2) + ',' + y2.toFixed(2) + '" stroke="' + vizRef(i) + '" stroke-width="' + th + '" fill="none"/>';
+    });
+    s += '<text x="90" y="86" text-anchor="middle" fill="var(--ink-900)" font-size="20" font-weight="500" style="font-variant-numeric:tabular-nums;letter-spacing:-0.02em">' + esc(o.centerVal) + '</text>';
+    s += '<text x="90" y="104" text-anchor="middle" fill="var(--ink-400)" font-size="10" style="letter-spacing:0.04em;text-transform:uppercase">' + esc(o.center || 'Total') + '</text>';
+    return '<svg width="180" height="180">' + s + '</svg>';
+  }
+
+  // Canvas libraries (Chart.js, ECharts) cannot consume a CSS var — they need
+  // resolved colours at draw time. Without a bridge, every generated app
+  // hardcodes its own hexes and drifts from the design system, which is how
+  // one dashboard ends up with three different greys for the same gridline.
+  // This is the one place a canvas chart should get its palette. Snapshot
+  // semantics: re-call it (and rebuild the chart) on a theme flip.
+  // getPropertyValue hands back the SPECIFIED value, so a token defined as
+  // color-mix(...) arrives as that literal string — which a canvas cannot
+  // parse, and 2D context silently ignores an unparseable strokeStyle rather
+  // than throwing. Round-trip through a computed `color` to get real rgb().
+  var _swatch = null;
+  function resolveColor(value, fallback) {
+    if (!value) return fallback;
+    if (/^(#|rgb|hsl)/i.test(value)) return value;
+    try {
+      if (!_swatch) {
+        _swatch = document.createElement('span');
+        _swatch.style.cssText = 'position:absolute;width:0;height:0;visibility:hidden';
+        document.documentElement.appendChild(_swatch);
+      }
+      _swatch.style.color = '';
+      _swatch.style.color = value;
+      var out = getComputedStyle(_swatch).color;
+      if (!out) return fallback;
+      // A color-mix() of two hexes computes to CSS Color 4 `color(srgb r g b)`
+      // in current engines. Chrome's canvas happens to accept that, but older
+      // engines and some chart libraries do not — normalise to legacy rgb()
+      // rather than depend on it.
+      var m = out.match(/^color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\s*\)$/i);
+      if (m) {
+        var ch = [1, 2, 3].map(function (i) {
+          return Math.max(0, Math.min(255, Math.round(parseFloat(m[i]) * 255)));
+        });
+        var a = m[4] === undefined ? 1 : parseFloat(m[4]);
+        return a >= 1 ? 'rgb(' + ch.join(', ') + ')' : 'rgba(' + ch.join(', ') + ', ' + a + ')';
+      }
+      return out;
+    } catch (e) { return fallback; }
+  }
+
+  function chartTheme() {
+    var series = [];
+    for (var i = 0; i < 6; i++) series.push(resolveColor(vizColor(i), VIZ_FALLBACK[i % 6]));
+    return {
+      grid: resolveColor(cvar('--grid-line'), 'rgba(120,113,108,0.35)'),
+      text: resolveColor(cvar('--ink-800'), '#292724'),
+      textMuted: resolveColor(cvar('--ink-400'), '#A8A29E'),
+      surface: resolveColor(cvar('--ink-0'), '#FFFFFF'),
+      accent: resolveColor(cvar('--brand-500'), '#3B5BDB'),
+      series: series,
+      isDark: document.documentElement.dataset.theme === 'dark',
+    };
+  }
+
+  // ── gsDash.chart(el, config): themed Chart.js ───────────────────────────
+  // The SVG builders above are single-series static markup: no second series,
+  // no hover, no click. Real dashboards need all three, so an app that hits
+  // that wall on its first chart hand-writes `new Chart(...)` — and then drops
+  // the design system for the whole page. (Measured 2026-09-17 over 600 apps:
+  // of the 51 that had the kit AND drew a chart, 2 called gsDash at all; 14
+  // hardcoded hex series colours and exactly 1 redrew on a theme flip.)
+  //
+  // So this is deliberately NOT another builder. It is a merge: the app writes
+  // whatever Chart.js config it wants — multi-series, stacked, dual-axis,
+  // onClick drilldown — and the theme is merged UNDERNEATH it. Every key the
+  // app sets wins. What the app leaves out (palette, grid, ticks, tooltip,
+  // responsive) arrives from the design tokens by default, instead of
+  // depending on the author remembering to call chartTheme().
+  //
+  //   gsDash.chart(elOrSelector, chartJsConfig)
+  //     -> { instance, update(config?), retheme(), destroy() }
+  //
+  // Extras the wrapper understands, on top of plain Chart.js:
+  //   dataset.gsTotal: true   — this series is a STATED TOTAL, not a part. It
+  //                             is excluded from the stack sum and checked
+  //                             against it (console.warn names the x values
+  //                             that disagree).
+  //   data.totals: number[]   — same check without a drawn series.
+  //
+  // Lifecycle: `instance` is the live Chart.js object and is REPLACED on a
+  // theme flip (a canvas bakes its colours in, so a re-theme is a rebuild).
+  // Mutate `h.instance.data` in place and call `h.instance.update()` as you
+  // would with plain Chart.js; the rebuild reads the live data, not the
+  // config you first passed. `h.update()` with no argument re-derives the
+  // signed-axis bounds after such a change; `h.update(cfg)` swaps the config.
+  //
+  // First paint: the chart is drawn SYNCHRONOUSLY, with no intro animation,
+  // unless the app sets `options.animation` itself. Chart.js defers an
+  // animated draw to requestAnimationFrame, and a frame the browser is not
+  // rendering never gets one: the agent's preview and the thumbnail capture
+  // are off-screen cross-origin iframes, and a background tab is the same.
+  // There the canvas stayed correctly sized and completely empty, and no
+  // update()/render() could paint it, because every redraw queues behind the
+  // animation that never starts (2026-10-01: ~100 agent turns on one
+  // dashboard). Later updates animate as usual once a frame has run.
+
+  var NO_CARTESIAN = { pie: 1, doughnut: 1, polarArea: 1, radar: 1 };
+  var SLICE_COLOURED = { pie: 1, doughnut: 1, polarArea: 1 };
+
+  function hasOwn(o, k) { return Object.prototype.hasOwnProperty.call(o, k); }
+  function isPlain(v) {
+    if (v == null || typeof v !== 'object') return false;
+    if (Object.prototype.toString.call(v) === '[object Array]') return false;
+    if (typeof Node !== 'undefined' && v instanceof Node) return false;
+    return true;
+  }
+  // Theme defaults go in `base`, the app's config in `over`, and `over` wins on
+  // every key it sets. Arrays, functions and class instances are taken whole
+  // from `over` — merging an app's `data: [1,2,3]` element-wise with anything
+  // would corrupt it, and half-merging an onClick is meaningless.
+  function deepMerge(base, over) {
+    if (over === undefined) return base;
+    if (!isPlain(base) || !isPlain(over)) return over;
+    var out = {}, k;
+    for (k in base) if (hasOwn(base, k)) out[k] = base[k];
+    for (k in over) if (hasOwn(over, k)) out[k] = hasOwn(base, k) ? deepMerge(base[k], over[k]) : over[k];
+    return out;
+  }
+
+  // A token resolves to either a hex or an rgb() (see resolveColor), so a fill
+  // cannot be built by concatenating '80' onto it.
+  function withAlpha(color, a) {
+    if (!color) return color;
+    var s = String(color).trim(), m;
+    if ((m = s.match(/^#([0-9a-f]{3})$/i))) {
+      s = '#' + m[1].charAt(0) + m[1].charAt(0) + m[1].charAt(1) + m[1].charAt(1) + m[1].charAt(2) + m[1].charAt(2);
+    }
+    if ((m = s.match(/^#([0-9a-f]{6})$/i))) {
+      var n = parseInt(m[1], 16);
+      return 'rgba(' + ((n >> 16) & 255) + ', ' + ((n >> 8) & 255) + ', ' + (n & 255) + ', ' + a + ')';
+    }
+    if ((m = s.match(/^rgba?\(([^)]+)\)$/i))) {
+      var p = m[1].split(/[\s,\/]+/).filter(function (x) { return x !== ''; });
+      if (p.length >= 3) return 'rgba(' + p[0] + ', ' + p[1] + ', ' + p[2] + ', ' + a + ')';
+    }
+    return s; // unparseable — hand it back untouched rather than emit garbage
+  }
+
+  function isTotalSet(ds) { return !!(ds && (ds.gsTotal === true || ds.gsRole === 'total')); }
+  // Chart.js accepts number[], {x,y}[] and {v}[]. `va` is the VALUE axis, so an
+  // indexAxis:'y' chart reads x from an object point, not y.
+  function numAt(ds, i, va) {
+    var d = ds && ds.data;
+    if (!d || i >= d.length) return null;
+    var v = d[i];
+    if (v == null) return null;
+    if (typeof v === 'object') {
+      v = v[va] != null ? v[va] : (v.y != null ? v.y : (v.x != null ? v.x : v.v));
+      if (v == null) return null;
+    }
+    v = Number(v);
+    return isNaN(v) ? null : v;
+  }
+
+  // Bounds for a value axis that carries negatives. The failure this exists to
+  // stop (2026-09-16): an app forced every expense category negative so the
+  // axis would look right, which silently flipped the sign of the three
+  // categories that were genuinely positive in some months. The data is never
+  // touched here — the BOUNDS are derived from the real signed totals instead.
+  // Positives and negatives accumulate into separate running totals per x (per
+  // Chart.js stack group), exactly as the renderer stacks them.
+  function signedExtent(sets, cfgType, stacked, va) {
+    var i, j, k, n = 0, any = false, hasNeg = false, lo = 0, hi = 0;
+    for (i = 0; i < sets.length; i++) if (sets[i] && sets[i].data && sets[i].data.length > n) n = sets[i].data.length;
+    for (j = 0; j < n; j++) {
+      var stacks = {};
+      for (i = 0; i < sets.length; i++) {
+        var v = numAt(sets[i], j, va);
+        if (v == null) continue;
+        any = true;
+        if (v < 0) hasNeg = true;
+        // A stated total is drawn (so it must fit inside the bounds) but is not
+        // a part, so it never joins a stack sum.
+        if (!stacked || isTotalSet(sets[i])) {
+          if (v > hi) hi = v;
+          if (v < lo) lo = v;
+          continue;
+        }
+        var key = sets[i].stack != null ? String(sets[i].stack) : String(sets[i].type || cfgType);
+        var s = stacks[key] || (stacks[key] = { pos: 0, neg: 0 });
+        if (v >= 0) s.pos += v; else s.neg += v;
+      }
+      for (k in stacks) if (hasOwn(stacks, k)) {
+        if (stacks[k].pos > hi) hi = stacks[k].pos;
+        if (stacks[k].neg < lo) lo = stacks[k].neg;
+      }
+    }
+    // lo/hi start at 0, so zero is always inside the range and the baseline
+    // below has somewhere to draw.
+    return any ? { hasNegative: hasNeg, dataMin: lo, dataMax: hi } : null;
+  }
+
+  // "Net" / "Total" labels that disagree with the bars under them survived
+  // weeks unnoticed on a real dashboard. Cheap to check, so check it.
+  function warnTotals(data, cfgType, va) {
+    var sets = (data && data.datasets) || [], labels = (data && data.labels) || [];
+    var totals = null, totalIdx = -1, i, j;
+    for (i = 0; i < sets.length; i++) if (isTotalSet(sets[i])) { totalIdx = i; break; }
+    if (totalIdx >= 0) totals = sets[totalIdx].data || [];
+    else if (data && Object.prototype.toString.call(data.totals) === '[object Array]') totals = data.totals;
+    if (!totals || !totals.length) return;
+
+    var bad = [];
+    for (j = 0; j < totals.length; j++) {
+      var t = totals[j];
+      if (t != null && typeof t === 'object') t = t[va] != null ? t[va] : (t.y != null ? t.y : t.x);
+      // Before coercion: Number(null) is 0, and a SQL NULL in a totals column
+      // must read as "no stated total here", not "stated total of zero".
+      if (t == null || t === '') continue;
+      t = Number(t);
+      if (isNaN(t)) continue;
+      var sum = 0, seen = false;
+      for (i = 0; i < sets.length; i++) {
+        if (i === totalIdx) continue;
+        var v = numAt(sets[i], j, va);
+        if (v == null) continue;
+        sum += v; seen = true;
+      }
+      if (!seen) continue;
+      // Relative tolerance: float addition of a dozen currency values does not
+      // land on the stated total to the bit.
+      if (Math.abs(sum - t) > Math.max(1e-9, Math.abs(t) * 1e-6)) {
+        bad.push((labels[j] != null ? labels[j] : j) + ' (parts ' + sum + ' vs stated ' + t + ')');
+      }
+    }
+    if (bad.length) {
+      try {
+        console.warn('[gsDash.chart] stated total does not match the sum of its parts at '
+          + bad.length + ' x value(s): ' + bad.join('; '));
+      } catch (e) {}
+    }
+  }
+
+  function sliceColours(ds, theme) {
+    var out = [], n = (ds && ds.data && ds.data.length) || 0;
+    for (var i = 0; i < n; i++) out.push(theme.series[i % theme.series.length]);
+    return out;
+  }
+  // A line marker's halo (pointBorderColor: surface) overlaps its neighbours'
+  // on a dense series and cuts the line into beads — a 30-day KPI trend read
+  // as dashed (2026-10-07). So markers draw only while points sit
+  // MARKER_MIN_GAP px apart (hover still shows them), re-decided per resize.
+  // An isolated point keeps its marker: no line passes through it.
+  var MARKER_MIN_GAP = 16;
+  function whenSparse(value) {
+    return function (ctx) {
+      var ch = ctx && ctx.chart, a = ch && ch.chartArea, ds = ctx && ctx.dataset;
+      if (!a || !ds) return value;
+      var va = ch.options && ch.options.indexAxis === 'y' ? 'x' : 'y';
+      var i = ctx.dataIndex;
+      if (i != null && numAt(ds, i - 1, va) == null && numAt(ds, i + 1, va) == null) return value;
+      var labels = (ch.data && ch.data.labels) || [];
+      var n = Math.max(labels.length, (ds.data && ds.data.length) || 0);
+      var span = va === 'x' ? a.bottom - a.top : a.right - a.left;
+      return n < 2 || span / (n - 1) >= MARKER_MIN_GAP ? value : 0;
+    };
+  }
+  function datasetDefaults(i, ds, cfgType, theme) {
+    var t = (ds && ds.type) || cfgType;
+    var c = theme.series[i % theme.series.length];
+    if (SLICE_COLOURED[t]) {
+      // One colour per SLICE, not per dataset — a pie has one dataset.
+      return { backgroundColor: sliceColours(ds, theme), borderColor: theme.surface, borderWidth: 2 };
+    }
+    if (t === 'line') {
+      return {
+        borderColor: c, backgroundColor: withAlpha(c, 0.14), borderWidth: 2,
+        pointBackgroundColor: c, pointBorderColor: theme.surface,
+        pointRadius: whenSparse(2.5), pointBorderWidth: whenSparse(2), pointHoverRadius: 4,
+      };
+    }
+    if (t === 'radar') {
+      return {
+        borderColor: c, backgroundColor: withAlpha(c, 0.14), borderWidth: 2,
+        pointBackgroundColor: c, pointBorderColor: theme.surface,
+        pointRadius: 2.5, pointHoverRadius: 4,
+      };
+    }
+    return { backgroundColor: c, borderColor: c, borderWidth: 0, borderRadius: 4 };
+  }
+
+  // Which scale a dataset's VALUES land on. Chart.js reads yAxisID for a
+  // vertical chart and xAxisID for indexAxis:'y'; unset means the default axis.
+  function valueAxisOf(ds, indexAxis) {
+    if (indexAxis === 'y') return (ds && ds.xAxisID) || 'x';
+    return (ds && ds.yAxisID) || 'y';
+  }
+
+  function scaleDefaults(theme) {
+    return { ticks: { color: theme.textMuted }, grid: { color: theme.grid }, border: { color: theme.grid } };
+  }
+
+  function themedConfig(cfg, theme) {
+    var uOpts = cfg.options || {}, uData = cfg.data || {}, uSets = uData.datasets || [];
+    var indexAxis = uOpts.indexAxis === 'y' ? 'y' : 'x';
+    var valueKey = indexAxis === 'y' ? 'x' : 'y';   // key read off an {x,y} point
+    var ca = indexAxis;                              // category axis id
+    var uScales = uOpts.scales || {};
+    var i, k;
+
+    var base = {
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        // Unified hover: one tooltip listing every series at that x, which is
+        // what a multi-series dashboard chart is read for.
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { labels: { color: theme.textMuted, usePointStyle: true, boxWidth: 10, boxHeight: 10 } },
+          tooltip: {
+            backgroundColor: theme.isDark ? 'rgba(16,15,14,0.94)' : 'rgba(41,39,36,0.94)',
+            titleColor: '#FFFFFF', bodyColor: '#FFFFFF',
+            borderColor: theme.grid, borderWidth: 1,
+            padding: 10, cornerRadius: 6, displayColors: true,
+          },
+        },
+      },
+    };
+
+    if (cfg.type === 'radar' || cfg.type === 'polarArea') {
+      base.options.scales = { r: {
+        ticks: { color: theme.textMuted, backdropColor: 'transparent' },
+        grid: { color: theme.grid }, angleLines: { color: theme.grid },
+        pointLabels: { color: theme.textMuted },
+      } };
+    } else if (!NO_CARTESIAN[cfg.type]) {
+      // Every scale the chart will have: the two defaults, plus anything the
+      // app declared (a right-hand y1, say). Theming only x and y left y1's
+      // ticks in Chart.js' default #666 on a dark card.
+      var byAxis = {};
+      var ids = {};
+      ids[ca] = 1; ids[valueKey] = 1;
+      for (k in uScales) if (hasOwn(uScales, k)) ids[k] = 1;
+      for (i = 0; i < uSets.length; i++) {
+        var ax = valueAxisOf(uSets[i], indexAxis);
+        ids[ax] = 1;
+        (byAxis[ax] || (byAxis[ax] = [])).push(uSets[i]);
+      }
+      base.options.scales = {};
+      for (k in ids) if (hasOwn(ids, k)) {
+        if (k === ca) {
+          base.options.scales[k] = { ticks: { color: theme.textMuted }, grid: { display: false, color: theme.grid }, border: { color: theme.grid } };
+          continue;
+        }
+        var value = scaleDefaults(theme);
+        // Bounds are derived PER AXIS from the datasets that land on it. A
+        // percentage line on y1 dipping to -20 must not drag y (revenue in
+        // the tens of thousands) down to -20000.
+        var stacked = !!((uScales[k] && uScales[k].stacked) || (uScales[ca] && uScales[ca].stacked));
+        var ext = signedExtent(byAxis[k] || [], cfg.type, stacked, valueKey);
+        if (ext && ext.hasNegative) {
+          var ns = niceScale(ext.dataMin, ext.dataMax, 4);
+          // SUGGESTED, not hard. Chart.js only ever widens a suggested bound,
+          // so an app that later mutates chart.data in place and calls
+          // update() is never clipped at bounds computed from stale data —
+          // and beginAtZero on signed data would pin one end at 0.
+          value.beginAtZero = false;
+          value.suggestedMin = ns.nMin;
+          value.suggestedMax = ns.nMax;
+          // Zero baseline. Scriptable so it stays one line of config rather
+          // than an annotation plugin the app would have to load.
+          value.grid.color = function (c) {
+            return c && c.tick && Number(c.tick.value) === 0 ? theme.textMuted : theme.grid;
+          };
+          value.grid.lineWidth = function (c) {
+            return c && c.tick && Number(c.tick.value) === 0 ? 1.5 : 1;
+          };
+        }
+        base.options.scales[k] = value;
+      }
+    }
+
+    var out = deepMerge(base, cfg);
+    // Rebuild `data` rather than merging it: the datasets array needs per-index
+    // theming, and the app's own config object must come back unmutated.
+    var data = {};
+    for (k in uData) if (hasOwn(uData, k)) data[k] = uData[k];
+    data.datasets = [];
+    for (i = 0; i < uSets.length; i++) {
+      var defaults = datasetDefaults(i, uSets[i], cfg.type, theme);
+      var merged = deepMerge(defaults, uSets[i] || {});
+      // Remember which keys the THEME supplied, so a rebuild from the live
+      // chart can strip them and re-theme, while keys the app set stay the
+      // app's. Non-enumerable: invisible to Chart.js and to deepMerge.
+      var injected = [];
+      for (k in defaults) if (hasOwn(defaults, k) && !(uSets[i] && hasOwn(uSets[i], k))) injected.push(k);
+      try { Object.defineProperty(merged, '__gsInjected', { value: injected, enumerable: false, configurable: true }); } catch (e) {}
+      data.datasets.push(merged);
+    }
+    out.data = data;
+    return out;
+  }
+
+  // The app-authored view of a LIVE dataset: everything the theme injected
+  // stripped back off. A dataset the app added after mount carries no marker
+  // and is taken whole.
+  function stripInjected(ds) {
+    if (!ds || typeof ds !== 'object') return ds;
+    var injected = ds.__gsInjected;
+    if (!injected) return ds;
+    var out = {}, k, i, skip = {};
+    for (i = 0; i < injected.length; i++) skip[injected[i]] = 1;
+    for (k in ds) if (hasOwn(ds, k) && !skip[k]) out[k] = ds[k];
+    return out;
+  }
+
+  // Sweep handles whose canvas left the document. A section that re-rendered
+  // (loadSections replaces el.innerHTML on every refresh, and so does any
+  // hand-written refresh) leaves its canvas detached; keeping the handle would
+  // keep the Chart.js instance — and its whole dataset — alive for the life of
+  // the page, growing once per refresh.
+  function sweepDetached() {
+    for (var i = _liveCharts.length - 1; i >= 0; i--) {
+      try { if (_liveCharts[i].isDetached()) _liveCharts[i].destroy(); } catch (e) {}
+    }
+  }
+
+  function chart(el, config) {
+    var target = typeof el === 'string' ? document.querySelector(el) : el;
+    if (!target) throw new Error('gsDash.chart: container not found');
+    var canvas = target;
+    if (String(target.tagName || '').toLowerCase() !== 'canvas') {
+      canvas = target.querySelector && target.querySelector('canvas');
+      if (!canvas) {
+        canvas = document.createElement('canvas');
+        target.innerHTML = '';
+        target.appendChild(canvas);
+      }
+    }
+    sweepDetached();
+    // Whatever already owns this canvas goes first: our own handle (reached
+    // through the container OR the canvas), or a chart the app drew by hand —
+    // Chart.js throws "Canvas is already in use" otherwise.
+    var prev = canvas.__gsChart || target.__gsChart;
+    if (prev) prev.destroy();
+    try {
+      if (window.Chart && typeof window.Chart.getChart === 'function') {
+        var stray = window.Chart.getChart(canvas);
+        if (stray && typeof stray.destroy === 'function') stray.destroy();
+      }
+    } catch (e0) {}
+
+    var userConfig = config || {};
+    var handle = {
+      instance: null, config: null,
+      update: update, retheme: retheme, destroy: destroy,
+      // `isConnected === false` rather than `!isConnected`: an environment
+      // that does not implement it must not have every chart swept away.
+      isDetached: function () { return canvas.isConnected === false; },
+    };
+    var destroyed = false;
+    var warnedNoChart = false; // once per chart, not once per rebuild
+    var warnedUnsized = false;
+
+    function clearNote() {
+      var parent = canvas.parentNode;
+      if (parent && parent.__gsChartNote) {
+        try { parent.removeChild(parent.__gsChartNote); } catch (e) {}
+        parent.__gsChartNote = null;
+      }
+    }
+
+    // Chart.js sizes the canvas to its container when the chart is created.
+    // A container that is hidden (or not in the document yet) measures 0, the
+    // canvas is locked at 0x0, and nothing is drawn. On a live page Chart.js
+    // recovers when the container appears; where frames do not run it never
+    // does. Say so, instead of leaving an empty card to be debugged.
+    function warnUnsized() {
+      var box = canvas.parentNode;
+      if (warnedUnsized || !box || box.clientWidth > 0) return;
+      warnedUnsized = true;
+      try {
+        console.warn('[gsDash.chart] ' + (canvas.id ? '#' + canvas.id : 'canvas')
+          + ' has no size: its container is hidden or not in the document. Show the container'
+          + ' (e.g. el.hidden = false) BEFORE calling gsDash.chart, or the chart stays 0x0.');
+      } catch (e) {}
+    }
+
+    function build(checkData) {
+      var merged = themedConfig(userConfig, chartTheme());
+      // Runs even without Chart.js: a total that disagrees with its parts is a
+      // data defect, and it should be reported whether or not the canvas drew.
+      if (checkData) warnTotals(merged.data, userConfig.type, (userConfig.options || {}).indexAxis === 'y' ? 'x' : 'y');
+      handle.config = merged;
+      if (typeof window.Chart !== 'function') {
+        if (!warnedNoChart) {
+          warnedNoChart = true;
+          try { console.warn('[gsDash.chart] window.Chart is not loaded — add the Chart.js <script> tag; rendering a placeholder.'); } catch (e) {}
+        }
+        try {
+          if (canvas.parentNode && !canvas.parentNode.__gsChartNote) {
+            var note = document.createElement('div');
+            note.className = 'gs-empty';
+            note.textContent = 'Chart unavailable — Chart.js did not load';
+            canvas.parentNode.appendChild(note);
+            canvas.parentNode.__gsChartNote = note;
+          }
+        } catch (e2) {}
+        return;
+      }
+      clearNote();
+      warnUnsized();
+      // Draw the first frame without animation (see "First paint" above),
+      // then hand animation back to Chart.js' defaults — but only from inside
+      // a frame callback. Where frames never run the key stays, so resizes
+      // and data updates keep drawing synchronously too.
+      var opts = merged.options || (merged.options = {});
+      var ownAnimation = hasOwn(userConfig.options || {}, 'animation');
+      if (!ownAnimation) opts.animation = false;
+      var inst = handle.instance = new window.Chart(canvas, merged);
+      if (!ownAnimation) {
+        try {
+          window.requestAnimationFrame(function () {
+            if (handle.instance === inst && opts.animation === false) delete opts.animation;
+          });
+        } catch (e3) {}
+      }
+    }
+
+    // The app's config as it stands NOW: the live chart's data (which the app
+    // may have mutated in place — the idiomatic Chart.js update path) with the
+    // theme's injected keys stripped, under the app's original options.
+    function liveConfig() {
+      var inst = handle.instance;
+      var live = inst && inst.data;
+      if (!live || typeof live !== 'object') return userConfig;
+      var next = {}, k;
+      for (k in userConfig) if (hasOwn(userConfig, k)) next[k] = userConfig[k];
+      var data = {};
+      for (k in live) if (hasOwn(live, k)) data[k] = live[k];
+      data.datasets = (live.datasets || []).map(stripInjected);
+      next.data = data;
+      return next;
+    }
+
+    function teardown() {
+      if (handle.instance && typeof handle.instance.destroy === 'function') {
+        try { handle.instance.destroy(); } catch (e) {}
+      }
+      handle.instance = null;
+    }
+
+    // update(config) re-renders from a new config; update() re-renders from
+    // whatever the live chart holds now (after in-place data changes).
+    function update(next) {
+      if (destroyed) return handle;
+      userConfig = next || liveConfig();
+      teardown();
+      build(true);
+      return handle;
+    }
+    // Called by the kit's single matchMedia listener — never by the app.
+    // Rebuilds from the LIVE data, so a flip never reverts the chart to the
+    // data it was created with.
+    function retheme() {
+      if (destroyed) return handle;
+      userConfig = liveConfig();
+      teardown();
+      build(false);
+      return handle;
+    }
+    function destroy() {
+      if (destroyed) return;
+      destroyed = true;
+      teardown();
+      clearNote();
+      for (var i = 0; i < _liveCharts.length; i++) {
+        if (_liveCharts[i] === handle) { _liveCharts.splice(i, 1); break; }
+      }
+      if (target.__gsChart === handle) target.__gsChart = null;
+      if (canvas.__gsChart === handle) canvas.__gsChart = null;
+    }
+
+    _liveCharts.push(handle);
+    target.__gsChart = handle;
+    canvas.__gsChart = handle;
+    build(true);
+    return handle;
+  }
+
+  function phead(title, sub, badge) {
+    return '<div class="gs-phead"><div><div class="t-h3">' + esc(title) + '</div>' + (sub ? '<div class="t-small">' + esc(sub) + '</div>' : '') + '</div>' + (badge ? '<span class="t-small" style="color:var(--ink-400)">' + esc(badge) + '</span>' : '') + '</div>';
+  }
+  function kpiCard(s) {
+    return '<div class="gs-card gs-kpi"><span class="t-small" style="color:var(--ink-500)">' + esc(s.label) + '</span>'
+      + '<div class="t-h1 num ' + (s.accent || '') + '">' + esc(s.value) + '</div>'
+      + (s.sub ? '<div class="t-small gs-kpi-sub">' + esc(s.sub) + '</div>' : '') + '</div>';
+  }
+  function kpiRow(specs) {
+    var n = Math.max(1, Math.min((specs || []).length, 5));
+    return '<div class="gs-kpis" style="--gs-kpi-cols:' + n + '">' + (specs || []).map(kpiCard).join('') + '</div>';
+  }
+  function donutCard(o) {
+    var rows = o.rows || [], fmt = o.fmt || fmtInt, total = rows.reduce(function (a, r) { return a + Number(r.value); }, 0) || 1;
+    if (!rows.length) return '<div class="gs-card">' + phead(o.title, o.sub, o.badge) + '<div class="gs-empty">No data yet</div></div>';
+    var leg = rows.map(function (r, i) { var pct = Math.round(100 * Number(r.value) / total); return '<div class="gs-leg"><span class="sw" style="background:' + vizRef(i) + '"></span><span class="nm">' + esc(humanize(r.label)) + '</span><span class="vv num">' + fmt(r.value) + '</span><span class="pp num t-small">' + pct + '%</span></div>'; }).join('');
+    return '<div class="gs-card">' + phead(o.title, o.sub, o.badge) + '<div class="gs-donut-body">' + donut({ rows: rows, center: o.center, centerVal: o.centerVal || fmt(total) }) + '<div class="gs-legend">' + leg + '</div></div></div>';
+  }
+  function barCard(o) {
+    if (!(o.rows || []).length) return '<div class="gs-card">' + phead(o.title, o.sub, o.badge) + '<div class="gs-empty">No data yet</div></div>';
+    return '<div class="gs-card">' + phead(o.title, o.sub, o.badge) + '<div>' + barH({ rows: o.rows, xFmt: o.xFmt, l: o.l }) + '</div></div>';
+  }
+  function feedCard(o) {
+    var rows = o.rows || [];
+    if (!rows.length) return '<div class="gs-card">' + phead(o.title) + '<div class="gs-empty">' + esc(o.empty || 'No entries') + '</div></div>';
+    var body = rows.map(function (r, i) {
+      var col = r.color || AV[i % AV.length];
+      return '<div class="row"><span class="gs-avatar" style="background:color-mix(in srgb,' + col + ' 14%,transparent);color:' + col + '">' + esc(r.initial || '\u2022') + '</span><div class="main"><div class="ttl">' + esc(r.main) + '</div>' + (r.sub ? '<div class="sub">' + esc(r.sub) + '</div>' : '') + '</div><span class="meta">' + (r.meta || '') + '</span></div>';
+    }).join('');
+    return '<div class="gs-card">' + phead(o.title) + '<div class="gs-feed">' + body + '</div></div>';
+  }
+  function panels(arr, cols) {
+    return '<div class="gs-panels" style="--gs-panel-cols:' + (arr.length >= 2 ? (cols || '1.1fr .9fr') : '1fr') + '">' + arr.join('') + '</div>';
+  }
+
+  // Virtualized data table for large result sets. Renders only the rows in
+  // (and near) the viewport and recycles them on scroll, so DOM residency is
+  // bounded no matter how many rows stream in. Pages are pulled lazily via
+  // opts.fetchPage(cursor) — an opaque keyset cursor passed back verbatim,
+  // never an OFFSET the component computes — and in-memory rows are capped at
+  // opts.maxResident: the earliest rows are dropped behind a visible
+  // "earlier rows omitted" notice (silent truncation would misstate the data).
+  //
+  //   gsDash.virtualTable(container, {
+  //     columns: [{ key, label?, width?, align?, render? }],
+  //     fetchPage: function (cursor) ->
+  //       Promise<{ rows: object[], nextCursor: any|null }>,
+  //     pageSize?: 200, maxResident?: 1000, rowHeight?: 36, height?: '420px',
+  //     empty?: 'No data yet',
+  //   }) -> { refresh(), destroy() }
+  //
+  // render(row) returns an HTML string (escape data yourself or build it from
+  // esc()/tag()); without render the cell shows esc(row[key]). fetchPage ends
+  // the stream by returning nextCursor: null (or an empty rows page).
+  function virtualTable(container, opts) {
+    if (typeof container === 'string') container = document.querySelector(container);
+    opts = opts || {};
+    if (!container) throw new Error('gsDash.virtualTable: container not found');
+    if (typeof opts.fetchPage !== 'function') throw new Error('gsDash.virtualTable: fetchPage(cursor) is required');
+    var cols = opts.columns || [];
+    if (!cols.length) throw new Error('gsDash.virtualTable: columns is required');
+    var rowH = opts.rowHeight || 36;
+    var pageSize = opts.pageSize || 200;
+    var maxResident = Math.max(opts.maxResident || 1000, pageSize * 2);
+    var overscan = 6;
+    if (container.__gsVt) container.__gsVt.destroy();
+
+    var rows = [], trimmed = 0, cursor = null;
+    var done = false, loading = false, failed = false, destroyed = false, gen = 0;
+    var grid = cols.map(function (c) { return c.width || 'minmax(80px,1fr)'; }).join(' ');
+
+    var root = document.createElement('div'); root.className = 'gs-vtable';
+    var head = document.createElement('div'); head.className = 'gs-vt-head'; head.style.gridTemplateColumns = grid;
+    head.innerHTML = cols.map(function (c) {
+      return '<div class="gs-vt-th"' + (c.align === 'right' ? ' style="text-align:right"' : '') + '>'
+        + esc(c.label != null ? c.label : humanize(c.key)) + '</div>';
+    }).join('');
+    var notice = document.createElement('div'); notice.className = 'gs-vt-notice'; notice.style.display = 'none';
+    var viewport = document.createElement('div'); viewport.className = 'gs-vt-viewport';
+    viewport.style.height = typeof opts.height === 'number' ? opts.height + 'px' : (opts.height || '420px');
+    var sizer = document.createElement('div'); sizer.className = 'gs-vt-sizer';
+    var slice = document.createElement('div'); slice.className = 'gs-vt-slice';
+    var status = document.createElement('div'); status.className = 'gs-vt-status'; status.style.display = 'none';
+    sizer.appendChild(slice);
+    viewport.appendChild(sizer);
+    viewport.appendChild(status);
+    root.appendChild(head);
+    root.appendChild(notice);
+    root.appendChild(viewport);
+    container.innerHTML = '';
+    container.appendChild(root);
+
+    function cellHtml(r, c) {
+      if (c.render) return String(c.render(r));
+      var v = r == null ? null : r[c.key];
+      return esc(v == null ? '' : v);
+    }
+
+    function render() {
+      sizer.style.height = (rows.length * rowH) + 'px';
+      var vh = viewport.clientHeight || 0;
+      var start = Math.max(0, Math.floor(viewport.scrollTop / rowH) - overscan);
+      var end = Math.min(rows.length, Math.ceil((viewport.scrollTop + vh) / rowH) + overscan);
+      slice.style.top = (start * rowH) + 'px';
+      var html = '';
+      for (var i = start; i < end; i++) {
+        html += '<div class="gs-vt-row" style="grid-template-columns:' + grid + ';height:' + rowH + 'px">';
+        for (var j = 0; j < cols.length; j++) {
+          html += '<div class="gs-vt-cell' + (cols[j].align === 'right' ? ' num ta-r' : '') + '">' + cellHtml(rows[i], cols[j]) + '</div>';
+        }
+        html += '</div>';
+      }
+      slice.innerHTML = html;
+      if (trimmed > 0) {
+        notice.textContent = fmtInt(trimmed) + ' earlier rows omitted to keep this view responsive — refine the query to browse them';
+        notice.style.display = '';
+      }
+      if (!loading && !failed) {
+        if (!rows.length && done) { status.textContent = opts.empty || 'No data yet'; status.style.display = ''; }
+        else { status.style.display = 'none'; }
+      }
+      maybeFetch();
+    }
+
+    function maybeFetch() {
+      if (done || loading || failed || destroyed) return;
+      var vh = viewport.clientHeight || 0;
+      var belowPx = rows.length * rowH - (viewport.scrollTop + vh);
+      if (belowPx < rowH * Math.max(20, pageSize / 2)) fetchNext();
+    }
+
+    function fetchNext() {
+      loading = true;
+      var g = gen;
+      status.textContent = 'Loading…';
+      status.style.display = '';
+      var p;
+      try { p = Promise.resolve(opts.fetchPage(cursor)); } catch (e) { p = Promise.reject(e); }
+      p.then(function (page) {
+        if (destroyed || g !== gen) return;
+        var isArr = Object.prototype.toString.call(page) === '[object Array]';
+        var newRows = isArr ? page : ((page && page.rows) || []);
+        var next = isArr || page == null ? null : page.nextCursor;
+        rows = rows.concat(newRows);
+        cursor = next;
+        if (next == null || !newRows.length) done = true;
+        if (rows.length > maxResident) {
+          // Drop the earliest rows; shift scrollTop so the visible rows stay
+          // put (indices moved up by `cut`).
+          var cut = rows.length - maxResident;
+          rows.splice(0, cut);
+          trimmed += cut;
+          viewport.scrollTop = Math.max(0, viewport.scrollTop - cut * rowH);
+        }
+        loading = false;
+        render();
+      }, function (err) {
+        if (destroyed || g !== gen) return;
+        loading = false;
+        failed = true;
+        status.innerHTML = '';
+        var t = document.createElement('span');
+        t.textContent = 'Error: ' + (err && err.message ? err.message : err);
+        var b = document.createElement('button');
+        b.className = 'gs-vt-retry';
+        b.textContent = 'Retry';
+        b.onclick = function () { failed = false; status.style.display = 'none'; fetchNext(); };
+        status.appendChild(t);
+        status.appendChild(b);
+        status.style.display = '';
+      });
+    }
+
+    function onScroll() { render(); }
+    viewport.addEventListener('scroll', onScroll);
+    var ro = typeof ResizeObserver === 'function' ? new ResizeObserver(function () { render(); }) : null;
+    if (ro) ro.observe(viewport);
+
+    function refresh() {
+      gen++;
+      rows = []; trimmed = 0; cursor = null;
+      done = false; loading = false; failed = false;
+      notice.style.display = 'none';
+      viewport.scrollTop = 0;
+      render();
+    }
+    function destroy() {
+      destroyed = true;
+      gen++;
+      viewport.removeEventListener('scroll', onScroll);
+      if (ro) ro.disconnect();
+      if (container.__gsVt === handle) container.__gsVt = null;
+    }
+    var handle = { refresh: refresh, destroy: destroy };
+    container.__gsVt = handle;
+    render();
+    return handle;
+  }
+
+  // Staged loader for multi-section dashboards. Collecting every query
+  // result first and rendering the whole page in one pass freezes the
+  // renderer — serial fetches don't help, because the single giant render
+  // still blocks the main thread for the entire page. loadSections renders
+  // the sections strictly in order — render one section, yield the main
+  // thread (setTimeout 0, so the browser can paint it), then render the
+  // next — with per-section retry + exponential backoff, and a failed
+  // section renders an inline error + Retry without blocking the sections
+  // after it. Queries are PREFETCHED a small window ahead of the section
+  // being rendered (opts.prefetch, default 2), so staging costs little
+  // wall-clock versus a parallel fetch while rendering stays one section
+  // at a time.
+  //
+  //   gsDash.loadSections({
+  //     sections: [{
+  //       el,                  // element (or selector) the section renders into
+  //       queryName?, params?, // window.agentdb.executeQuery(queryName, params);
+  //                            // params may be a function (re-read every run).
+  //                            // Omit queryName for mount-only sections — e.g.
+  //                            // a virtualTable, which pages its own data.
+  //       render,              // render(result, el) — must replace el's content;
+  //                            // result is null for mount-only sections.
+  //                            // el is un-hidden (el.hidden = false) just
+  //                            // before the call, so a section the page
+  //                            // ships as `hidden` has a real size for
+  //                            // whatever render measures (a chart canvas)
+  //     }],
+  //     retries?: 2,           // per-section retries after the first failure
+  //     backoffMs?: 500,       // first retry delay; doubles per retry
+  //     prefetch?: 2,          // how many sections ahead queries may be
+  //                            // started (0 = strictly one query in flight)
+  //     onSectionError?: function (err, section, index) {},
+  //   }) -> { refresh(), cancel() }
+  //
+  // refresh() restarts from the first section; sections that rendered before
+  // keep their content on screen while their query re-runs (failed ones show
+  // the loading placeholder again). cancel() drops all in-flight work; a
+  // later refresh() starts the sequence again, and a failed section's Retry
+  // button keeps working even while cancelled.
+  function loadSections(opts) {
+    opts = opts || {};
+    var sections = opts.sections || [];
+    if (!sections.length) throw new Error('gsDash.loadSections: sections is required');
+    for (var si = 0; si < sections.length; si++) {
+      if (typeof sections[si].render !== 'function') {
+        throw new Error('gsDash.loadSections: sections[' + si + '].render is required');
+      }
+    }
+    var retries = opts.retries == null ? 2 : opts.retries;
+    var backoffMs = opts.backoffMs == null ? 500 : opts.backoffMs;
+    var prefetch = opts.prefetch == null ? 2 : Math.max(0, opts.prefetch);
+    var gen = 0;
+    var rendered = [];
+
+    function elOf(s) { return typeof s.el === 'string' ? document.querySelector(s.el) : s.el; }
+    function showLoading(el) { el.innerHTML = '<div class="gs-sec-loading">Loading…</div>'; }
+    // A page may ship its sections `hidden` until they have content. Left to
+    // render() to undo, the reveal lands after the chart call (the canvas has
+    // already measured 0x0) or is forgotten and the section never shows.
+    function reveal(el) { if (el && el.hidden) el.hidden = false; }
+    function paramsOf(s) { return typeof s.params === 'function' ? s.params() : (s.params || {}); }
+    function firstFetch(s) {
+      try {
+        if (!s.queryName) return Promise.resolve(null);
+        return Promise.resolve(window.agentdb.executeQuery(s.queryName, paramsOf(s)));
+      } catch (e) { return Promise.reject(e); }
+    }
+
+    function fail(err, s, i, el, g) {
+      rendered[i] = false;
+      if (el) {
+        reveal(el);
+        el.innerHTML = '';
+        var box = document.createElement('div');
+        box.className = 'gs-sec-error';
+        var t = document.createElement('span');
+        t.textContent = 'Error: ' + (err && err.message ? err.message : err);
+        var b = document.createElement('button');
+        b.className = 'gs-sec-retry';
+        b.textContent = 'Retry';
+        b.onclick = function () {
+          // Run under the CURRENT generation, not the one the failure
+          // happened in: cancel() bumps the generation without touching the
+          // DOM, and a still-visible Retry that silently no-ops is worse
+          // than the rare duplicate fetch when a refresh walk is in flight.
+          showLoading(el);
+          runSection(s, i, gen, 0, null, function () {});
+        };
+        box.appendChild(t);
+        box.appendChild(b);
+        el.appendChild(box);
+      }
+      try { console.error('[error] gsDash.loadSections section ' + i + ':', err); } catch (e1) {}
+      if (opts.onSectionError) {
+        try { opts.onSectionError(err, s, i); } catch (e2) {}
+      }
+    }
+
+    function runSection(s, i, g, attempt, prefetched, done) {
+      var el = elOf(s);
+      if (!el) {
+        fail(new Error('loadSections: section ' + i + ' container not found'), s, i, null, g);
+        done();
+        return;
+      }
+      // First attempts may consume a prefetched query; retries (and manual
+      // Retry clicks) always issue a fresh one.
+      var p = attempt === 0 && prefetched ? prefetched : firstFetch(s);
+      p.then(function (result) {
+        if (g !== gen) return;
+        try {
+          reveal(el);
+          s.render(result, el);
+          rendered[i] = true;
+        } catch (renderErr) {
+          // A render() throw is a code defect, not a transient failure —
+          // retrying would re-issue the query just to crash the same way.
+          fail(renderErr, s, i, el, g);
+        }
+        done();
+      }, function (err) {
+        if (g !== gen) return;
+        if (attempt < retries) {
+          setTimeout(function () {
+            if (g !== gen) return;
+            runSection(s, i, g, attempt + 1, null, done);
+          }, backoffMs * Math.pow(2, attempt));
+        } else {
+          fail(err, s, i, el, g);
+          done();
+        }
+      });
+    }
+
+    function run() {
+      var g = ++gen;
+      var queued = [];
+      for (var i = 0; i < sections.length; i++) {
+        var el = elOf(sections[i]);
+        if (el && !rendered[i]) showLoading(el);
+      }
+      function ensure(j) {
+        if (j >= sections.length || queued[j]) return;
+        var p = firstFetch(sections[j]);
+        // A prefetched failure is handled when its section is consumed; this
+        // no-op handler just keeps it from surfacing as unhandled meanwhile.
+        p.then(null, function () {});
+        queued[j] = p;
+      }
+      (function next(i) {
+        if (g !== gen || i >= sections.length) return;
+        // Keep up to `prefetch` queries in flight beyond the section being
+        // rendered, so staging does not serialize query latency.
+        for (var j = i; j <= i + prefetch; j++) ensure(j);
+        var p = queued[i] || null;
+        queued[i] = null;
+        runSection(sections[i], i, g, 0, p, function () {
+          if (g !== gen) return;
+          // Yield the main thread between sections so the browser paints the
+          // section that just rendered before the next one starts.
+          setTimeout(function () { next(i + 1); }, 0);
+        });
+      })(0);
+    }
+
+    run();
+    return {
+      refresh: function () { run(); },
+      cancel: function () { gen++; },
+    };
+  }
+
+  // gsDash.print / gsDash.downloadPdf are agentdb.print / agentdb.downloadPdf
+  // (the bridge's printing) for dashboards that hold `var g = window.gsDash`.
+  // They work detached, and reject with PRINT_UNAVAILABLE on a page whose
+  // bridge cannot print.
+  function printAlias(name) {
+    return function (target, options) {
+      var bridge = window.agentdb;
+      if (bridge && typeof bridge[name] === 'function') return bridge[name](target, options);
+      var err = new Error('agentdb.' + name + ' is not available on this page');
+      err.code = 'PRINT_UNAVAILABLE';
+      return Promise.reject(err);
+    };
+  }
+
+  window.gsDash = {
+    cvar: cvar, vizColor: vizColor, vizRef: vizRef, chartTheme: chartTheme, esc: esc, fmtInt: fmtInt, money: money, humanize: humanize,
+    dateMD: dateMD, relTime: relTime, statusTone: statusTone, tag: tag,
+    sparkline: sparkline, lineChart: lineChart, barH: barH, donut: donut, chart: chart,
+    kpiCard: kpiCard, kpiRow: kpiRow, donutCard: donutCard, barCard: barCard, feedCard: feedCard, panels: panels,
+    virtualTable: virtualTable,
+    loadSections: loadSections,
+    print: printAlias('print'), downloadPdf: printAlias('downloadPdf'),
+  };
+})();
+
+
+</script>
+<script>window.__SNAPSHOT__={"generated_at":"2026-10-18","app_id":"f6808b63-92a0-4584-81bd-7b080ac397e5","title":"운영 데이터 입력 센터"};
+window.__DATA__={"list_progress":{"rows":[{"id":1,"student_id":1,"curriculum_id":1,"learning_path_id":1,"status":"완료","progress_percent":100,"mastery_score":95,"started_date":"2026-03-02","completed_date":"2026-04-10","time_spent_minutes":480,"notes":"우수한 이해도","student_name":"김민준","unit_name":"실수와 그 계산","subject_name":"수학"},{"id":2,"student_id":1,"curriculum_id":2,"learning_path_id":1,"status":"완료","progress_percent":100,"mastery_score":88,"started_date":"2026-04-11","completed_date":"2026-05-30","time_spent_minutes":600,"notes":"인수분해 응용에 강함","student_name":"김민준","unit_name":"다항식의 곱셈과 인수분해","subject_name":"수학"},{"id":3,"student_id":1,"curriculum_id":3,"learning_path_id":1,"status":"진행중","progress_percent":65,"mastery_score":null,"started_date":"2026-06-01","completed_date":null,"time_spent_minutes":420,"notes":"이차방정식 활용 문제 집중 중","student_name":"김민준","unit_name":"이차방정식","subject_name":"수학"},{"id":7,"student_id":3,"curriculum_id":1,"learning_path_id":4,"status":"진행중","progress_percent":40,"mastery_score":null,"started_date":"2026-04-15","completed_date":null,"time_spent_minutes":320,"notes":"제곱근 개념 반복 학습 중","student_name":"박지후","unit_name":"실수와 그 계산","subject_name":"수학"},{"id":4,"student_id":2,"curriculum_id":1,"learning_path_id":3,"status":"완료","progress_percent":100,"mastery_score":98,"started_date":"2026-03-02","completed_date":"2026-04-05","time_spent_minutes":420,"notes":"매우 우수","student_name":"이서연","unit_name":"실수와 그 계산","subject_name":"수학"},{"id":5,"student_id":2,"curriculum_id":2,"learning_path_id":3,"status":"완료","progress_percent":100,"mastery_score":92,"started_date":"2026-04-06","completed_date":"2026-05-25","time_spent_minutes":540,"notes":"","student_name":"이서연","unit_name":"다항식의 곱셈과 인수분해","subject_name":"수학"},{"id":6,"student_id":2,"curriculum_id":3,"learning_path_id":3,"status":"진행중","progress_percent":80,"mastery_score":null,"started_date":"2026-06-01","completed_date":null,"time_spent_minutes":600,"notes":"심화 문제 도전 중","student_name":"이서연","unit_name":"이차방정식","subject_name":"수학"},{"id":10,"student_id":5,"curriculum_id":1,"learning_path_id":6,"status":"진행중","progress_percent":30,"mastery_score":null,"started_date":"2026-05-01","completed_date":null,"time_spent_minutes":240,"notes":"기초 재정비 중","student_name":"정현우","unit_name":"실수와 그 계산","subject_name":"수학"},{"id":8,"student_id":4,"curriculum_id":5,"learning_path_id":5,"status":"완료","progress_percent":100,"mastery_score":85,"started_date":"2026-03-10","completed_date":"2026-05-15","time_spent_minutes":360,"notes":"분사구문 이해 양호","student_name":"최수아","unit_name":"분사구문","subject_name":"영어"},{"id":9,"student_id":4,"curriculum_id":6,"learning_path_id":5,"status":"진행중","progress_percent":55,"mastery_score":null,"started_date":"2026-05-16","completed_date":null,"time_spent_minutes":300,"notes":"관계대명사 응용 연습","student_name":"최수아","unit_name":"관계대명사","subject_name":"영어"}]},"list_reports":{"rows":[{"id":9,"student_id":1,"report_period_start":"2026-10-01","report_period_end":"2026-10-31","report_type":"월간","overall_progress":"10월 전반적 진전 — 수정됨","attendance_summary":null,"assessment_summary":null,"strengths":"성실한 과제 수행","areas_for_improvement":"시간 관리","teacher_comments":"꾸준한 지도 유지","ai_summary":null,"next_period_goals":"11월 수능 모의고사 대비","status":"발송","sent_date":"2026-10-14","student_name":"김민준"},{"id":1,"student_id":1,"report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","overall_progress":"수학 과목에서 꾸준한 상승세. 3차 모의고사 반 1등 달성.","attendance_summary":"총 12회 수업 중 12회 출석 (100%)","assessment_summary":"수학 94점 (1등), 전월 대비 2점 상승","strengths":"논리적 사고력, 꾸준함","areas_for_improvement":"그래프 해석, 통계","teacher_comments":"매우 모범적인 학생. 심화 과정 추천.","ai_summary":"AI 종합 분석: 전반적 우수. 특목고 대비 심화 커리큘럼 적용 권장","next_period_goals":"통계 단원 완성, 특목고 기출 10회 풀이","status":"발송완료","sent_date":"2026-10-01","student_name":"김민준"},{"id":2,"student_id":2,"report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","overall_progress":"전과목 최상위권 유지. 3차 모의고사 만점 수준.","attendance_summary":"총 12회 수업 중 12회 출석 (100%)","assessment_summary":"수학 98점 (1등)","strengths":"전 영역 우수","areas_for_improvement":"없음","teacher_comments":"올림피아드 준비 적극 추천","ai_summary":"AI 종합 분석: 최상위권. 대회 수준 도전 권장","next_period_goals":"올림피아드 기출 문제 집중","status":"발송완료","sent_date":"2026-10-01","student_name":"이서연"},{"id":3,"student_id":3,"report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","overall_progress":"기초 다지기 과정에서 꾸준한 성장.","attendance_summary":"총 10회 수업 중 9회 출석 (90%)","assessment_summary":"수학 72점, 전월 대비 7점 상승","strengths":"성실함","areas_for_improvement":"응용 문제","teacher_comments":"꾸준한 노력이 돋보임","ai_summary":"AI 종합 분석: 안정적 성장. 기본기 완성 단계","next_period_goals":"응용 문제 집중 훈련","status":"발송완료","sent_date":"2026-10-01","student_name":"박지후"},{"id":4,"student_id":4,"report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","overall_progress":"영어 회화 능력 크게 향상.","attendance_summary":"총 10회 수업 중 10회 출석 (100%)","assessment_summary":"영어 85점","strengths":"자신감, 발화력","areas_for_improvement":"복잡한 문장","teacher_comments":"적극적 참여 돋보임","ai_summary":"AI 종합 분석: 실전 영어 능력 향상 중","next_period_goals":"영어 일기 및 토론 참여","status":"초안","sent_date":null,"student_name":"최수아"},{"id":5,"student_id":5,"report_period_start":"2026-09-01","report_period_end":"2026-09-30","report_type":"월간","overall_progress":"학습 경로 재설계 후 안정화 중.","attendance_summary":"총 10회 수업 중 10회 출석 (100%)","assessment_summary":"수학 58점 (기준선)","strengths":"꾸준한 출석","areas_for_improvement":"2학년 과정 전반","teacher_comments":"재정비 중, 격려 필요","ai_summary":"AI 종합 분석: 기초 보강 집중기. 2개월 후 재평가 예정","next_period_goals":"2학년 과정 완성","status":"초안","sent_date":null,"student_name":"정현우"}]},"list_results":{"rows":[{"id":3,"student_id":1,"assessment_id":3,"score":94,"rank_in_class":1,"percentile":97.5,"taken_date":"2026-09-30","time_taken_minutes":75,"correct_count":24,"incorrect_count":1,"weak_areas":"통계","strong_areas":"전반적 우수","ai_analysis":"AI 분석: 반 1등 달성. 심화 과정 도전 가능","student_name":"김민준","assessment_name":"2026 3차 수학 모의고사"},{"id":6,"student_id":2,"assessment_id":3,"score":98,"rank_in_class":1,"percentile":99.5,"taken_date":"2026-09-30","time_taken_minutes":65,"correct_count":25,"incorrect_count":0,"weak_areas":"없음","strong_areas":"전 영역","ai_analysis":"AI 분석: 만점 수준. 올림피아드 준비 적극 추천","student_name":"이서연","assessment_name":"2026 3차 수학 모의고사"},{"id":8,"student_id":3,"assessment_id":2,"score":72,"rank_in_class":10,"percentile":68.0,"taken_date":"2026-07-20","time_taken_minutes":88,"correct_count":18,"incorrect_count":7,"weak_areas":"응용 문제","strong_areas":"기본 개념","ai_analysis":"AI 분석: 꾸준한 성장. 기본기 안정화 중","student_name":"박지후","assessment_name":"2026 2차 수학 모의고사"},{"id":2,"student_id":1,"assessment_id":2,"score":92,"rank_in_class":2,"percentile":95.0,"taken_date":"2026-07-20","time_taken_minutes":80,"correct_count":23,"incorrect_count":2,"weak_areas":"확률","strong_areas":"방정식, 함수","ai_analysis":"AI 분석: 성적 상승 추세. 확률 단원 추가 학습 권장","student_name":"김민준","assessment_name":"2026 2차 수학 모의고사"},{"id":5,"student_id":2,"assessment_id":2,"score":97,"rank_in_class":1,"percentile":99.0,"taken_date":"2026-07-20","time_taken_minutes":68,"correct_count":24,"incorrect_count":1,"weak_areas":"없음","strong_areas":"전 영역","ai_analysis":"AI 분석: 완벽에 가까운 성취. 선행학습 추천","student_name":"이서연","assessment_name":"2026 2차 수학 모의고사"},{"id":9,"student_id":4,"assessment_id":4,"score":85,"rank_in_class":5,"percentile":85.0,"taken_date":"2026-05-20","time_taken_minutes":55,"correct_count":17,"incorrect_count":3,"weak_areas":"관계대명사 복합","strong_areas":"분사구문","ai_analysis":"AI 분석: 문법 안정. 응용 단계 진입","student_name":"최수아","assessment_name":"영어 중간 평가"},{"id":10,"student_id":5,"assessment_id":1,"score":58,"rank_in_class":18,"percentile":42.0,"taken_date":"2026-05-15","time_taken_minutes":90,"correct_count":14,"incorrect_count":11,"weak_areas":"2학년 과정 전반","strong_areas":"최근 학습 단원","ai_analysis":"AI 분석: 과거 과정 재학습 필요. 학습 경로 재설계 완료","student_name":"정현우","assessment_name":"2026 1차 수학 모의고사"},{"id":4,"student_id":2,"assessment_id":1,"score":95,"rank_in_class":1,"percentile":98.0,"taken_date":"2026-05-15","time_taken_minutes":70,"correct_count":24,"incorrect_count":1,"weak_areas":"없음","strong_areas":"전 영역","ai_analysis":"AI 분석: 최상위권 유지. 대회 준비 추천","student_name":"이서연","assessment_name":"2026 1차 수학 모의고사"},{"id":7,"student_id":3,"assessment_id":1,"score":65,"rank_in_class":15,"percentile":55.0,"taken_date":"2026-05-15","time_taken_minutes":90,"correct_count":16,"incorrect_count":9,"weak_areas":"기본 연산, 응용 문제","strong_areas":"단순 계산","ai_analysis":"AI 분석: 기초 보강 필요. 꾸준한 훈련 중요","student_name":"박지후","assessment_name":"2026 1차 수학 모의고사"},{"id":1,"student_id":1,"assessment_id":1,"score":88,"rank_in_class":3,"percentile":92.5,"taken_date":"2026-05-15","time_taken_minutes":85,"correct_count":22,"incorrect_count":3,"weak_areas":"함수 그래프 해석","strong_areas":"방정식, 인수분해","ai_analysis":"AI 분석: 전체적으로 우수. 그래프 영역 집중 보완 필요","student_name":"김민준","assessment_name":"2026 1차 수학 모의고사"}]},"list_schedule":{"rows":[{"id":5,"student_id":4,"subject_id":2,"class_date":"2026-10-09","start_time":"18:30:00","end_time":"20:00:00","class_type":"1:1","teacher_name":"이선생","classroom":"B-204","topic":"회화 실전","status":"예정","attendance":null,"notes":null,"student_name":"최수아","subject_name":"영어"},{"id":2,"student_id":1,"subject_id":2,"class_date":"2026-10-08","start_time":"19:00:00","end_time":"20:30:00","class_type":"그룹","teacher_name":"이선생","classroom":"B-203","topic":"관계대명사 심화","status":"예정","attendance":null,"notes":null,"student_name":"김민준","subject_name":"영어"},{"id":4,"student_id":3,"subject_id":1,"class_date":"2026-10-08","start_time":"17:00:00","end_time":"18:30:00","class_type":"그룹","teacher_name":"박선생","classroom":"C-105","topic":"제곱근 복습","status":"예정","attendance":null,"notes":null,"student_name":"박지후","subject_name":"수학"},{"id":3,"student_id":2,"subject_id":1,"class_date":"2026-10-07","start_time":"19:30:00","end_time":"21:30:00","class_type":"1:1","teacher_name":"김선생","classroom":"A-102","topic":"심화 응용 문제","status":"예정","attendance":null,"notes":null,"student_name":"이서연","subject_name":"수학"},{"id":1,"student_id":1,"subject_id":1,"class_date":"2026-10-07","start_time":"19:00:00","end_time":"21:00:00","class_type":"1:1","teacher_name":"김선생","classroom":"A-101","topic":"이차방정식 활용 문제","status":"예정","attendance":null,"notes":null,"student_name":"김민준","subject_name":"수학"},{"id":6,"student_id":5,"subject_id":1,"class_date":"2026-10-07","start_time":"17:30:00","end_time":"19:00:00","class_type":"그룹","teacher_name":"박선생","classroom":"C-105","topic":"2학년 과정 복습","status":"예정","attendance":null,"notes":null,"student_name":"정현우","subject_name":"수학"},{"id":23,"student_id":3,"subject_id":1,"class_date":"2026-10-06","start_time":"17:00:00","end_time":"18:30:00","class_type":"그룹","teacher_name":"박선생","classroom":"C-105","topic":"제곱근 기초","status":"완료","attendance":"출석","notes":"","student_name":"박지후","subject_name":"수학"},{"id":9,"student_id":3,"subject_id":1,"class_date":"2026-10-06","start_time":"17:00:00","end_time":"18:30:00","class_type":"그룹","teacher_name":"박선생","classroom":"C-105","topic":"제곱근 기초","status":"완료","attendance":"출석","notes":null,"student_name":"박지후","subject_name":"수학"},{"id":22,"student_id":2,"subject_id":1,"class_date":"2026-10-05","start_time":"19:30:00","end_time":"21:30:00","class_type":"1:1","teacher_name":"김선생","classroom":"A-102","topic":"최적화 문제","status":"완료","attendance":"출석","notes":"","student_name":"이서연","subject_name":"수학"},{"id":8,"student_id":2,"subject_id":1,"class_date":"2026-10-05","start_time":"19:30:00","end_time":"21:30:00","class_type":"1:1","teacher_name":"김선생","classroom":"A-102","topic":"최적화 문제","status":"완료","attendance":"출석","notes":null,"student_name":"이서연","subject_name":"수학"},{"id":7,"student_id":1,"subject_id":1,"class_date":"2026-10-05","start_time":"19:00:00","end_time":"21:00:00","class_type":"1:1","teacher_name":"김선생","classroom":"A-101","topic":"판별식과 근의 공식","status":"완료","attendance":"출석","notes":null,"student_name":"김민준","subject_name":"수학"},{"id":21,"student_id":1,"subject_id":1,"class_date":"2026-10-05","start_time":"19:00:00","end_time":"21:00:00","class_type":"1:1","teacher_name":"김선생","classroom":"A-101","topic":"판별식과 근의 공식","status":"완료","attendance":"출석","notes":"","student_name":"김민준","subject_name":"수학"},{"id":25,"student_id":5,"subject_id":1,"class_date":"2026-10-05","start_time":"17:30:00","end_time":"19:00:00","class_type":"그룹","teacher_name":"박선생","classroom":"C-105","topic":"2학년 과정 복습","status":"완료","attendance":"출석","notes":"","student_name":"정현우","subject_name":"수학"},{"id":24,"student_id":4,"subject_id":2,"class_date":"2026-10-04","start_time":"18:30:00","end_time":"20:00:00","class_type":"1:1","teacher_name":"이선생","classroom":"B-204","topic":"관계대명사 회화","status":"완료","attendance":"출석","notes":"","student_name":"최수아","subject_name":"영어"},{"id":10,"student_id":4,"subject_id":2,"class_date":"2026-10-04","start_time":"18:30:00","end_time":"20:00:00","class_type":"1:1","teacher_name":"이선생","classroom":"B-204","topic":"관계대명사 회화","status":"완료","attendance":"출석","notes":null,"student_name":"최수아","subject_name":"영어"},{"id":18,"student_id":4,"subject_id":2,"class_date":"2026-10-02","start_time":"18:30:00","end_time":"20:00:00","class_type":"1:1","teacher_name":"이선생","classroom":"B-204","topic":"회화 연습","status":"완료","attendance":"결석","notes":"사전 통보 결석","student_name":"최수아","subject_name":"영어"},{"id":20,"student_id":5,"subject_id":1,"class_date":"2026-10-02","start_time":"17:30:00","end_time":"19:00:00","class_type":"그룹","teacher_name":"박선생","classroom":"C-105","topic":"2학년 심화","status":"완료","attendance":"출석","notes":"","student_name":"정현우","subject_name":"수학"},{"id":16,"student_id":3,"subject_id":1,"class_date":"2026-10-02","start_time":"17:00:00","end_time":"18:30:00","class_type":"그룹","teacher_name":"박선생","classroom":"C-105","topic":"다항식 입문","status":"완료","attendance":"출석","notes":"","student_name":"박지후","subject_name":"수학"},{"id":12,"student_id":1,"subject_id":2,"class_date":"2026-10-01","start_time":"19:00:00","end_time":"20:30:00","class_type":"그룹","teacher_name":"이선생","classroom":"B-203","topic":"분사구문","status":"완료","attendance":"출석","notes":"","student_name":"김민준","subject_name":"영어"},{"id":14,"student_id":2,"subject_id":2,"class_date":"2026-10-01","start_time":"19:00:00","end_time":"20:30:00","class_type":"그룹","teacher_name":"이선생","classroom":"B-203","topic":"분사구문","status":"완료","attendance":"출석","notes":"","student_name":"이서연","subject_name":"영어"},{"id":13,"student_id":2,"subject_id":1,"class_date":"2026-09-30","start_time":"19:30:00","end_time":"21:30:00","class_type":"1:1","teacher_name":"김선생","classroom":"A-102","topic":"심화 함수","status":"완료","attendance":"출석","notes":"","student_name":"이서연","subject_name":"수학"},{"id":11,"student_id":1,"subject_id":1,"class_date":"2026-09-30","start_time":"19:00:00","end_time":"21:00:00","class_type":"1:1","teacher_name":"김선생","classroom":"A-101","topic":"이차방정식 복습","status":"완료","attendance":"출석","notes":"","student_name":"김민준","subject_name":"수학"},{"id":17,"student_id":4,"subject_id":2,"class_date":"2026-09-30","start_time":"18:30:00","end_time":"20:00:00","class_type":"1:1","teacher_name":"이선생","classroom":"B-204","topic":"관계대명사","status":"완료","attendance":"출석","notes":"","student_name":"최수아","subject_name":"영어"},{"id":19,"student_id":5,"subject_id":1,"class_date":"2026-09-30","start_time":"17:30:00","end_time":"19:00:00","class_type":"그룹","teacher_name":"박선생","classroom":"C-105","topic":"2학년 복습","status":"완료","attendance":"출석","notes":"","student_name":"정현우","subject_name":"수학"},{"id":15,"student_id":3,"subject_id":1,"class_date":"2026-09-29","start_time":"17:00:00","end_time":"18:30:00","class_type":"그룹","teacher_name":"박선생","classroom":"C-105","topic":"제곱근 복습","status":"완료","attendance":"지각","notes":"10분 지각","student_name":"박지후","subject_name":"수학"}]},"list_sessions":{"rows":[{"id":1,"student_id":1,"subject_id":1,"curriculum_id":3,"session_date":"2026-10-06T19:00:00","duration_minutes":45,"session_type":"개념설명","questions_asked":12,"concepts_covered":"이차방정식 근의 공식, 판별식","student_engagement":"높음","ai_feedback":"학생이 적극적으로 질문함. 개념 적용력 우수","strengths_identified":"논리적 사고력, 공식 암기","weaknesses_identified":"응용 문제 변환 능력","next_recommendation":"실전 문제 10회 풀이 추천","session_summary":"이차방정식 집중 세션. 판별식 완벽 이해, 활용 문제 추가 연습 필요","student_name":"김민준","subject_name":"수학"},{"id":3,"student_id":3,"subject_id":1,"curriculum_id":1,"session_date":"2026-10-06T17:00:00","duration_minutes":40,"session_type":"복습","questions_asked":20,"concepts_covered":"제곱근 기본 개념","student_engagement":"보통","ai_feedback":"반복 학습으로 이해도 향상 중","strengths_identified":"꾸준한 노력","weaknesses_identified":"기본 연산 속도","next_recommendation":"매일 10분 기초 연산 훈련","session_summary":"기초 개념 반복 세션. 꾸준한 개선 보임","student_name":"박지후","subject_name":"수학"},{"id":2,"student_id":2,"subject_id":1,"curriculum_id":3,"session_date":"2026-10-05T19:30:00","duration_minutes":50,"session_type":"문제풀이","questions_asked":18,"concepts_covered":"이차방정식 활용, 최적화 문제","student_engagement":"매우 높음","ai_feedback":"최상위권 수준의 사고력 보유","strengths_identified":"복잡한 문제 분해 능력, 수학적 모델링","weaknesses_identified":"없음 - 심화 도전 추천","next_recommendation":"올림피아드 유형 도전","session_summary":"심화 문제풀이 세션. 전 문제 정답, 대회 수준 도전 가능","student_name":"이서연","subject_name":"수학"},{"id":5,"student_id":5,"subject_id":1,"curriculum_id":1,"session_date":"2026-10-05T17:30:00","duration_minutes":40,"session_type":"기초다지기","questions_asked":10,"concepts_covered":"실수의 기본 성질","student_engagement":"보통","ai_feedback":"천천히 다지는 학습 유효","strengths_identified":"성실한 학습 태도","weaknesses_identified":"개념 간 연결","next_recommendation":"시각화 자료 활용 추천","session_summary":"기초 재정비 세션. 안정적 진전 중","student_name":"정현우","subject_name":"수학"},{"id":4,"student_id":4,"subject_id":2,"curriculum_id":6,"session_date":"2026-10-04T18:30:00","duration_minutes":35,"session_type":"회화연습","questions_asked":15,"concepts_covered":"관계대명사 활용 대화","student_engagement":"높음","ai_feedback":"발음과 유창성 개선","strengths_identified":"자신감 있는 발화","weaknesses_identified":"복잡한 문장 구조","next_recommendation":"일일 영어 일기 쓰기 추천","session_summary":"관계대명사 회화 세션. 자연스러운 활용 가능","student_name":"최수아","subject_name":"영어"},{"id":14,"student_id":5,"subject_id":1,"curriculum_id":1,"session_date":"2026-10-02T18:30:00","duration_minutes":45,"session_type":"복습","questions_asked":12,"concepts_covered":"2학년 심화 복습","student_engagement":"높음","ai_feedback":"복습 효과 가시화","strengths_identified":"꾸준함","weaknesses_identified":"응용","next_recommendation":"응용 문제 도전","session_summary":"심화 복습","student_name":"정현우","subject_name":"수학"},{"id":11,"student_id":3,"subject_id":1,"curriculum_id":2,"session_date":"2026-10-02T18:00:00","duration_minutes":45,"session_type":"개념설명","questions_asked":15,"concepts_covered":"다항식 기초","student_engagement":"높음","ai_feedback":"점점 자신감 상승","strengths_identified":"학습 태도","weaknesses_identified":"복합 문제","next_recommendation":"단계별 심화","session_summary":"다항식 입문","student_name":"박지후","subject_name":"수학"},{"id":9,"student_id":2,"subject_id":2,"curriculum_id":5,"session_date":"2026-10-01T19:30:00","duration_minutes":35,"session_type":"회화","questions_asked":12,"concepts_covered":"영어 토론","student_engagement":"높음","ai_feedback":"유창한 발화","strengths_identified":"어휘력","weaknesses_identified":"듣기","next_recommendation":"팟캐스트 추천","session_summary":"토론 연습","student_name":"이서연","subject_name":"영어"},{"id":7,"student_id":1,"subject_id":2,"curriculum_id":5,"session_date":"2026-10-01T19:30:00","duration_minutes":40,"session_type":"개념설명","questions_asked":10,"concepts_covered":"분사구문 활용","student_engagement":"보통","ai_feedback":"문법 이해도 양호","strengths_identified":"구문 분석","weaknesses_identified":"어휘 응용","next_recommendation":"단어장 매일 암기","session_summary":"분사구문 집중","student_name":"김민준","subject_name":"영어"},{"id":8,"student_id":2,"subject_id":1,"curriculum_id":3,"session_date":"2026-09-30T20:30:00","duration_minutes":55,"session_type":"심화문제","questions_asked":20,"concepts_covered":"최적화, 극값","student_engagement":"매우 높음","ai_feedback":"최상위권 사고력","strengths_identified":"수학적 모델링","weaknesses_identified":"없음","next_recommendation":"올림피아드 기출","session_summary":"심화 완벽 수행","student_name":"이서연","subject_name":"수학"},{"id":6,"student_id":1,"subject_id":1,"curriculum_id":3,"session_date":"2026-09-30T20:00:00","duration_minutes":50,"session_type":"문제풀이","questions_asked":15,"concepts_covered":"이차방정식 응용","student_engagement":"높음","ai_feedback":"응용력 향상","strengths_identified":"논리적 사고","weaknesses_identified":"복잡한 조건 문제","next_recommendation":"유형별 10문제 추천","session_summary":"응용 세션 완료","student_name":"김민준","subject_name":"수학"},{"id":12,"student_id":4,"subject_id":2,"curriculum_id":6,"session_date":"2026-09-30T19:30:00","duration_minutes":35,"session_type":"회화","questions_asked":14,"concepts_covered":"관계대명사 대화","student_engagement":"높음","ai_feedback":"발음 개선","strengths_identified":"자신감","weaknesses_identified":"복잡한 문장","next_recommendation":"영어 일기","session_summary":"관계대명사 회화","student_name":"최수아","subject_name":"영어"},{"id":13,"student_id":5,"subject_id":1,"curriculum_id":1,"session_date":"2026-09-30T18:30:00","duration_minutes":40,"session_type":"기초다지기","questions_asked":10,"concepts_covered":"2학년 과정 재정비","student_engagement":"보통","ai_feedback":"안정적 진전","strengths_identified":"성실함","weaknesses_identified":"개념 연결","next_recommendation":"시각화 자료","session_summary":"기초 재정비","student_name":"정현우","subject_name":"수학"},{"id":10,"student_id":3,"subject_id":1,"curriculum_id":1,"session_date":"2026-09-29T18:00:00","duration_minutes":40,"session_type":"기초다지기","questions_asked":18,"concepts_covered":"제곱근 반복","student_engagement":"보통","ai_feedback":"꾸준한 노력","strengths_identified":"기본 연산","weaknesses_identified":"응용 문제","next_recommendation":"매일 10분 연산","session_summary":"기초 반복","student_name":"박지후","subject_name":"수학"}]},"list_students":{"rows":[{"id":1,"student_code":"S2026001","name":"김민준","grade":"중3","school":"서울중학교","phone":"010-1111-2222","parent_name":"김영희","parent_phone":"010-1111-3333","parent_email":"minjun.parent@email.com","enrolled_date":"2026-03-02","learning_style":"시각형","learning_goal":"특목고 입학","status":"수강중","notes":null},{"id":3,"student_code":"S2026003","name":"박지후","grade":"중2","school":"대한중학교","phone":"010-3333-4444","parent_name":"박미경","parent_phone":"010-3333-5555","parent_email":"jihoo.parent@email.com","enrolled_date":"2026-04-15","learning_style":"체험형","learning_goal":"수학 기초 다지기","status":"수강중","notes":null},{"id":2,"student_code":"S2026002","name":"이서연","grade":"중3","school":"한국중학교","phone":"010-2222-3333","parent_name":"이철수","parent_phone":"010-2222-4444","parent_email":"seoyeon.parent@email.com","enrolled_date":"2026-03-02","learning_style":"청각형","learning_goal":"내신 1등급 유지","status":"수강중","notes":null},{"id":5,"student_code":"S2026005","name":"정현우","grade":"중3","school":"한국중학교","phone":"010-5555-6666","parent_name":"정수진","parent_phone":"010-5555-7777","parent_email":"hyunwoo.parent@email.com","enrolled_date":"2026-05-01","learning_style":"혼합형","learning_goal":"전과목 성적 향상","status":"수강중","notes":null},{"id":4,"student_code":"S2026004","name":"최수아","grade":"중3","school":"서울중학교","phone":"010-4444-5555","parent_name":"최동훈","parent_phone":"010-4444-6666","parent_email":"sua.parent@email.com","enrolled_date":"2026-03-10","learning_style":"시각형","learning_goal":"영어 회화 능력 향상","status":"수강중","notes":null}]},"opt_assessments":{"rows":[{"id":3,"assessment_name":"2026 3차 수학 모의고사","subject_name":"수학"},{"id":5,"assessment_name":"영어 기말 평가","subject_name":"영어"},{"id":2,"assessment_name":"2026 2차 수학 모의고사","subject_name":"수학"},{"id":4,"assessment_name":"영어 중간 평가","subject_name":"영어"},{"id":1,"assessment_name":"2026 1차 수학 모의고사","subject_name":"수학"}]},"opt_curriculum":{"rows":[{"id":1,"unit_name":"실수와 그 계산","unit_order":1,"subject_name":"수학"},{"id":2,"unit_name":"다항식의 곱셈과 인수분해","unit_order":2,"subject_name":"수학"},{"id":3,"unit_name":"이차방정식","unit_order":3,"subject_name":"수학"},{"id":4,"unit_name":"이차함수","unit_order":4,"subject_name":"수학"},{"id":5,"unit_name":"분사구문","unit_order":1,"subject_name":"영어"},{"id":6,"unit_name":"관계대명사","unit_order":2,"subject_name":"영어"},{"id":7,"unit_name":"현대시 감상","unit_order":1,"subject_name":"국어"},{"id":8,"unit_name":"화학 반응과 에너지","unit_order":1,"subject_name":"과학"}]},"opt_paths":{"rows":[{"id":1,"path_name":"김민준-수학 심화","student_name":"김민준","subject_name":"수학"},{"id":2,"path_name":"김민준-영어 독해","student_name":"김민준","subject_name":"영어"},{"id":4,"path_name":"박지후-수학 기초","student_name":"박지후","subject_name":"수학"},{"id":3,"path_name":"이서연-수학 완성","student_name":"이서연","subject_name":"수학"},{"id":6,"path_name":"정현우-수학 재정비","student_name":"정현우","subject_name":"수학"},{"id":10,"path_name":"정현우-수학 처방 경로","student_name":"정현우","subject_name":"수학"},{"id":5,"path_name":"최수아-영어 회화","student_name":"최수아","subject_name":"영어"}]},"opt_students":{"rows":[{"id":1,"name":"김민준","grade":"중3"},{"id":3,"name":"박지후","grade":"중2"},{"id":2,"name":"이서연","grade":"중3"},{"id":5,"name":"정현우","grade":"중3"},{"id":4,"name":"최수아","grade":"중3"}]},"opt_subjects":{"rows":[{"id":1,"subject_name":"수학"},{"id":2,"subject_name":"영어"},{"id":3,"subject_name":"국어"},{"id":4,"subject_name":"과학"},{"id":5,"subject_name":"사회"}]}};
+window.__MUT__={"insert_student":1,"update_student":1,"delete_student":1,"insert_schedule":1,"update_schedule":1,"delete_schedule":1,"insert_session":1,"update_session":1,"delete_session":1,"insert_result":1,"update_result":1,"delete_result":1,"insert_progress":1,"update_progress":1,"delete_progress":1,"insert_report":1,"update_report":1,"delete_report":1};
+window.__APP__={"id":"f6808b63-92a0-4584-81bd-7b080ac397e5","title":"운영 데이터 입력 센터"};</script>
+<script>
+/* =====================================================================
+   오프라인 보드 어댑터 (Offline Board Adapter) — 읽기 전용
+   - window.__DATA__ 에 내장된 스냅샷으로 등록 쿼리 결과를 대신 돌려줍니다.
+   - 저장·수정(등록/삭제) 쿼리는 반영되지 않고 안내 메시지를 돌려줍니다.
+   ===================================================================== */
+(function () {
+  'use strict';
+  var DATA = window.__DATA__ || {};
+  var MUT = window.__MUT__ || {};
+  var APP = window.__APP__ || {};
+  var SNAP = (window.__SNAPSHOT__ || {}).generated_at || '';
+  var READS = window.__READS__ || {};
+
+  function keyOf(name, params) {
+    if (!params) return name;
+    var ks = Object.keys(params).filter(function (k) { return params[k] !== undefined; });
+    if (!ks.length) return name;
+    ks.sort();
+    return name + '#' + ks.map(function (k) { return k + '=' + params[k]; }).join('&');
+  }
+
+  /* 같은 쿼리를 파라미터만 바꿔 여러 번 받아둔 경우, 없는 조합은 합집합으로 대신합니다. */
+  var byName = {};
+  Object.keys(DATA).forEach(function (k) {
+    var n = k.split('#')[0];
+    (byName[n] = byName[n] || []).push(DATA[k].rows || []);
+  });
+
+  window.agentdb = {
+    executeQuery: async function (name, params) {
+      params = params || {};
+      var k = keyOf(name, params);
+      if (DATA[k]) return { rows: DATA[k].rows || [] };
+      if (MUT[name]) {
+        throw new Error('이 파일은 오프라인 스냅샷(읽기 전용)입니다. 저장·수정은 온라인 대시보드에서 해 주세요.');
+      }
+      var groups = byName[name];
+      if (groups) {
+        var seen = {}, out = [];
+        groups.forEach(function (rows) {
+          rows.forEach(function (r) {
+            var s = JSON.stringify(r);
+            if (!seen[s]) { seen[s] = 1; out.push(r); }
+          });
+        });
+        return { rows: out };
+      }
+      throw new Error('오프라인 스냅샷에 "' + name + '" 데이터가 없습니다.');
+    },
+    getSchema: async function () { return { tables: [] }; },
+    getAppInfo: async function () {
+      return { id: APP.id || 'offline', name: APP.title || '오프라인 보드', scope: 'workspace' };
+    },
+    print: function () { window.print(); },
+    downloadPdf: function () { window.print(); }
+  };
+
+  window.__offlineInfo = { snapshot_at: SNAP, app: APP.title || '', queries: Object.keys(DATA).length };
+
+  /* ---------- 하단 배지 ---------- */
+  function badge() {
+    if (document.getElementById('od-badge')) return;
+    var css = document.createElement('style');
+    css.textContent = [
+      '#od-badge{position:fixed;right:14px;bottom:14px;z-index:2147483000;display:flex;align-items:center;gap:8px;',
+      'padding:7px 11px;border-radius:999px;background:#FFFEFB;border:1px solid #DFD7C3;color:#4A4234;',
+      'font:600 11.5px/1.35 "Pretendard","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;',
+      'box-shadow:0 2px 10px rgba(31,27,21,.14)}',
+      '#od-badge i{width:7px;height:7px;border-radius:50%;background:#A0501F;display:inline-block}',
+      '#od-badge b{color:#A0501F;font-weight:700}',
+      '#od-badge a{color:#A0501F;text-decoration:none;border-bottom:1px solid #E4C7B4}',
+      '#od-badge a:hover{border-bottom-color:#A0501F}',
+      '@media print{#od-badge{display:none}}'
+    ].join('');
+    document.head.appendChild(css);
+    var el = document.createElement('div');
+    el.id = 'od-badge';
+    el.innerHTML = '<i></i><span>오프라인 스냅샷 <b>' + (SNAP || '') + '</b> · 읽기 전용</span><a href="index.html">전체 보드</a>';
+    document.body.appendChild(el);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', badge);
+  else badge();
+})();
+
+</script>
+
+  <div class="gs-wrap wrap" id="root">
+    <div class="gs-hero">
+      <div>
+        <div class="t-micro" style="margin-bottom:6px">다움진로진학컨설팅의 진학 및 학습 맞춤엔진</div>
+        <h1 class="t-h1" style="margin:0">운영 데이터 입력 센터</h1>
+        <p class="t-body" style="margin:8px 0 0">학생·수업·출결·AI 세션·평가·진도·리포트를 직접 입력·수정·삭제합니다.</p>
+      </div>
+      <span class="gs-pill"><span class="dot"></span><span id="ts">—</span></span>
+    </div>
+
+    <div class="tabbar" id="tabbar"></div>
+    <div id="panel"></div>
+  </div>
+
+  <div class="modal-mask" id="modalMask">
+    <div class="modal">
+      <h3 id="modalTitle">확인</h3>
+      <p id="modalMsg"></p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modalCancel">취소</button>
+        <button class="btn btn-primary" id="modalOk">확인</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+// 엔티티(테이블) 정의 — 폼 필드와 목록 열 구성
+// 필드 순서는 등록된 insert/update 쿼리의 파라미터 순서와 반드시 일치해야 합니다.
+
+window.DYNAMIC = {
+  students: {
+    query: 'opt_students',
+    value: function (r) { return r.id; },
+    label: function (r) { return r.name + (r.grade ? ' (' + r.grade + ')' : ''); },
+  },
+  subjects: {
+    query: 'opt_subjects',
+    value: function (r) { return r.id; },
+    label: function (r) { return r.subject_name; },
+  },
+  curriculum: {
+    query: 'opt_curriculum',
+    value: function (r) { return r.id; },
+    label: function (r) { return r.subject_name + ' · ' + r.unit_name; },
+  },
+  assessments: {
+    query: 'opt_assessments',
+    value: function (r) { return r.id; },
+    label: function (r) { return r.assessment_name + (r.subject_name ? ' (' + r.subject_name + ')' : ''); },
+  },
+  paths: {
+    query: 'opt_paths',
+    value: function (r) { return r.id; },
+    label: function (r) { return r.student_name + ' · ' + r.subject_name + (r.path_name ? ' · ' + r.path_name : ''); },
+  },
+};
+
+window.ENTITIES = [
+  // ---------------- 학생 ----------------
+  {
+    key: 'students',
+    tab: '학생',
+    title: '학생 등록/수정',
+    listQuery: 'list_students',
+    insertQuery: 'insert_student',
+    updateQuery: 'update_student',
+    deleteQuery: 'delete_student',
+    listCols: [
+      { key: 'student_code', label: '코드' },
+      { key: 'name', label: '이름' },
+      { key: 'grade', label: '학년' },
+      { key: 'school', label: '학교' },
+      { key: 'parent_name', label: '학부모' },
+      { key: 'parent_phone', label: '학부모 연락처' },
+      { key: 'status', label: '상태', badge: true },
+    ],
+    fields: [
+      { name: 'student_code', label: '학생코드', type: 'text', required: true, placeholder: 'S2026010' },
+      { name: 'name', label: '이름', type: 'text', required: true },
+      { name: 'grade', label: '학년', type: 'select', options: ['중1', '중2', '중3', '고1', '고2', '고3'] },
+      { name: 'school', label: '학교', type: 'text' },
+      { name: 'phone', label: '학생 연락처', type: 'text', placeholder: '010-0000-0000' },
+      { name: 'parent_name', label: '학부모 이름', type: 'text' },
+      { name: 'parent_phone', label: '학부모 연락처', type: 'text', placeholder: '010-0000-0000' },
+      { name: 'parent_email', label: '학부모 이메일', type: 'text' },
+      { name: 'enrolled_date', label: '등록일', type: 'date' },
+      { name: 'learning_style', label: '학습 유형', type: 'select', options: ['시각형', '청각형', '체험형', '혼합형'] },
+      { name: 'learning_goal', label: '학습 목표', type: 'text', span2: true },
+      { name: 'status', label: '상태', type: 'select', options: ['수강중', '휴원', '퇴원'] },
+      { name: 'notes', label: '비고', type: 'textarea', span2: true },
+    ],
+  },
+
+  // ---------------- 수업 일정 / 출결 ----------------
+  {
+    key: 'schedule',
+    tab: '수업·출결',
+    title: '수업 일정 / 출결 기록',
+    listQuery: 'list_schedule',
+    insertQuery: 'insert_schedule',
+    updateQuery: 'update_schedule',
+    deleteQuery: 'delete_schedule',
+    listCols: [
+      { key: 'class_date', label: '날짜', date: true },
+      { key: 'start_time', label: '시작', time: true },
+      { key: 'student_name', label: '학생' },
+      { key: 'subject_name', label: '과목' },
+      { key: 'class_type', label: '유형' },
+      { key: 'teacher_name', label: '교사' },
+      { key: 'topic', label: '주제' },
+      { key: 'status', label: '상태', badge: true },
+      { key: 'attendance', label: '출결', badge: true },
+    ],
+    fields: [
+      { name: 'student_id', label: '학생', type: 'dynamic', source: 'students', required: true },
+      { name: 'subject_id', label: '과목', type: 'dynamic', source: 'subjects' },
+      { name: 'class_date', label: '수업 날짜', type: 'date', required: true },
+      { name: 'start_time', label: '시작 시간', type: 'time' },
+      { name: 'end_time', label: '종료 시간', type: 'time' },
+      { name: 'class_type', label: '수업 유형', type: 'select', options: ['1:1', '그룹', '클리닉', '온라인'] },
+      { name: 'teacher_name', label: '담당 교사', type: 'text' },
+      { name: 'classroom', label: '강의실', type: 'text' },
+      { name: 'topic', label: '수업 주제', type: 'text', span2: true },
+      { name: 'status', label: '상태', type: 'select', options: ['예정', '완료', '취소'] },
+      { name: 'attendance', label: '출결', type: 'select', options: ['출석', '지각', '결석', '사전결석'] },
+      { name: 'notes', label: '비고', type: 'textarea', span2: true },
+    ],
+  },
+
+  // ---------------- AI 튜터 세션 ----------------
+  {
+    key: 'sessions',
+    tab: 'AI 튜터 세션',
+    title: 'AI 튜터 세션 기록',
+    listQuery: 'list_sessions',
+    insertQuery: 'insert_session',
+    updateQuery: 'update_session',
+    deleteQuery: 'delete_session',
+    listCols: [
+      { key: 'session_date', label: '일시', datetime: true },
+      { key: 'student_name', label: '학생' },
+      { key: 'subject_name', label: '과목' },
+      { key: 'session_type', label: '유형' },
+      { key: 'duration_minutes', label: '시간(분)' },
+      { key: 'questions_asked', label: '질문' },
+      { key: 'student_engagement', label: '참여도', badge: true },
+      { key: 'session_summary', label: '요약', wide: true },
+    ],
+    fields: [
+      { name: 'student_id', label: '학생', type: 'dynamic', source: 'students', required: true },
+      { name: 'subject_id', label: '과목', type: 'dynamic', source: 'subjects' },
+      { name: 'curriculum_id', label: '단원', type: 'dynamic', source: 'curriculum' },
+      { name: 'session_date', label: '세션 일시', type: 'datetime', required: true },
+      { name: 'duration_minutes', label: '진행 시간(분)', type: 'number' },
+      { name: 'session_type', label: '세션 유형', type: 'select', options: ['개념설명', '문제풀이', '복습', '회화', '심화문제', '기초다지기', '진단평가'] },
+      { name: 'questions_asked', label: '질문 수', type: 'number' },
+      { name: 'concepts_covered', label: '다룬 개념', type: 'text', span2: true },
+      { name: 'student_engagement', label: '참여도', type: 'select', options: ['매우 높음', '높음', '보통', '낮음'] },
+      { name: 'ai_feedback', label: 'AI 피드백', type: 'textarea', span2: true },
+      { name: 'strengths_identified', label: '강점', type: 'textarea' },
+      { name: 'weaknesses_identified', label: '약점', type: 'textarea' },
+      { name: 'next_recommendation', label: '다음 추천', type: 'textarea' },
+      { name: 'session_summary', label: '세션 요약', type: 'textarea', span2: true },
+    ],
+  },
+
+  // ---------------- 평가 결과 ----------------
+  {
+    key: 'results',
+    tab: '평가 결과',
+    title: '평가 결과 입력',
+    listQuery: 'list_results',
+    insertQuery: 'insert_result',
+    updateQuery: 'update_result',
+    deleteQuery: 'delete_result',
+    listCols: [
+      { key: 'taken_date', label: '응시일', date: true },
+      { key: 'student_name', label: '학생' },
+      { key: 'assessment_name', label: '평가' },
+      { key: 'score', label: '점수' },
+      { key: 'rank_in_class', label: '등수' },
+      { key: 'percentile', label: '백분위' },
+      { key: 'correct_count', label: '정답' },
+      { key: 'incorrect_count', label: '오답' },
+    ],
+    fields: [
+      { name: 'student_id', label: '학생', type: 'dynamic', source: 'students', required: true },
+      { name: 'assessment_id', label: '평가', type: 'dynamic', source: 'assessments', required: true },
+      { name: 'score', label: '점수', type: 'number', required: true },
+      { name: 'rank_in_class', label: '등수', type: 'number' },
+      { name: 'percentile', label: '백분위', type: 'number' },
+      { name: 'taken_date', label: '응시일', type: 'date' },
+      { name: 'time_taken_minutes', label: '소요 시간(분)', type: 'number' },
+      { name: 'correct_count', label: '정답 수', type: 'number' },
+      { name: 'incorrect_count', label: '오답 수', type: 'number' },
+      { name: 'weak_areas', label: '취약 영역', type: 'text' },
+      { name: 'strong_areas', label: '강점 영역', type: 'text' },
+      { name: 'ai_analysis', label: 'AI 분석', type: 'textarea', span2: true },
+    ],
+  },
+
+  // ---------------- 학습 진도 ----------------
+  {
+    key: 'progress',
+    tab: '학습 진도',
+    title: '학습 진도 입력/수정',
+    listQuery: 'list_progress',
+    insertQuery: 'insert_progress',
+    updateQuery: 'update_progress',
+    deleteQuery: 'delete_progress',
+    listCols: [
+      { key: 'student_name', label: '학생' },
+      { key: 'subject_name', label: '과목' },
+      { key: 'unit_name', label: '단원' },
+      { key: 'status', label: '상태', badge: true },
+      { key: 'progress_percent', label: '진도%' },
+      { key: 'mastery_score', label: '숙련도' },
+      { key: 'time_spent_minutes', label: '학습시간(분)' },
+    ],
+    fields: [
+      { name: 'student_id', label: '학생', type: 'dynamic', source: 'students', required: true },
+      { name: 'curriculum_id', label: '단원', type: 'dynamic', source: 'curriculum', required: true },
+      { name: 'learning_path_id', label: '학습 경로(선택)', type: 'dynamic', source: 'paths', span2: true },
+      { name: 'status', label: '상태', type: 'select', options: ['미시작', '진행중', '완료'] },
+      { name: 'progress_percent', label: '진도율(%)', type: 'number' },
+      { name: 'mastery_score', label: '숙련도 점수', type: 'number' },
+      { name: 'time_spent_minutes', label: '학습 시간(분)', type: 'number' },
+      { name: 'started_date', label: '시작일', type: 'date' },
+      { name: 'completed_date', label: '완료일', type: 'date' },
+      { name: 'notes', label: '비고', type: 'textarea', span2: true },
+    ],
+  },
+
+  // ---------------- 학부모 리포트 ----------------
+  {
+    key: 'reports',
+    tab: '학부모 리포트',
+    title: '학부모 리포트 작성',
+    listQuery: 'list_reports',
+    insertQuery: 'insert_report',
+    updateQuery: 'update_report',
+    deleteQuery: 'delete_report',
+    listCols: [
+      { key: 'student_name', label: '학생' },
+      { key: 'report_type', label: '유형' },
+      { key: 'report_period_start', label: '시작', date: true },
+      { key: 'report_period_end', label: '종료', date: true },
+      { key: 'status', label: '상태', badge: true },
+      { key: 'sent_date', label: '발송일', date: true },
+    ],
+    fields: [
+      { name: 'student_id', label: '학생', type: 'dynamic', source: 'students', required: true },
+      { name: 'report_type', label: '리포트 유형', type: 'select', options: ['월간', '분기', '학기'] },
+      { name: 'report_period_start', label: '기간 시작', type: 'date', required: true },
+      { name: 'report_period_end', label: '기간 종료', type: 'date', required: true },
+      { name: 'overall_progress', label: '종합 진도', type: 'textarea', span2: true },
+      { name: 'attendance_summary', label: '출결 요약', type: 'text', span2: true },
+      { name: 'assessment_summary', label: '평가 요약', type: 'text', span2: true },
+      { name: 'strengths', label: '강점', type: 'text', span2: true },
+      { name: 'areas_for_improvement', label: '개선점', type: 'text', span2: true },
+      { name: 'teacher_comments', label: '교사 코멘트', type: 'textarea', span2: true },
+      { name: 'ai_summary', label: 'AI 종합 요약', type: 'textarea', span2: true },
+      { name: 'next_period_goals', label: '다음 기간 목표', type: 'text', span2: true },
+      { name: 'status', label: '상태', type: 'select', options: ['초안', '발송완료'] },
+      { name: 'sent_date', label: '발송일', type: 'date' },
+    ],
+  },
+];
+
+</script>
+  <script>
+// 범용 CRUD 폼 엔진 — 엔티티 정의만 바꾸면 모든 테이블에 재사용됩니다.
+(function () {
+  var g = window.gsDash;
+
+  function esc(s) { return g.esc(s == null ? '' : String(s)); }
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  var state = {
+    entityKey: null,
+    editingId: null,
+    options: {},
+    listRows: [],
+    search: '',
+  };
+
+  function toast(msg, ok) {
+    var t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.className = 'toast show ' + (ok ? 'ok' : 'err');
+    setTimeout(function () { t.className = 'toast ' + (ok ? 'ok' : 'err'); }, 2800);
+  }
+
+  function confirmDialog(title, msg) {
+    return new Promise(function (resolve) {
+      var mask = document.getElementById('modalMask');
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalMsg').textContent = msg;
+      mask.classList.add('show');
+      var okBtn = document.getElementById('modalOk');
+      var cancelBtn = document.getElementById('modalCancel');
+      function cleanup(val) {
+        mask.classList.remove('show');
+        okBtn.removeEventListener('click', onOk);
+        cancelBtn.removeEventListener('click', onCancel);
+        resolve(val);
+      }
+      function onOk() { cleanup(true); }
+      function onCancel() { cleanup(false); }
+      okBtn.addEventListener('click', onOk);
+      cancelBtn.addEventListener('click', onCancel);
+    });
+  }
+
+  async function loadDynamicOptions() {
+    var keys = Object.keys(window.DYNAMIC);
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      var def = window.DYNAMIC[k];
+      try {
+        var res = await window.agentdb.executeQuery(def.query, {});
+        state.options[k] = res.rows.map(function (r) {
+          return { value: def.value(r), label: def.label(r) };
+        });
+      } catch (e) {
+        state.options[k] = [];
+        console.error('[options] failed for', k, e.message);
+      }
+    }
+    console.log('[data] dynamic options loaded:', Object.keys(state.options).map(function (k) {
+      return k + '=' + state.options[k].length;
+    }).join(', '));
+  }
+
+  function toInputValue(type, v) {
+    if (v == null) return '';
+    var s = String(v);
+    if (type === 'date') return s.slice(0, 10);
+    if (type === 'time') return s.slice(0, 5);
+    if (type === 'datetime') {
+      var d = new Date(s);
+      if (isNaN(d)) return '';
+      return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+    }
+    return s;
+  }
+
+  function fieldHtml(f) {
+    var req = f.required ? ' <span class="req">*</span>' : '';
+    var span = f.span2 ? ' span2' : '';
+    var id = 'f_' + f.name;
+    var inner = '';
+    if (f.type === 'textarea') {
+      inner = '<textarea id="' + id + '" data-field="' + f.name + '"></textarea>';
+    } else if (f.type === 'select') {
+      inner = '<select id="' + id + '" data-field="' + f.name + '"><option value="">— 선택 —</option>';
+      (f.options || []).forEach(function (o) { inner += '<option value="' + esc(o) + '">' + esc(o) + '</option>'; });
+      inner += '</select>';
+    } else if (f.type === 'dynamic') {
+      inner = '<select id="' + id + '" data-field="' + f.name + '"><option value="">— 선택 —</option>';
+      (state.options[f.source] || []).forEach(function (o) {
+        inner += '<option value="' + esc(o.value) + '">' + esc(o.label) + '</option>';
+      });
+      inner += '</select>';
+    } else {
+      var it = 'text';
+      if (f.type === 'number') it = 'number';
+      else if (f.type === 'date') it = 'date';
+      else if (f.type === 'time') it = 'time';
+      else if (f.type === 'datetime') it = 'datetime-local';
+      inner = '<input type="' + it + '" id="' + id + '" data-field="' + f.name + '"' +
+        (f.placeholder ? ' placeholder="' + esc(f.placeholder) + '"' : '') + '>';
+    }
+    return '<div class="fg' + span + '">' +
+      '<label for="' + id + '">' + esc(f.label) + req + '</label>' + inner +
+      '<div class="err" id="err_' + f.name + '"></div></div>';
+  }
+
+  function renderForm(entity) {
+    return '<div class="panel">' +
+      '<div class="panel-head"><div class="t">' + esc(entity.title) + '</div></div>' +
+      '<div class="panel-body">' +
+        '<div class="edit-banner" id="edit-banner" style="display:none">' +
+          '<span id="edit-banner-text"></span>' +
+          '<button class="btn btn-ghost" style="padding:3px 10px;font-size:11.5px" id="cancel-edit">취소</button>' +
+        '</div>' +
+        '<div class="form-grid" id="form-grid">' + entity.fields.map(fieldHtml).join('') + '</div>' +
+        '<div class="form-actions">' +
+          '<button class="btn btn-primary" id="submit-btn">저장</button>' +
+          '<button class="btn btn-ghost" id="reset-btn">초기화</button>' +
+        '</div>' +
+      '</div></div>';
+  }
+
+  function fmtDateTime(v) {
+    var d = new Date(v);
+    if (isNaN(d)) return String(v);
+    return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  function badge(v) {
+    var tone = 'pill-neutral';
+    if (['수강중', '완료', '출석', '발송완료', '양호', '높음', '매우 높음'].indexOf(v) >= 0) tone = 'pill-ok';
+    else if (['휴원', '지각', '사전결석', '초안', '주의', '보통'].indexOf(v) >= 0) tone = 'pill-warn';
+    else if (['퇴원', '결석', '취소', '낮음', '긴급'].indexOf(v) >= 0) tone = 'pill-danger';
+    return '<span class="pill ' + tone + '">' + esc(v) + '</span>';
+  }
+
+  function fmtCell(col, val) {
+    if (val == null || val === '') return '<span style="color:var(--ink-300)">—</span>';
+    if (col.date) return esc(String(val).slice(0, 10));
+    if (col.time) return esc(String(val).slice(0, 5));
+    if (col.datetime) return esc(fmtDateTime(val));
+    if (col.badge) return badge(val);
+    return esc(String(val));
+  }
+
+  function renderListTable(entity) {
+    var lp = document.getElementById('list-panel');
+    if (!lp) return;
+    var rows = state.listRows.filter(function (r) {
+      if (!state.search) return true;
+      var hay = Object.keys(r).map(function (k) { return r[k]; }).join(' ').toLowerCase();
+      return hay.indexOf(state.search.toLowerCase()) >= 0;
+    });
+    var head = '<th style="width:1%"></th>' + entity.listCols.map(function (c) {
+      return '<th>' + esc(c.label) + '</th>';
+    }).join('');
+    var body = rows.map(function (r) {
+      var cells = entity.listCols.map(function (c) {
+        var style = c.wide ? ' style="white-space:normal;max-width:300px"' : '';
+        return '<td' + style + '>' + fmtCell(c, r[c.key]) + '</td>';
+      }).join('');
+      return '<tr>' +
+        '<td class="actions">' +
+          '<button class="row-btn" data-edit="' + r.id + '">수정</button>' +
+          '<button class="row-btn danger" data-del="' + r.id + '">삭제</button>' +
+        '</td>' + cells + '</tr>';
+    }).join('');
+    if (!rows.length) {
+      body = '<tr><td colspan="' + (entity.listCols.length + 1) + '" class="empty-note">데이터 없음</td></tr>';
+    }
+
+    lp.innerHTML = '<div class="panel">' +
+      '<div class="panel-head"><div class="t">' + esc(entity.tab) + ' 목록</div>' +
+        '<span class="pill pill-neutral">' + rows.length + '건</span></div>' +
+      '<div class="panel-body">' +
+        '<div class="list-tools"><input id="list-search" placeholder="검색…" value="' + esc(state.search) + '"></div>' +
+        '<div class="scroll-x"><table class="grid"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div>' +
+      '</div></div>';
+
+    var searchEl = document.getElementById('list-search');
+    if (searchEl) {
+      searchEl.addEventListener('input', function (e) {
+        state.search = e.target.value;
+        renderListTable(entity);
+        var s2 = document.getElementById('list-search');
+        if (s2) { s2.focus(); try { s2.setSelectionRange(s2.value.length, s2.value.length); } catch (x) {} }
+      });
+    }
+    lp.querySelectorAll('[data-edit]').forEach(function (b) {
+      b.addEventListener('click', function () { startEdit(entity, Number(b.getAttribute('data-edit'))); });
+    });
+    lp.querySelectorAll('[data-del]').forEach(function (b) {
+      b.addEventListener('click', function () { doDelete(entity, Number(b.getAttribute('data-del'))); });
+    });
+  }
+
+  async function loadList(entity) {
+    var lp = document.getElementById('list-panel');
+    if (lp) {
+      lp.innerHTML = '<div class="panel"><div class="panel-head"><div class="t">' + esc(entity.tab) + ' 목록</div></div>' +
+        '<div class="panel-body"><div class="empty-note">불러오는 중…</div></div></div>';
+    }
+    try {
+      var res = await window.agentdb.executeQuery(entity.listQuery, {});
+      state.listRows = res.rows;
+      renderListTable(entity);
+    } catch (e) {
+      console.error('[list] error', e.message);
+      if (lp) {
+        lp.innerHTML = '<div class="panel"><div class="panel-body"><div class="empty-note" style="color:var(--danger-500)">오류: ' + esc(e.message) + '</div></div></div>';
+      }
+    }
+  }
+
+  function startEdit(entity, id) {
+    var row = state.listRows.find(function (r) { return Number(r.id) === id; });
+    if (!row) return;
+    entity.fields.forEach(function (f) {
+      var el = document.getElementById('f_' + f.name);
+      if (!el) return;
+      el.value = toInputValue(f.type, row[f.name]);
+    });
+    state.editingId = id;
+    var labelVal = row.name || row.student_name || ('#' + id);
+    document.getElementById('edit-banner-text').textContent = '수정 중: ' + labelVal;
+    document.getElementById('edit-banner').style.display = 'flex';
+    document.getElementById('submit-btn').textContent = '수정 저장';
+    var panel = document.getElementById('panel');
+    if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function resetForm(entity) {
+    entity.fields.forEach(function (f) {
+      var el = document.getElementById('f_' + f.name);
+      if (el) el.value = '';
+    });
+    state.editingId = null;
+    var banner = document.getElementById('edit-banner');
+    if (banner) banner.style.display = 'none';
+    var sb = document.getElementById('submit-btn');
+    if (sb) sb.textContent = '저장';
+  }
+
+  async function submitForm(entity) {
+    entity.fields.forEach(function (f) {
+      var e = document.getElementById('err_' + f.name);
+      if (e) e.style.display = 'none';
+    });
+    var data = {};
+    var invalid = null;
+    entity.fields.forEach(function (f) {
+      var el = document.getElementById('f_' + f.name);
+      var raw = el ? el.value : '';
+      if (f.required && (raw == null || String(raw).trim() === '')) invalid = invalid || f;
+      if (raw === '') data[f.name] = null;
+      else if (f.type === 'number' || f.type === 'dynamic') data[f.name] = Number(raw);
+      else data[f.name] = raw;
+    });
+    if (invalid) {
+      var errEl = document.getElementById('err_' + invalid.name);
+      if (errEl) { errEl.textContent = '필수 항목입니다'; errEl.style.display = 'block'; }
+      toast('필수 항목을 입력하세요: ' + invalid.label, false);
+      return;
+    }
+    var btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    try {
+      if (state.editingId) {
+        data.id = state.editingId;
+        await window.agentdb.executeQuery(entity.updateQuery, data);
+        toast('수정되었습니다', true);
+      } else {
+        await window.agentdb.executeQuery(entity.insertQuery, data);
+        toast('저장되었습니다', true);
+      }
+      resetForm(entity);
+      await loadList(entity);
+      if (entity.key === 'students') await loadDynamicOptions();
+    } catch (e) {
+      console.error('[submit] error', e.message);
+      toast('오류: ' + e.message, false);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function doDelete(entity, id) {
+    var row = state.listRows.find(function (r) { return Number(r.id) === id; });
+    var label = row ? (row.name || row.student_name || ('#' + id)) : ('#' + id);
+    var warn = entity.key === 'students'
+      ? '이 학생의 수업·세션·평가·진도·리포트 기록도 함께 삭제됩니다. 계속할까요?'
+      : '이 기록을 삭제할까요? 되돌릴 수 없습니다.';
+    var ok = await confirmDialog('삭제 확인', '「' + label + '」 — ' + warn);
+    if (!ok) return;
+    try {
+      await window.agentdb.executeQuery(entity.deleteQuery, { id: id });
+      toast('삭제되었습니다', true);
+      if (state.editingId === id) resetForm(entity);
+      await loadList(entity);
+      if (entity.key === 'students') await loadDynamicOptions();
+    } catch (e) {
+      console.error('[delete] error', e.message);
+      toast('오류: ' + e.message, false);
+    }
+  }
+
+  function bindForm(entity) {
+    document.getElementById('submit-btn').addEventListener('click', function () { submitForm(entity); });
+    document.getElementById('reset-btn').addEventListener('click', function () { resetForm(entity); });
+    var ce = document.getElementById('cancel-edit');
+    if (ce) ce.addEventListener('click', function () { resetForm(entity); });
+  }
+
+  async function renderEntity(key) {
+    var entity = window.ENTITIES.find(function (e) { return e.key === key; });
+    if (!entity) return;
+    state.entityKey = key;
+    state.editingId = null;
+    state.search = '';
+    document.getElementById('panel').innerHTML =
+      '<div class="split">' + renderForm(entity) + '<div id="list-panel"></div></div>';
+    bindForm(entity);
+    await loadList(entity);
+  }
+
+  window.Rx = {
+    state: state,
+    toast: toast,
+    loadDynamicOptions: loadDynamicOptions,
+    renderEntity: renderEntity,
+  };
+})();
+
+</script>
+  <script>
+// 진입점 — 탭바를 구성하고, 선택된 엔티티의 입력 폼 + 목록을 렌더합니다.
+// 실제 CRUD 로직은 sections/form-engine.js 의 window.Rx 가 담당합니다.
+(function () {
+  var Rx = window.Rx;
+
+  function updateTimestamp() {
+    var el = document.getElementById('ts');
+    if (!el) return;
+    var d = new Date();
+    var p = function (n) { return String(n).padStart(2, '0'); };
+    el.textContent = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) +
+      ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+
+  function renderTabbar() {
+    var bar = document.getElementById('tabbar');
+    if (!bar) return;
+    bar.innerHTML = window.ENTITIES.map(function (e) {
+      return '<button class="tabbtn" data-key="' + e.key + '">' + e.tab + '</button>';
+    }).join('');
+    bar.querySelectorAll('.tabbtn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        selectTab(btn.getAttribute('data-key'));
+      });
+    });
+  }
+
+  function selectTab(key) {
+    document.querySelectorAll('#tabbar .tabbtn').forEach(function (b) {
+      b.classList.toggle('active', b.getAttribute('data-key') === key);
+    });
+    Rx.renderEntity(key);
+  }
+
+  async function init() {
+    console.log('[init] data entry center starting');
+    renderTabbar();
+    updateTimestamp();
+    setInterval(updateTimestamp, 60000);
+    await Rx.loadDynamicOptions();
+    selectTab(window.ENTITIES[0].key);
+    console.log('[init] data entry center ready');
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+
+</script>
+</body>
+</html>
