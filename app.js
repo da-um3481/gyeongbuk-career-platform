@@ -782,6 +782,14 @@
     return `
       <section class="page">
         <div class="section-title"><div class="st-icon g-pink">📝</div><div><h2>2028 대입정보</h2><p>수능 안내 · 성취평가제 · 전형시행계획</p></div></div>
+        <a class="card hover" href="/interview/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;margin-bottom:18px;text-decoration:none">
+          <div class="st-icon g-indigo" style="width:46px;height:46px;font-size:21px">🎤</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:900;font-size:16px;color:var(--du-navy)">2027 대입 면접 시사이슈 검색기</div>
+            <div style="font-size:12.5px;color:var(--slate-500)">주제별 배경 · 찬반 논리 · 예상 질문 · 답변 골격 · 출처 (인쇄/CSV 저장)</div>
+          </div>
+          <span class="badge b-indigo" style="flex:none">열기 →</span>
+        </a>
         <div class="stat-grid">${stats}</div>
         ${sections}
         <div class="section-title mt-24"><div class="st-icon g-pink">🔔</div><div><h2 style="font-size:18px">수시/정시 주요 변경 사항</h2></div></div>
