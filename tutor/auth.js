@@ -69,7 +69,7 @@
   }
 
   /* ---------- 앱 부팅 ---------- */
-  var FILES = ["shim.js", "sections/routes.js", "sections/main.js", "extras.js"];
+  var FILES = ["shim.js", "sections/routes.js", "sections/main.js", "extras.js", "library.js"];
   function boot(pw) {
     window.TUTOR_TOKEN = pw || "";
     var g = document.getElementById("auth-gate");

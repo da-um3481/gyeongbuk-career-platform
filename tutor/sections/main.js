@@ -69,6 +69,7 @@
       if(id==='rx')           return await renderRxPaths(root);
       if(id==='settings')     return renderSettings(root);
       if(id==='guide')        return renderGuide(root);
+      if(window.EXTRA_ROUTES && window.EXTRA_ROUTES[id]) return await window.EXTRA_ROUTES[id](root, arg);
       if(T[id])               return await renderTable(root, id);
       root.innerHTML = '<div class="err-note">알 수 없는 화면: '+esc(id)+'</div>';
     }catch(e){
