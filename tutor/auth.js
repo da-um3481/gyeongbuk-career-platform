@@ -5,7 +5,7 @@
    · 인증 후 그 값을 API 토큰(x-tutor-token)으로 사용합니다.
    ============================================================ */
 (function () {
-  var EXPECTED = "0c793046af5ee30ce4f901f3b7af9f5ad85bc47487d36396635dc802789099b4"; // daum-tutor-2026
+  var EXPECTED = "f73abd98e13a819f56b4e5e508220a15357e4ae3069ab67b1700c33778765bd6"; // daum-tutor-2027
   var KEY_OK = "tutor_ok";
   var KEY_PW = "tutor_pw";
 
