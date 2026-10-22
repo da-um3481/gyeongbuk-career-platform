@@ -3,7 +3,7 @@
    원본 main.js 는 한 줄 훅(window.EXTRA_ROUTES)으로만 연결합니다.
    ============================================================ */
 (function () {
-  var S = { tab: "content", q: "", subject: "", rtype: "", rows: [], meta: [] };
+  var S = { tab: "content", q: "", subject: "", rtype: "", year: "", atype: "", rows: [], meta: [], adm: {} };
   var EDIT = null; // 수정 중인 행
   var timer = null;
 
@@ -68,18 +68,21 @@
 
   function shell(root) {
     root.innerHTML =
-      '<div class="hero"><div class="micro">자료실</div><h1>교재·처방자료 관리</h1>' +
-        "<p>상담·처방에 쓰는 교재와 자료를 직접 등록·수정하고, 최종 확인일로 현행성을 관리합니다.</p></div>" +
+      '<div class="hero"><div class="micro">자료실</div><h1>교재·처방자료 · 입시정보 관리</h1>' +
+        "<p>상담·처방에 쓰는 교재와 자료, 대학별 모집단위·전형 정보를 직접 등록·수정하고 최종 확인일로 현행성을 관리합니다.</p></div>" +
       '<div class="panel" style="margin-bottom:12px">' +
-        '<div class="lib-tabs">' + tabBtn("content", "학습 콘텐츠·교재") + tabBtn("rx", "처방 자료") + "</div>" +
+        '<div class="lib-tabs">' + tabBtn("content", "학습 콘텐츠·교재") + tabBtn("rx", "처방 자료") +
+          tabBtn("adm", "입시 정보") + "</div>" +
         '<div class="lib-bar">' +
-          '<input id="lib-q" type="search" placeholder="제목·태그·출처 검색" value="' + esc(S.q) + '" />' +
+          '<input id="lib-q" type="search" placeholder="검색" value="' + esc(S.q) + '" />' +
           '<select id="lib-sub"></select>' +
           '<select id="lib-rtype"><option value="">분류 전체</option>' +
             ["교재", "도서", "문제집", "영상", "문제", "기타"].map(function (v) {
               return '<option value="' + v + '"' + (S.rtype === v ? " selected" : "") + ">" + v + "</option>";
             }).join("") + "</select>" +
-          '<button class="btn primary" id="lib-add">＋ 자료 등록</button>' +
+          '<select id="lib-year"><option value="">연도 전체</option></select>' +
+          '<select id="lib-atype"><option value="">전형 전체</option></select>' +
+          '<button class="btn primary" id="lib-add">＋ 등록</button>' +
         "</div>" +
         '<div id="lib-note" class="lib-note"></div>' +
       "</div>" +
@@ -95,13 +98,20 @@
     };
     $("lib-sub").onchange = function () { S.subject = this.value; load(); };
     $("lib-rtype").onchange = function () { S.rtype = this.value; load(); };
+    $("lib-year").onchange = function () { S.year = this.value; load(); };
+    $("lib-atype").onchange = function () { S.atype = this.value; load(); };
     $("lib-add").onclick = function () { openForm(null); };
     paint();
   }
 
   function paint() {
-    var rx = S.tab === "rx";
+    if (!$("lib-rtype")) return;
+    var rx = S.tab === "rx", adm = S.tab === "adm";
     $("lib-rtype").style.display = rx ? "" : "none";
+    $("lib-sub").style.display = adm ? "none" : "";
+    $("lib-year").style.display = adm ? "" : "none";
+    $("lib-atype").style.display = adm ? "" : "none";
+    $("lib-q").placeholder = adm ? "대학·모집단위·전형 검색" : "제목·태그·출처 검색";
     document.querySelectorAll(".lib-tab").forEach(function (b) {
       b.classList.toggle("on", b.dataset.tab === S.tab);
     });
@@ -112,13 +122,26 @@
       sel.dataset.filled = "1";
       sel.value = S.subject;
     }
+    var ys = $("lib-year");
+    if (ys && !ys.dataset.filled && S.adm.years) {
+      ys.innerHTML = '<option value="">연도 전체</option>' +
+        S.adm.years.map(function (y) { return '<option value="' + y + '">' + y + "학년도</option>"; }).join("");
+      ys.dataset.filled = "1";
+      ys.value = S.year;
+    }
+    var as = $("lib-atype");
+    if (as && !as.dataset.filled && S.adm.types) {
+      as.innerHTML = '<option value="">전형 전체</option>' +
+        S.adm.types.map(function (t) { return '<option value="' + esc(t) + '">' + esc(t) + "</option>"; }).join("");
+      as.dataset.filled = "1";
+      as.value = S.atype;
+    }
   }
 
   async function render(root) {
-    var okBanner;
     if (!connected()) {
       root.innerHTML =
-        '<div class="hero"><div class="micro">자료실</div><h1>교재·처방자료 관리</h1></div>' +
+        '<div class="hero"><div class="micro">자료실</div><h1>교재·처방자료 · 입시정보 관리</h1></div>' +
         '<div class="err-note">DB에 연결되지 않아 자료를 관리할 수 없습니다. (데모 모드)<br />' +
         "Vercel 환경변수 DATABASE_URL · TUTOR_TOKEN 을 확인한 뒤 재배포하세요.</div>";
       return;
@@ -128,6 +151,10 @@
       var m = await exec("wa_lib_meta", {});
       S.meta = m.rows || [];
     } catch (e) { S.meta = []; }
+    try {
+      var a = await exec("wa_adm_meta", {});
+      S.adm = (a.rows && a.rows[0]) || {};
+    } catch (e) { S.adm = {}; }
     paint();
     await load();
   }
@@ -137,9 +164,14 @@
     if (!box) return;
     box.innerHTML = '<div class="skl" style="width:50%;margin-bottom:8px"></div><div class="skl" style="width:80%"></div>';
     try {
-      var r = S.tab === "rx"
-        ? await exec("wa_lib_rx", { q: S.q, subject_id: S.subject, resource_type: S.rtype })
-        : await exec("wa_lib_contents", { q: S.q, subject_id: S.subject });
+      var r;
+      if (S.tab === "adm") {
+        r = await exec("wa_adm_list", { q: S.q, year: S.year, university: "", admission_type: S.atype });
+      } else if (S.tab === "rx") {
+        r = await exec("wa_lib_rx", { q: S.q, subject_id: S.subject, resource_type: S.rtype });
+      } else {
+        r = await exec("wa_lib_contents", { q: S.q, subject_id: S.subject });
+      }
       S.rows = r.rows || [];
       drawTable();
     } catch (e) {
@@ -149,22 +181,35 @@
 
   function drawTable() {
     var box = $("lib-list");
-    var rx = S.tab === "rx";
+    var rx = S.tab === "rx", adm = S.tab === "adm";
     var stale = S.rows.filter(function (r) { var d = daysSince(r.verified_on); return d === null || d > 365; }).length;
-    var title = rx ? "처방 자료" : "학습 콘텐츠·교재";
-    var head = rx
+    var title = adm ? "입시 정보(모집단위·전형)" : rx ? "처방 자료" : "학습 콘텐츠·교재";
+    var head = adm
+      ? ["대학 / 모집단위", "전형", "모집인원", "수능최저", "최종 확인", "상태", ""]
+      : rx
       ? ["자료명", "분류", "과목", "수준", "제공처", "최종 확인", "상태", ""]
       : ["자료명", "유형", "과목", "난이도", "출처", "최종 확인", "상태", ""];
 
     var rows = S.rows.map(function (r) {
+      var cells;
+      if (adm) {
+        var nm = "<b>" + esc(r.university) + "</b>" +
+          '<div class="lib-sub2">' + esc(r.department || "모집단위 미기재") + (r.year ? " · " + r.year + "학년도" : "") + "</div>";
+        if (r.url) nm = '<a href="' + esc(r.url) + '" target="_blank" rel="noopener" class="lib-link">' + nm + "</a>";
+        cells = [nm, esc(r.admission_type || "—"),
+          r.recruitment == null ? "—" : String(r.recruitment) + "명",
+          esc(r.min_score ? String(r.min_score).slice(0, 40) : "—"),
+          verifiedCell(r), statusCell(r.status)];
+      } else {
       var name = '<b>' + esc(r.title) + "</b>" +
         (r.tags ? '<div class="lib-sub2">' + esc(r.tags) + "</div>" : "");
       if (r.url) name = '<a href="' + esc(r.url) + '" target="_blank" rel="noopener" class="lib-link">' + name + "</a>";
-      var cells = rx
+      cells = rx
         ? [name, esc(r.resource_type), esc(r.subject_name || "—"), esc(r.level || "—"),
            esc(r.provider || "—"), verifiedCell(r), statusCell(r.status)]
         : [name, esc(r.content_type || "—"), esc(r.subject_name || "—"), esc(r.difficulty || "—"),
            esc(r.source || "—"), verifiedCell(r), statusCell(r.status)];
+      }
       var btns =
         '<div class="lib-act">' +
           '<button class="mini-btn" data-act="edit" data-id="' + r.id + '">수정</button>' +
@@ -183,7 +228,9 @@
       (S.rows.length
         ? '<table class="tbl m-cards"><thead><tr>' + head.map(function (h) { return "<th>" + h + "</th>"; }).join("") +
           "</tr></thead><tbody>" + rows + "</tbody></table>"
-        : '<div class="empty">조건에 맞는 자료가 없습니다. ‘＋ 자료 등록’으로 추가할 수 있습니다.</div>');
+        : '<div class="empty">' + (adm
+            ? "등록된 입시 정보가 없습니다. ‘＋ 등록’으로 대학별 모집단위·전형을 추가하세요."
+            : "조건에 맞는 자료가 없습니다. ‘＋ 등록’으로 추가할 수 있습니다.") + "</div>");
 
     box.querySelectorAll("button[data-act]").forEach(function (b) {
       b.onclick = function () { onAction(b.dataset.act, parseInt(b.dataset.id, 10)); };
@@ -201,16 +248,17 @@
     if (act === "edit") return openForm(row);
     if (act === "touch") {
       try {
-        await exec(S.tab === "rx" ? "wa_lib_rx_touch" : "wa_lib_content_touch", { id: id });
+        await exec(S.tab === "adm" ? "wa_adm_touch" : S.tab === "rx" ? "wa_lib_rx_touch" : "wa_lib_content_touch", { id: id });
         toast("최종 확인일을 오늘로 갱신했습니다");
         load();
       } catch (e) { toast("실패: " + (e && e.message ? e.message : e)); }
       return;
     }
     if (act === "del") {
-      if (!confirm("‘" + row.title + "’ 을(를) 중지 처리할까요?\n(삭제 대신 ‘중지’로 남겨 이력을 보존합니다)")) return;
+      var label = S.tab === "adm" ? (row.university + " " + (row.department || "")) : row.title;
+      if (!confirm("‘" + label + "’ 을(를) 중지 처리할까요?\n(삭제 대신 ‘중지’로 남겨 이력을 보존합니다)")) return;
       try {
-        await exec(S.tab === "rx" ? "wa_lib_rx_del" : "wa_lib_content_del", { id: id });
+        await exec(S.tab === "adm" ? "wa_adm_del" : S.tab === "rx" ? "wa_lib_rx_del" : "wa_lib_content_del", { id: id });
         toast("중지 처리했습니다");
         load();
       } catch (e) { toast("실패: " + (e && e.message ? e.message : e)); }
@@ -241,11 +289,39 @@
 
   function openForm(row) {
     EDIT = row || null;
-    var rx = S.tab === "rx";
+    var rx = S.tab === "rx", adm = S.tab === "adm";
     var d = row || {};
     var html;
 
-    if (rx) {
+    if (adm) {
+      var types = ["수시-교과", "수시-종합", "수시-논술", "수시-실기", "정시-가", "정시-나", "정시-다", "기타"];
+      if (d.admission_type && types.indexOf(d.admission_type) < 0) types.push(d.admission_type);
+      html = "<h3>" + (row ? "입시 정보 수정" : "입시 정보 등록") + "</h3>" +
+        '<div class="grid2">' +
+          "<div>" +
+            input("f-year", "입시 연도", d.year, "예: 2027", "number") +
+            input("f-univ", "대학 *", d.university, "예: 경북대학교") +
+            input("f-dept", "모집단위", d.department, "예: 컴퓨터학부") +
+            '<label for="f-atype">전형</label><select id="f-atype">' + opt(types, d.admission_type || "수시-교과") + "</select>" +
+            input("f-recr", "모집인원", d.recruitment, "예: 12", "number") +
+            input("f-verified", "최종 확인일", d.verified_on, "", "date") +
+            '<label for="f-status">상태</label><select id="f-status">' + opt(["활성", "중지"], d.status || "활성") + "</select>" +
+          "</div>" +
+          "<div>" +
+            textarea("f-minscore", "수능 최저", d.min_score, "예: 국·수·영·탐 2개 합 7등급") +
+            textarea("f-selection", "전형 방법", d.selection, "예: 학생부 70 + 면접 30") +
+            textarea("f-elig", "지원 자격", d.eligibility, "예: 2027년 2월 졸업예정자") +
+          "</div>" +
+        "</div>" +
+        '<div class="grid2">' +
+          "<div>" + input("f-sched", "일정", d.schedule, "예: 원서 9.9~9.13, 면접 11.22") + "</div>" +
+          "<div>" + input("f-url", "요강 URL", d.url, "https://") + "</div>" +
+        "</div>" +
+        input("f-tags", "태그", d.tags, "쉼표 구분") +
+        textarea("f-note", "메모", d.note, "상담 시 참고사항") +
+        '<div class="foot"><button class="btn" id="mCancel">취소</button>' +
+        '<button class="btn primary" id="mSave">' + (row ? "저장" : "등록") + "</button></div>";
+    } else if (rx) {
       html = "<h3>" + (row ? "자료 수정" : "처방 자료 등록") + "</h3>" +
         '<div class="grid2">' +
           "<div>" +
@@ -295,25 +371,49 @@
     openModal(html);
     $("mCancel").onclick = closeModal;
     $("mSave").onclick = save;
-    setTimeout(function () { var t = $("f-title"); if (t) t.focus(); }, 30);
+    setTimeout(function () { var t = $("f-univ") || $("f-title"); if (t) t.focus(); }, 30);
   }
 
   async function save() {
+    var adm = S.tab === "adm";
     var rx = S.tab === "rx";
-    var title = val("f-title");
-    if (!title) { toast("자료명을 입력하세요"); return; }
+    if (adm) {
+      if (!val("f-univ")) { toast("대학명을 입력하세요"); return; }
+    } else if (!val("f-title")) {
+      toast(adm ? "대학명을 입력하세요" : "자료명을 입력하세요");
+      return;
+    }
     var btn = $("mSave");
     btn.disabled = true;
     btn.textContent = "저장 중…";
 
     var p;
     var name;
-    if (rx) {
+    if (adm) {
+      p = {
+        id: EDIT ? EDIT.id : "",
+        year: val("f-year"),
+        university: val("f-univ"),
+        department: val("f-dept"),
+        admission_type: val("f-atype"),
+        recruitment: val("f-recr"),
+        eligibility: val("f-elig"),
+        selection: val("f-selection"),
+        min_score: val("f-minscore"),
+        schedule: val("f-sched"),
+        url: val("f-url"),
+        note: val("f-note"),
+        tags: val("f-tags"),
+        status: val("f-status") || "활성",
+        verified_at: val("f-verified"),
+      };
+      name = EDIT ? "wa_adm_upd" : "wa_adm_add";
+    } else if (rx) {
       p = {
         id: EDIT ? EDIT.id : "",
         resource_type: val("f-rtype") || "교재",
         subject_id: val("f-sub"),
-        title: title,
+        title: val("f-title"),
         provider: val("f-provider"),
         url: val("f-url"),
         level: val("f-level"),
@@ -328,7 +428,7 @@
       p = {
         id: EDIT ? EDIT.id : "",
         subject_id: val("f-sub"),
-        title: title,
+        title: val("f-title"),
         content_type: val("f-type"),
         format: val("f-format"),
         difficulty: val("f-diff"),
