@@ -295,6 +295,57 @@ const EXTRA_QUERIES = [
     params: [{ name: "id" }],
     sql: `DELETE FROM admission_info WHERE id = $1::int RETURNING id`,
   },
+
+  /* ---------- CSV 일괄 등록 ---------- */
+
+  {
+    name: "wa_lib_content_import",
+    params: [{ name: "rows" }],
+    sql: `INSERT INTO learning_contents
+        (subject_id, title, content_type, format, difficulty, estimated_minutes, author, source,
+         url, tags, description, status, verified_at)
+      SELECT x.subject_id, x.title, x.content_type, x.format, x.difficulty, x.estimated_minutes,
+        x.author, x.source, x.url, x.tags, x.description,
+        COALESCE(NULLIF(x.status,''),'활성'), x.verified_at
+      FROM jsonb_to_recordset($1::jsonb) AS x(
+        subject_id int, title text, content_type text, format text, difficulty text,
+        estimated_minutes int, author text, source text, url text, tags text,
+        description text, status text, verified_at date)
+      WHERE COALESCE(x.title,'') <> ''
+      RETURNING id`,
+  },
+
+  {
+    name: "wa_lib_rx_import",
+    params: [{ name: "rows" }],
+    sql: `INSERT INTO prescription_resources
+        (resource_type, subject_id, title, provider, url, level, target, note, tags, status, verified_at)
+      SELECT COALESCE(NULLIF(x.resource_type,''),'교재'), x.subject_id, x.title, x.provider,
+        x.url, x.level, x.target, x.note, x.tags,
+        COALESCE(NULLIF(x.status,''),'활성'), x.verified_at
+      FROM jsonb_to_recordset($1::jsonb) AS x(
+        resource_type text, subject_id int, title text, provider text, url text, level text,
+        target text, note text, tags text, status text, verified_at date)
+      WHERE COALESCE(x.title,'') <> ''
+      RETURNING id`,
+  },
+
+  {
+    name: "wa_adm_import",
+    params: [{ name: "rows" }],
+    sql: `INSERT INTO admission_info
+        (year, university, department, admission_type, recruitment, eligibility, selection,
+         min_score, schedule, url, note, tags, status, verified_at)
+      SELECT x.year, x.university, x.department, x.admission_type, x.recruitment, x.eligibility,
+        x.selection, x.min_score, x.schedule, x.url, x.note, x.tags,
+        COALESCE(NULLIF(x.status,''),'활성'), x.verified_at
+      FROM jsonb_to_recordset($1::jsonb) AS x(
+        year int, university text, department text, admission_type text, recruitment int,
+        eligibility text, selection text, min_score text, schedule text, url text, note text,
+        tags text, status text, verified_at date)
+      WHERE COALESCE(x.university,'') <> ''
+      RETURNING id`,
+  },
 ];
 
 const ALL = (QUERIES_JSON.queries || []).concat(EXTRA_QUERIES);

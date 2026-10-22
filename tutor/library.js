@@ -82,6 +82,7 @@
             }).join("") + "</select>" +
           '<select id="lib-year"><option value="">연도 전체</option></select>' +
           '<select id="lib-atype"><option value="">전형 전체</option></select>' +
+          '<button class="btn" id="lib-csv">⬆ CSV 업로드</button>' +
           '<button class="btn primary" id="lib-add">＋ 등록</button>' +
         "</div>" +
         '<div id="lib-note" class="lib-note"></div>' +
@@ -101,6 +102,7 @@
     $("lib-year").onchange = function () { S.year = this.value; load(); };
     $("lib-atype").onchange = function () { S.atype = this.value; load(); };
     $("lib-add").onclick = function () { openForm(null); };
+    $("lib-csv").onclick = openImport;
     paint();
   }
 
@@ -319,8 +321,7 @@
         "</div>" +
         input("f-tags", "태그", d.tags, "쉼표 구분") +
         textarea("f-note", "메모", d.note, "상담 시 참고사항") +
-        '<div class="foot"><button class="btn" id="mCancel">취소</button>' +
-        '<button class="btn primary" id="mSave">' + (row ? "저장" : "등록") + "</button></div>";
+        footHtml(row);
     } else if (rx) {
       html = "<h3>" + (row ? "자료 수정" : "처방 자료 등록") + "</h3>" +
         '<div class="grid2">' +
@@ -341,8 +342,7 @@
           "</div>" +
         "</div>" +
         textarea("f-note", "메모", d.note, "사용 후기·주의사항") +
-        '<div class="foot"><button class="btn" id="mCancel">취소</button>' +
-        '<button class="btn primary" id="mSave">' + (row ? "저장" : "등록") + "</button></div>";
+        footHtml(row);
     } else {
       html = "<h3>" + (row ? "자료 수정" : "학습 콘텐츠·교재 등록") + "</h3>" +
         '<div class="grid2">' +
@@ -365,13 +365,251 @@
           "</div>" +
         "</div>" +
         textarea("f-desc", "설명", d.description, "핵심 개념 요약 노트") +
-        '<div class="foot"><button class="btn" id="mCancel">취소</button>' +
-        '<button class="btn primary" id="mSave">' + (row ? "저장" : "등록") + "</button></div>";
+        footHtml(row);
     }
     openModal(html);
     $("mCancel").onclick = closeModal;
     $("mSave").onclick = save;
+    if ($("mDel")) $("mDel").onclick = hardDelete;
     setTimeout(function () { var t = $("f-univ") || $("f-title"); if (t) t.focus(); }, 30);
+  }
+
+  function footHtml(row) {
+    return '<div class="foot">' +
+      (row ? '<button class="btn" id="mDel" style="margin-right:auto;color:#c0392b;border-color:#f0c9c4">영구 삭제</button>' : "") +
+      '<button class="btn" id="mCancel">취소</button>' +
+      '<button class="btn primary" id="mSave">' + (row ? "저장" : "등록") + "</button></div>";
+  }
+
+  /* 완전 삭제 — 수동으로만 실행 (자동 정리 없음) */
+  async function hardDelete() {
+    if (!EDIT) return;
+    var name = S.tab === "adm" ? "wa_adm_purge" : S.tab === "rx" ? "wa_lib_rx_purge" : "wa_lib_content_purge";
+    var label = S.tab === "adm" ? (EDIT.university + " " + (EDIT.department || "")) : EDIT.title;
+    if (!confirm("‘" + label + "’ 을(를) DB에서 완전히 삭제할까요?\n이 작업은 되돌릴 수 없습니다.")) return;
+    try {
+      await exec(name, { id: EDIT.id });
+      closeModal();
+      toast("삭제했습니다");
+      load();
+    } catch (e) { toast("실패: " + (e && e.message ? e.message : e)); }
+  }
+
+  /* ---------- CSV 일괄 등록 ---------- */
+  var CSV_SPEC = {
+    content: {
+      imp: "wa_lib_content_import", need: "title", subjectFrom: "subject_name",
+      cols: [
+        { k: "title", n: ["자료명", "제목", "교재명", "title"] },
+        { k: "subject_name", n: ["과목", "subject", "과목명"] },
+        { k: "content_type", n: ["유형", "구분", "type"] },
+        { k: "format", n: ["형식", "format"] },
+        { k: "difficulty", n: ["난이도", "difficulty"] },
+        { k: "estimated_minutes", n: ["예상시간", "시간", "시간(분)", "minutes"], t: "int" },
+        { k: "author", n: ["저자", "author"] },
+        { k: "source", n: ["출처", "source", "출판사"] },
+        { k: "url", n: ["url", "링크", "link"] },
+        { k: "tags", n: ["태그", "tags", "키워드"] },
+        { k: "description", n: ["설명", "비고", "description", "메모"] },
+        { k: "status", n: ["상태", "status"] },
+        { k: "verified_at", n: ["최종확인일", "확인일", "verified_at"], t: "date" },
+      ],
+    },
+    rx: {
+      imp: "wa_lib_rx_import", need: "title", subjectFrom: "subject_name",
+      cols: [
+        { k: "title", n: ["자료명", "제목", "교재명", "title"] },
+        { k: "resource_type", n: ["분류", "유형", "type"] },
+        { k: "subject_name", n: ["과목", "subject", "과목명"] },
+        { k: "level", n: ["수준", "난이도", "level"] },
+        { k: "target", n: ["대상", "target"] },
+        { k: "provider", n: ["제공처", "출판사", "provider"] },
+        { k: "url", n: ["url", "링크", "link"] },
+        { k: "tags", n: ["태그", "tags", "키워드"] },
+        { k: "note", n: ["메모", "비고", "note"] },
+        { k: "status", n: ["상태", "status"] },
+        { k: "verified_at", n: ["최종확인일", "확인일", "verified_at"], t: "date" },
+      ],
+    },
+    adm: {
+      imp: "wa_adm_import", need: "university",
+      cols: [
+        { k: "year", n: ["연도", "입시연도", "year"], t: "int" },
+        { k: "university", n: ["대학", "대학명", "university"] },
+        { k: "department", n: ["모집단위", "학과", "department"] },
+        { k: "admission_type", n: ["전형", "전형유형", "admission_type"] },
+        { k: "recruitment", n: ["모집인원", "인원", "recruitment"], t: "int" },
+        { k: "min_score", n: ["수능최저", "최저", "min_score"] },
+        { k: "selection", n: ["전형방법", "전형요소", "selection"] },
+        { k: "eligibility", n: ["지원자격", "자격", "eligibility"] },
+        { k: "schedule", n: ["일정", "schedule"] },
+        { k: "url", n: ["요강url", "url", "링크", "요강"] },
+        { k: "tags", n: ["태그", "tags"] },
+        { k: "note", n: ["메모", "비고", "note"] },
+        { k: "status", n: ["상태", "status"] },
+        { k: "verified_at", n: ["최종확인일", "확인일", "verified_at"], t: "date" },
+      ],
+    },
+  };
+
+  function normHead(s) {
+    return String(s || "").replace(/^\uFEFF/, "").replace(/\s|_|\*|\(|\)/g, "").toLowerCase();
+  }
+  function parseCSV(text) {
+    text = String(text || "").replace(/^\uFEFF/, "");
+    var rows = [], row = [], cur = "", inQ = false, i, c;
+    for (i = 0; i < text.length; i++) {
+      c = text[i];
+      if (inQ) {
+        if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else inQ = false; }
+        else cur += c;
+      } else if (c === '"') inQ = true;
+      else if (c === ",") { row.push(cur); cur = ""; }
+      else if (c === "\n") { row.push(cur); rows.push(row); row = []; cur = ""; }
+      else if (c !== "\r") cur += c;
+    }
+    if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
+    return rows.filter(function (r) { return r.some(function (x) { return String(x).trim() !== ""; }); });
+  }
+  function toDate(v) {
+    var s = String(v || "").trim();
+    if (!s) return null;
+    var m = s.match(/^(\d{4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})/);
+    if (!m) return null;
+    return m[1] + "-" + ("0" + m[2]).slice(-2) + "-" + ("0" + m[3]).slice(-2);
+  }
+  function subjectIdByName(name) {
+    var n = String(name || "").trim();
+    if (!n) return null;
+    for (var i = 0; i < S.meta.length; i++) {
+      if (String(S.meta[i].subject_name).trim() === n) return S.meta[i].id;
+    }
+    for (var j = 0; j < S.meta.length; j++) {
+      if (n.indexOf(String(S.meta[j].subject_name).trim()) >= 0) return S.meta[j].id;
+    }
+    return null;
+  }
+
+  function mapCSV(spec, table) {
+    var head = table[0].map(normHead);
+    var idx = {};
+    spec.cols.forEach(function (c) {
+      for (var i = 0; i < head.length; i++) {
+        if (c.n.some(function (a) { return normHead(a) === head[i]; })) { idx[c.k] = i; break; }
+      }
+    });
+    var out = [], skipped = 0;
+    for (var r = 1; r < table.length; r++) {
+      var raw = table[r], obj = {}, notEmpty = false;
+      spec.cols.forEach(function (c) {
+        var pos = idx[c.k];
+        var v = pos == null ? "" : String(raw[pos] == null ? "" : raw[pos]).trim();
+        if (v !== "") notEmpty = true;
+        if (c.t === "int") obj[c.k] = v === "" ? null : (parseInt(v.replace(/[^\d\-]/g, ""), 10) || null);
+        else if (c.t === "date") obj[c.k] = toDate(v);
+        else if (c.k === spec.subjectFrom) obj.subject_id = subjectIdByName(v);
+        else obj[c.k] = v === "" ? null : v;
+      });
+      if (!notEmpty) continue;
+      if (!obj[spec.need]) { skipped++; continue; }
+      out.push(obj);
+    }
+    return { rows: out, skipped: skipped, mapped: Object.keys(idx).length };
+  }
+
+  function downloadTemplate() {
+    var spec = CSV_SPEC[S.tab];
+    var heads = spec.cols.map(function (c) { return c.n[0]; });
+    var sample = spec.cols.map(function (c) {
+      if (c.k === "title") return "예시 자료명";
+      if (c.k === "university") return "경북대학교";
+      if (c.k === "department") return "컴퓨터학부";
+      if (c.k === "admission_type") return "수시-교과";
+      if (c.k === "subject_name") return S.meta[0] ? S.meta[0].subject_name : "수학";
+      if (c.k === "year") return String(new Date().getFullYear() + 1);
+      if (c.k === "verified_at") return new Date().toISOString().slice(0, 10);
+      return "";
+    });
+    var csv = "\uFEFF" + heads.join(",") + "\r\n" + sample.map(function (v) {
+      return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+    }).join(",") + "\r\n";
+    var blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = (S.tab === "adm" ? "입시정보" : S.tab === "rx" ? "처방자료" : "교재") + "_양식.csv";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }
+
+  function openImport() {
+    var input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".csv,text/csv";
+    input.onchange = function () {
+      var f = input.files && input.files[0];
+      if (!f) return;
+      var rd = new FileReader();
+      rd.onload = function () {
+        var table;
+        try { table = parseCSV(rd.result); } catch (e) { toast("CSV를 읽을 수 없습니다"); return; }
+        if (!table.length) { toast("빈 파일입니다"); return; }
+        var res = mapCSV(CSV_SPEC[S.tab], table);
+        if (!res.rows.length) { toast("등록할 행이 없습니다. 첫 줄이 머리글인지 확인하세요"); return; }
+        previewImport(res, f.name);
+      };
+      rd.readAsText(f, "utf-8");
+    };
+    input.click();
+  }
+
+  function previewImport(res, fileName) {
+    var spec = CSV_SPEC[S.tab];
+    var cols = spec.cols.filter(function (c) { return c.k !== "subject_name"; }).slice(0, 6);
+    var head = cols.map(function (c) { return c.n[0]; });
+    var body = res.rows.slice(0, 6).map(function (r) {
+      return "<tr>" + cols.map(function (c) {
+        var v = r[c.k];
+        return "<td>" + esc(v == null ? "" : String(v).slice(0, 28)) + "</td>";
+      }).join("") + "</tr>";
+    }).join("");
+
+    openModal(
+      "<h3>CSV 미리보기</h3>" +
+        '<div class="lib-note" style="margin:0 0 10px">' + esc(fileName) + " · 등록 대상 <b>" + res.rows.length + "건</b>" +
+        (res.skipped ? " · 건너뜀 " + res.skipped + "건(필수값 없음)" : "") + "</div>" +
+        '<div style="overflow:auto;max-height:260px;border:1px solid var(--ink-100);border-radius:8px">' +
+          '<table class="tbl"><thead><tr>' + head.map(function (h) { return "<th>" + esc(h) + "</th>"; }).join("") +
+          "</tr></thead><tbody>" + body + "</tbody></table></div>" +
+        '<div class="lib-note">상위 6건만 표시합니다. 등록 후 ‘중지/영구 삭제’로 정리할 수 있습니다.</div>' +
+        '<div class="foot"><button class="btn" id="mTpl">양식 내려받기</button>' +
+        '<button class="btn" id="mCancel">취소</button>' +
+        '<button class="btn primary" id="mImport">' + res.rows.length + "건 등록</button></div>"
+    );
+    $("mTpl").onclick = downloadTemplate;
+    $("mCancel").onclick = closeModal;
+    $("mImport").onclick = function () { runImport(spec, res.rows); };
+  }
+
+  async function runImport(spec, rows) {
+    var btn = $("mImport");
+    btn.disabled = true;
+    btn.textContent = "등록 중…";
+    var done = 0;
+    try {
+      for (var i = 0; i < rows.length; i += 200) {
+        var chunk = rows.slice(i, i + 200);
+        var r = await exec(spec.imp, { rows: JSON.stringify(chunk) });
+        done += (r.rows || []).length;
+      }
+      closeModal();
+      toast(done + "건을 등록했습니다");
+      load();
+    } catch (e) {
+      toast("실패(" + done + "건 등록됨): " + (e && e.message ? e.message : e));
+      btn.disabled = false;
+      btn.textContent = "다시 시도";
+    }
   }
 
   async function save() {
