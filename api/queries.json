@@ -106,9 +106,9 @@
     },
     {
       "name": "wa_weak",
-      "description": "취약 단원(진도<70 또는 성취<70) — progress_tracking 기준",
+      "description": "취약 단원 — 진도<70 또는 성취<70(progress_tracking) + 시험지 채점 오답 단원(question_set_assignments)",
       "params": [],
-      "sql": "SELECT s.name AS student_name, sub.subject_name, cur.unit_name,\n  pt.progress_percent AS progress_pct, pt.mastery_score AS achievement\nFROM progress_tracking pt\nLEFT JOIN students s ON s.id = pt.student_id\nLEFT JOIN curriculum cur ON cur.id = pt.curriculum_id\nLEFT JOIN subjects sub ON sub.id = cur.subject_id\nWHERE COALESCE(pt.progress_percent, 0) < 70 OR COALESCE(pt.mastery_score, 0) < 70\nORDER BY COALESCE(pt.progress_percent, 0) + COALESCE(pt.mastery_score, 0) ASC\nLIMIT 100"
+      "sql": "SELECT * FROM (\n  SELECT s.name AS student_name, sub.subject_name, cur.unit_name,\n    pt.progress_percent AS progress_pct, pt.mastery_score AS achievement, '진도'::text AS source\n  FROM progress_tracking pt\n  LEFT JOIN students s ON s.id = pt.student_id\n  LEFT JOIN curriculum cur ON cur.id = pt.curriculum_id\n  LEFT JOIN subjects sub ON sub.id = cur.subject_id\n  WHERE COALESCE(pt.progress_percent, 0) < 70 OR COALESCE(pt.mastery_score, 0) < 70\n  UNION ALL\n  SELECT s.name, sub.subject_name, trim(u.unit), NULL::int, NULL::int, '오답'::text\n  FROM question_set_assignments a\n  JOIN question_sets qs ON qs.id = a.set_id\n  LEFT JOIN students s ON s.id = a.student_id\n  LEFT JOIN subjects sub ON sub.id = qs.subject_id\n  CROSS JOIN LATERAL unnest(string_to_array(COALESCE(a.wrong_units, ''), ',')) AS u(unit)\n  WHERE COALESCE(a.status, '') = '채점' AND trim(u.unit) <> ''\n) t\nORDER BY (COALESCE(progress_pct, 0) + COALESCE(achievement, 0)) ASC\nLIMIT 100"
     },
     {
       "name": "wa_tests",

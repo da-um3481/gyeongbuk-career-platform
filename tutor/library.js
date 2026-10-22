@@ -103,7 +103,6 @@
     $("lib-atype").onchange = function () { S.atype = this.value; load(); };
     $("lib-add").onclick = function () { openForm(null); };
     $("lib-csv").onclick = openImport;
-    paint();
   }
 
   function paint() {
@@ -118,7 +117,7 @@
       b.classList.toggle("on", b.dataset.tab === S.tab);
     });
     var sel = $("lib-sub");
-    if (sel && !sel.dataset.filled) {
+    if (sel && !sel.dataset.filled && S.meta.length) {
       sel.innerHTML = '<option value="">과목 전체</option>' +
         S.meta.map(function (m) { return '<option value="' + m.id + '">' + esc(m.subject_name) + "</option>"; }).join("");
       sel.dataset.filled = "1";

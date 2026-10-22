@@ -492,6 +492,12 @@ const EXTRA_QUERIES = [
   },
 
   {
+    name: "wa_qb_assign_purge",
+    params: [{ name: "id" }],
+    sql: `DELETE FROM question_set_assignments WHERE id = $1::int RETURNING id`,
+  },
+
+  {
     name: "wa_qb_weak_units",
     params: [{ name: "student_id" }],
     sql: `SELECT trim(u.unit) AS unit_name, count(*) AS miss_count,

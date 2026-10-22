@@ -23,6 +23,7 @@ window.MORE_NAV = [
   { id: 'contents',    label: '학습 콘텐츠' },
   { id: 'books',       label: '교재' },
   { id: 'qbank',       label: '문제은행' },
+  { id: 'sets',        label: '시험지 세트(EBS 단추)' },
   { id: 'prescription',label: '학습 처방(이력)' },
   { id: 'paths',       label: '학습 경로(전체)' },
   { id: 'diagnosis',   label: '취약 단원 진단(전체)' },
@@ -67,9 +68,9 @@ window.TABLE_ROUTES = {
   paths:       { q:'wa_paths',        label:'학습 경로(전체)', hint:'경로별 단계 수', cols:[
     {k:'student_name',h:'학생',link:'stu'},{k:'subject_name',h:'과목'},{k:'path_name',h:'경로'},
     {k:'step_count',h:'단계',fmt:'num'},{k:'status',h:'상태',fmt:'pill'}]},
-  diagnosis:   { q:'wa_weak',         label:'취약 단원(전체)', hint:'진도<70 또는 성취<70', cols:[
+  diagnosis:   { q:'wa_weak',         label:'취약 단원(전체)', hint:'진도<70 · 성취<70 · 시험지 오답', cols:[
     {k:'student_name',h:'학생',link:'stu'},{k:'subject_name',h:'과목'},{k:'unit_name',h:'단원'},
-    {k:'progress_pct',h:'진도 %',fmt:'num'},{k:'achievement',h:'성취',fmt:'num'}]},
+    {k:'source',h:'구분'},{k:'progress_pct',h:'진도 %',fmt:'num'},{k:'achievement',h:'성취',fmt:'num'}]},
   gpa:         { q:'wa_grades',       label:'내신 등급',  hint:'학기별 성적·등급', cols:[
     {k:'student_name',h:'학생',link:'stu'},{k:'school_year',h:'학년도'},{k:'semester',h:'학기'},
     {k:'subject_name',h:'과목'},{k:'grade_level',h:'등급',fmt:'num'}]},
