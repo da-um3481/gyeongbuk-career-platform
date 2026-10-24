@@ -533,6 +533,25 @@ const EXTRA_QUERIES = [
   },
 
   {
+    name: "wa_hw_admin_list",
+    params: [],
+    sql: `SELECT h.id, h.student_id, s.name AS student_name, h.title, h.status,
+        to_char(h.due_date,'YYYY-MM-DD') AS due,
+        to_char(h.submitted_at,'YYYY-MM-DD HH24:MI') AS submitted
+      FROM homework h LEFT JOIN students s ON s.id = h.student_id
+      ORDER BY h.id DESC LIMIT 300`,
+  },
+
+  {
+    name: "wa_hw_set_status",
+    params: [{ name: "id" }, { name: "status" }],
+    sql: `UPDATE homework
+        SET status = $2,
+            submitted_at = CASE WHEN $2 = '완료' THEN COALESCE(submitted_at, NOW()) ELSE NULL END
+      WHERE id = $1::int RETURNING id, status`,
+  },
+
+  {
     name: "wa_stu_account_clear",
     params: [{ name: "id" }],
     sql: `UPDATE students SET pw_hash = NULL, login_id = NULL, pw_updated_at = NULL
