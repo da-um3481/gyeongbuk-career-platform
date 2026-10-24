@@ -15,6 +15,7 @@ window.CORE_NAV = [
 // '더 보기' 아래 접히는 상세 화면 — 기존 전용 화면으로의 바로가기 모음
 window.MORE_NAV = [
   { id: 'library',     label: '교재·자료 관리' },
+  { id: 'accounts',    label: '학생 계정' },
   { id: 'schedule',    label: '수업 캘린더(전체)' },
   { id: 'homework',    label: '숙제(전체)' },
   { id: 'overview',    label: '학생 전체 목록' },

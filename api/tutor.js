@@ -4,6 +4,7 @@
    DB 연결 정보는 서버 환경변수(DATABASE_URL)에만 존재합니다.
    ============================================================ */
 const { Pool } = require("pg");
+const { hashPassword } = require("./_hash");
 const QUERIES_JSON = require("./queries.json");
 
 /* 번들에 없던 추가 쿼리 (학생 등록) */
@@ -510,6 +511,34 @@ const EXTRA_QUERIES = [
       LIMIT 50`,
   },
 
+  /* ---------- 학생 계정 ---------- */
+  {
+    name: "wa_stu_account_migrate",
+    params: [],
+    sql: `ALTER TABLE students ADD COLUMN IF NOT EXISTS login_id character varying(40);
+      ALTER TABLE students ADD COLUMN IF NOT EXISTS pw_hash text;
+      ALTER TABLE students ADD COLUMN IF NOT EXISTS pw_updated_at timestamp without time zone;
+      CREATE UNIQUE INDEX IF NOT EXISTS students_login_id_key ON students(login_id) WHERE login_id IS NOT NULL;`,
+  },
+
+  {
+    name: "wa_stu_accounts",
+    params: [],
+    sql: `SELECT s.id, s.name, s.student_code, s.grade, s.school,
+        COALESCE(s.login_id, s.student_code) AS login_id,
+        (s.pw_hash IS NOT NULL) AS has_pw,
+        to_char(s.pw_updated_at,'YYYY-MM-DD') AS pw_on
+      FROM students s
+      ORDER BY s.name`,
+  },
+
+  {
+    name: "wa_stu_account_clear",
+    params: [{ name: "id" }],
+    sql: `UPDATE students SET pw_hash = NULL, login_id = NULL, pw_updated_at = NULL
+      WHERE id = $1::int RETURNING id`,
+  },
+
   {
     name: "wa_qb_recommend",
     params: [{ name: "student_id" }],
@@ -558,6 +587,30 @@ module.exports = async function handler(req, res) {
     try { body = JSON.parse(body); } catch (e) { return res.status(400).json({ error: "bad json" }); }
   }
   body = body || {};
+
+  /* 학생 계정 발급/재설정 — 비밀번호는 서버에서 해시 후 저장 */
+  if (body.q === "wa_stu_account_set") {
+    const p = body.params || {};
+    const sid = parseInt(p.student_id, 10);
+    const pw = String(p.password || "");
+    if (!sid) return res.status(400).json({ error: "student_id 필요" });
+    if (pw.length < 4) return res.status(400).json({ error: "비밀번호는 4자 이상이어야 합니다." });
+    try {
+      const out = await pool.query(
+        `UPDATE students
+            SET login_id = COALESCE(NULLIF($2,''), student_code),
+                pw_hash = $3, pw_updated_at = NOW()
+          WHERE id = $1::int
+          RETURNING id, COALESCE(login_id, student_code) AS login_id`,
+        [sid, String(p.login_id || "").trim(), hashPassword(pw)]
+      );
+      return res.status(200).json({ rows: out.rows });
+    } catch (e) {
+      const msg = String((e && e.message) || e);
+      const dup = msg.indexOf("students_login_id_key") >= 0;
+      return res.status(dup ? 409 : 500).json({ error: dup ? "이미 사용 중인 아이디입니다." : msg });
+    }
+  }
 
   const q = BY_NAME[body.q];
   if (!q) return res.status(400).json({ error: "unknown query: " + body.q });
