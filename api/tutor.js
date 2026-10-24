@@ -546,8 +546,8 @@ const EXTRA_QUERIES = [
     name: "wa_hw_set_status",
     params: [{ name: "id" }, { name: "status" }],
     sql: `UPDATE homework
-        SET status = $2,
-            submitted_at = CASE WHEN $2 = '완료' THEN COALESCE(submitted_at, NOW()) ELSE NULL END
+        SET status = $2::text,
+            submitted_at = CASE WHEN $2::text = '완료' THEN COALESCE(submitted_at, NOW()) ELSE NULL END
       WHERE id = $1::int RETURNING id, status`,
   },
 
